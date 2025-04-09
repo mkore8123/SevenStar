@@ -7,16 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Common.Api\Common.Api.csproj" />
+    <ProjectReference Include="..\Common\Common.Api\Common.Api.csproj" />
+    <ProjectReference Include="..\SevenStar.Common\SevenStar.Common.Api\SevenStar.Common.Api.csproj" />
     <ProjectReference Include="..\SevenStar.ServiceDefaults\SevenStar.ServiceDefaults.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>

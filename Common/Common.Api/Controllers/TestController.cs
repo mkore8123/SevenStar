@@ -12,8 +12,8 @@ public class TestController : ApiControllerBase
     {
         public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
     }
-
-    [HttpGet("GetWeatherForecast")]
+    
+    [HttpGet]
     public WeatherForecast[] Weatherforecast()
     {
         var forecast = Enumerable.Range(1, 5).Select(index =>

@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="SevenStar.Common.Api\**" />
+    <EmbeddedResource Remove="SevenStar.Common.Api\**" />
+    <None Remove="SevenStar.Common.Api\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.0" />
   </ItemGroup>
 
