@@ -10,6 +10,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenStar.ApiService", "Sev
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenStar.Web", "SevenStar.Web\SevenStar.Web.csproj", "{2A584751-90E9-7A7F-9D75-661B76D1515F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Api", "Common.Api\Common.Api.csproj", "{BFA72474-B85B-4246-87ED-C2A38AC7FA93}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,9 +36,16 @@ Global
 		{2A584751-90E9-7A7F-9D75-661B76D1515F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A584751-90E9-7A7F-9D75-661B76D1515F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A584751-90E9-7A7F-9D75-661B76D1515F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFA72474-B85B-4246-87ED-C2A38AC7FA93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFA72474-B85B-4246-87ED-C2A38AC7FA93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFA72474-B85B-4246-87ED-C2A38AC7FA93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFA72474-B85B-4246-87ED-C2A38AC7FA93}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BFA72474-B85B-4246-87ED-C2A38AC7FA93} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0C4DA5FA-CDAC-4B6C-B21C-2894EB0B22DB}
