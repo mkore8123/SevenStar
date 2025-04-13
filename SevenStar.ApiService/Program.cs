@@ -1,46 +1,43 @@
+ï»¿using Common.Api.Extensions;
 using SevenStar.Common.Api.Exception;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add service defaults & Aspire client integrations.
-builder.AddServiceDefaults();
+// builder.AddServiceDefaults();
 
 // Add services to the container.
-builder.Services.AddProblemDetails();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
 
-#region Swagger °t¸m
+#region Swagger é…ç½®
 
-// µù¥U Minimal API Explorer
+// è¨»å†Š Minimal API Explorer
 builder.Services.AddEndpointsApiExplorer();
-// µù¥U Swagger ²£¥Í¾¹
-builder.Services.AddSwaggerGen();
+// è¨»å†Š Swagger ç”¢ç”Ÿå™¨
+builder.Services.AddSwaggerGenHandling();
 
 #endregion
 
-// «È»s¤Æ¨Ò¥~³B²z°Ê§@
-builder.Services.AddExceptionHandler<CustomExceptionHandler>();
+// å®¢è£½åŒ–ä¾‹å¤–è™•ç†å‹•ä½œ
+builder.Services.AddExceptionHandling();
+// builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-app.UseExceptionHandler ();
-
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-    //app.UseDeveloperExceptionPage();
     app.MapOpenApi();
 }
 
+app.UseSwaggerUIHandling();
+app.UseExceptionHandling();
 app.UseRouting();
 
-// ®M¥Î°ò¥»°·±dÀË¬d¥Îªº http url: health & alive\
+// å¥—ç”¨åŸºæœ¬å¥åº·æª¢æŸ¥ç”¨çš„ http url: health & alive
 app.MapControllers();
-app.MapDefaultEndpoints();
+// app.MapDefaultEndpoints();
 
 app.Run();
