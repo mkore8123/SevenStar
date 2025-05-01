@@ -1,6 +1,7 @@
 ﻿using Common.Api.Exception;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -15,9 +16,9 @@ public static class ExceptionHandlerExtension
     /// 註冊例外處理所需服務
     /// </summary>
     public static IServiceCollection AddExceptionHandling(this IServiceCollection services)
-    {
-        services.AddProblemDetails();
-        services.AddExceptionHandler<CustomExceptionHandler>();
+    {   
+        services.AddProblemDetails(DefaultProblemDetails);
+        services.AddExceptionHandler<ApiExceptionHandler>();
 
         return services;
     }
@@ -46,5 +47,27 @@ public static class ExceptionHandlerExtension
         }
 
         return app;
+    }
+
+    /// <summary>
+    /// 最後一道執行 ProblemDetailsContext 加工處理。
+    /// 即使例外處理流程有定義 ProblemDetailsContext，最終還是會運行 CustomizeProblemDetails，CustomizeProblemDetails 是一個「最後加工」機會
+    /// </summary>
+    /// <param name="options"></param>
+    private static void DefaultProblemDetails(ProblemDetailsOptions options)
+    {
+        options.CustomizeProblemDetails = context =>
+        {
+            var httpContext = context.HttpContext;
+            var problem = context.ProblemDetails;
+
+            problem.Instance ??= $"{httpContext.Request.Method} {httpContext.Request.Path}";
+            problem.Status ??= httpContext.Response.StatusCode;
+
+            if (!problem.Extensions.ContainsKey("traceId"))
+            {
+                problem.Extensions["traceId"] = httpContext.TraceIdentifier;
+            }
+        };
     }
 }

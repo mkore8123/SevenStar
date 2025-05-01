@@ -1,5 +1,4 @@
 ﻿using Common.Api.Extensions;
-using SevenStar.Common.Api.Exception;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +22,6 @@ builder.Services.AddSwaggerGenHandling();
 
 // 客製化例外處理動作
 builder.Services.AddExceptionHandling();
-// builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
 var app = builder.Build();
 

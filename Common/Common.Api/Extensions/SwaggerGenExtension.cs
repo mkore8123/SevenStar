@@ -21,7 +21,7 @@ public static class SwaggerGenExtension
     }
 
     /// <summary>
-    /// 使用例外處理中介層
+    /// 中介層使用 Swagger
     /// </summary>
     public static IApplicationBuilder UseSwaggerUIHandling(this IApplicationBuilder app)
     {
