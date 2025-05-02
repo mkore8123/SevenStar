@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Authentication;
 
 namespace SevenStar.ApiService.Controllers;
 
@@ -25,5 +26,11 @@ public class TestController : ApiControllerBase
         ))
         .ToArray();
         return forecast;
+    }
+    
+    [HttpGet]
+    public void TestException()
+    {
+        throw new Exception("Test Exception");
     }
 }
