@@ -10,6 +10,14 @@ namespace Common.Exception;
 /// </summary>
 public abstract class BaseExceptionHandler
 {
+    private ExceptionMetadata DefaultException { get; } =
+    new ExceptionMetadata
+    {
+        StatusCode = 500,
+        ErrorCode = 1000,
+        Title = "伺服器錯誤"
+    };
+
     /// <summary>
     /// 取得目前的例外對應表（可被子類別擴充）
     /// </summary>
@@ -60,12 +68,7 @@ public abstract class BaseExceptionHandler
             type = type.BaseType!;
         }
 
-        return new ExceptionMetadata
-        {
-            StatusCode = 500,
-            ErrorCode = 1000,
-            Title = "伺服器錯誤"
-        };
+        return DefaultException;
     }
 
     public virtual ExceptionMetadata Handle(System.Exception exception, out string message)

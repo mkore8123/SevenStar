@@ -33,6 +33,7 @@ public static class ExceptionHandlerExtension
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
+            //app.UseExceptionHandler();
         }
         else
         {
@@ -64,9 +65,9 @@ public static class ExceptionHandlerExtension
             problem.Instance ??= $"{httpContext.Request.Method} {httpContext.Request.Path}";
             problem.Status ??= httpContext.Response.StatusCode;
 
-            if (!problem.Extensions.ContainsKey("traceId"))
+            if (!problem.Extensions.ContainsKey("RequestId"))
             {
-                problem.Extensions["traceId"] = httpContext.TraceIdentifier;
+                problem.Extensions["RequestId"] = httpContext.TraceIdentifier;
             }
         };
     }

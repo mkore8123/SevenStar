@@ -67,7 +67,7 @@ public class ApiExceptionHandler : BaseExceptionHandler, IExceptionHandler
 
         // 加上額外欄位
         problem.Extensions.Add("errorCode", exceptionMetadata.ErrorCode);
-        problem.Extensions.Add("traceId", httpContext.TraceIdentifier);
+        problem.Extensions.Add("RequestId", httpContext.TraceIdentifier);
         problem.Extensions.Add("timestamp", DateTime.UtcNow);
 
         return problem;
