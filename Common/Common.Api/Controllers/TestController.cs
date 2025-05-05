@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using System.Security.Authentication;
 
 namespace SevenStar.ApiService.Controllers;
@@ -8,6 +9,12 @@ namespace SevenStar.ApiService.Controllers;
 public class TestController : ApiControllerBase
 {
     private string[] summaries = ["Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"];
+    private IStringLocalizer<TestController> _localizer;
+
+    public TestController(IStringLocalizer<TestController> localizer)
+    {
+        _localizer = localizer;
+    }
 
     public record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
     {
@@ -32,5 +39,12 @@ public class TestController : ApiControllerBase
     public void TestException()
     {
         throw new Exception("Test Exception");
+    }
+
+    [HttpGet]
+    public IActionResult TestLocalization()
+    {
+        var message = _localizer["Greeting.Hello"];
+        return Ok(new { message = message });
     }
 }

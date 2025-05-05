@@ -1,21 +1,26 @@
 ﻿using Common.Api.Extensions;
+using Common.Api.Localization;
 using Common.Log.Serilog.Middleware;
 using Serilog;
 using SevenStar.Common.Api.Serilog;
 using SevenStar.Common.Extensions;
+using System.Globalization;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 try
 {
+    var localization = new SevenStarLocalization();
     var serilogConfig = new ApiSerilogConfiguration();
+    
     builder.AddSerilogHandling(serilogConfig);
 
     // Add service defaults & Aspire client integrations.
     // builder.AddServiceDefaults();
 
     // Add services to the container.
+    builder.Services.AddLocalizationHandling(localization);
 
     // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
     builder.Services.AddOpenApi();
@@ -34,6 +39,8 @@ try
     builder.Services.AddExceptionHandling();
 
     var app = builder.Build();
+    app.UseLocalizationHandling();
+
     // app.UseMiddleware<AddLogContextMiddleware>();
     app.UseExceptionHandling(serilogConfig);
 
