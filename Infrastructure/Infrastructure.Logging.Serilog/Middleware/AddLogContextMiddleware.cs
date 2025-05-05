@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Common.Log.Serilog.Middleware;
+namespace Infrastructure.Logging.Serilog.Middleware;
 
 /// <summary>
 /// 針對 ILogger 紀錄添加更多 Metadata 欄位資訊

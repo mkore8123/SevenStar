@@ -1,6 +1,5 @@
 ﻿using Common.Api.Extensions;
 using Common.Api.Localization;
-using Common.Log.Serilog.Middleware;
 using Serilog;
 using SevenStar.Common.Api.Serilog;
 using SevenStar.Common.Extensions;
