@@ -13,7 +13,7 @@ public static class SwaggerGenExtension
     /// <summary>
     /// 註冊 Swagger 相關配置
     /// </summary>
-    public static IServiceCollection AddSwaggerGenHandling(this IServiceCollection services)
+    public static IServiceCollection AddSwaggerGenHandler(this IServiceCollection services)
     {
         services.AddSwaggerGen();
 

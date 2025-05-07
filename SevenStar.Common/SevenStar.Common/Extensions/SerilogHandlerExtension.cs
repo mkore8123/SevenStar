@@ -18,7 +18,7 @@ public static class SerilogHandlerExtension
     /// <param name="builder"></param>
     /// <param name="config">客製化的 Serilog 配置檔案，會調用 CreateLoggerConfiguration 方法，可覆寫自行調整，傳入後會啟用</param>
     /// <returns></returns>
-    public static WebApplicationBuilder AddSerilogHandling(this WebApplicationBuilder builder, SerilogConfigurationBase? config = null)
+    public static WebApplicationBuilder AddSerilogHandler(this WebApplicationBuilder builder, SerilogConfigurationBase? config = null)
     {
         config ??= new SerilogConfigurationBase();
         Log.Logger = config.CreateLoggerConfiguration(builder.Configuration).CreateLogger();

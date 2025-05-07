@@ -10,16 +10,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 try
 {
-    var localization = new SevenStarLocalization();
     var serilogConfig = new ApiSerilogConfiguration();
     
-    builder.AddSerilogHandling(serilogConfig);
+    builder.AddSerilogHandler(serilogConfig);
 
     // Add service defaults & Aspire client integrations.
     // builder.AddServiceDefaults();
 
     // Add services to the container.
-    builder.Services.AddLocalizationHandling(localization);
+    builder.Services.AddLocalizationHandler(new SevenStarLocalization());
 
     // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
     builder.Services.AddOpenApi();
@@ -30,12 +29,12 @@ try
     // 註冊 Minimal API Explorer
     builder.Services.AddEndpointsApiExplorer();
     // 註冊 Swagger 產生器
-    builder.Services.AddSwaggerGenHandling();
+    builder.Services.AddSwaggerGenHandler();
 
     #endregion
 
     // 客製化例外處理動作
-    builder.Services.AddExceptionHandling();
+    builder.Services.AddExceptionHandler();
 
     var app = builder.Build();
     app.UseLocalizationHandling();

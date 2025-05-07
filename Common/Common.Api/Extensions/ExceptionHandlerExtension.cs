@@ -15,7 +15,7 @@ public static class ExceptionHandlerExtension
     /// <summary>
     /// 註冊例外處理所需服務
     /// </summary>
-    public static IServiceCollection AddExceptionHandling(this IServiceCollection services)
+    public static IServiceCollection AddExceptionHandler(this IServiceCollection services)
     {   
         services.AddProblemDetails(DefaultProblemDetails);
         services.AddExceptionHandler<ApiExceptionHandler>();

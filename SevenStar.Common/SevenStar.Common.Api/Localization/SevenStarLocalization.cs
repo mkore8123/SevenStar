@@ -1,11 +1,12 @@
-﻿using Microsoft.Extensions.Localization;
+﻿using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Localization;
 using SevenStar.Common.Api.Localization;
 using System.Globalization;
 
 namespace Common.Api.Localization;
 
 /// <summary>
-/// 根據指定系統的多語系需求，實作 IStringLocalizerFactory 介面，並提供 IStringLocalizer 實作的工廠類別
+/// 根據指定系統的多語系需求，實作 IStringLocalizerFactory 介面以提供 IStringLocalizer 實作的工廠類別
 /// </summary>
 public class SevenStarLocalization : LocalizationBase
 {
@@ -40,5 +41,10 @@ public class SevenStarLocalization : LocalizationBase
             new CultureInfo("zh-TW"),
             new CultureInfo("en-US"),
         }.ToList();
+    }
+
+    public override List<IRequestCultureProvider> GetRequestCultureProvider()
+    {
+        return new List<IRequestCultureProvider>() { new CookieRequestCultureProvider() };
     }
 }
