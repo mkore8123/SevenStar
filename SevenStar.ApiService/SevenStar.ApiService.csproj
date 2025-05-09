@@ -8,8 +8,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.Api\Common.Api.csproj" />
-    <ProjectReference Include="..\SevenStar.Common\SevenStar.Common.Api\SevenStar.Shared.Domain.Api.csproj" />
     <ProjectReference Include="..\SevenStar.ServiceDefaults\SevenStar.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\SevenStar.Shared\SevenStar.Shared.Domain.Api\SevenStar.Shared.Domain.Api.csproj" />
+    <ProjectReference Include="..\SevenStar.Shared\SevenStar.Shared.Domain.Imp\SevenStar.Shared.Domain.Imp.csproj" />
   </ItemGroup>
 
   <ItemGroup>

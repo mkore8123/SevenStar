@@ -1,9 +1,10 @@
-﻿using Common.Api.Extensions;
+﻿using Common.Extensions;
+using Common.Api.Extensions;
 using Common.Api.Localization;
 using Serilog;
 using SevenStar.Common.Api.Serilog;
 using SevenStar.Common.Extensions;
-using System.Globalization;
+using System.Reflection;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,7 @@ try
     var serilogConfig = new ApiSerilogConfiguration();
     
     builder.AddSerilogHandler(serilogConfig);
+    builder.Services.RegisterAssemblyHandling(Assembly.Load("SevenStar.Shared.Domain.Imp"));
 
     // Add service defaults & Aspire client integrations.
     // builder.AddServiceDefaults();

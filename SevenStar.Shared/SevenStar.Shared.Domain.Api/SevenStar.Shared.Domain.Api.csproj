@@ -17,11 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\Common\Common.Api\Common.Api.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Infrastructure.Logging.Serilog\Infrastructure.Logging.Serilog.csproj" />
     <ProjectReference Include="..\SevenStar.Shared.Domain\SevenStar.Shared.Domain.csproj" />
   </ItemGroup>
 
