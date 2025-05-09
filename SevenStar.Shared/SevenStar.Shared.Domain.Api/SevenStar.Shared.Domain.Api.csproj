@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Common.Api\Common.Api.csproj" />
-    <ProjectReference Include="..\SevenStar.Common\SevenStar.Shared.Domain.Imp.csproj" />
+    <ProjectReference Include="..\SevenStar.Shared.Domain\SevenStar.Shared.Domain.csproj" />
   </ItemGroup>
 
 </Project>
