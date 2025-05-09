@@ -12,19 +12,21 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenStar.Web", "SevenStar.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SevenStar.Common", "SevenStar.Common", "{CA30A22E-3142-40CF-BCF6-13A0A2453C6B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SevenStar.Shared", "SevenStar.Shared", "{CA30A22E-3142-40CF-BCF6-13A0A2453C6B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Api", "Common\Common.Api\Common.Api.csproj", "{11E591AD-88AB-1082-D7C9-3B424936DFB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenStar.Common.Api", "SevenStar.Common\SevenStar.Common.Api\SevenStar.Common.Api.csproj", "{6F5ADBF1-86AB-FB8A-F04F-6D954CE891E6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenStar.Shared.Domain.Api", "SevenStar.Shared\SevenStar.Shared.Domain.Api\SevenStar.Shared.Domain.Api.csproj", "{E8DBCA27-D928-EA9C-8316-C399BB8B7BC4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common\Common.csproj", "{2DC899A3-3374-49FE-AB6A-D8F8CD63FBBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenStar.Common", "SevenStar.Common\SevenStar.Common\SevenStar.Common.csproj", "{4CB6FCDB-5914-4976-BCC6-D9622A723120}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenStar.Shared.Domain.Imp", "SevenStar.Shared\SevenStar.Shared.Domain.Imp\SevenStar.Shared.Domain.Imp.csproj", "{4CB6FCDB-5914-4976-BCC6-D9622A723120}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{EC8CF188-7A5F-4340-B348-A13731E6ED20}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Logging.Serilog", "Infrastructure\Infrastructure.Logging.Serilog\Infrastructure.Logging.Serilog.csproj", "{D44D00FA-56A1-4BFD-A644-B06A6D19C094}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenStar.Shared.Domain", "SevenStar.Shared\SevenStar.Shared.Domain\SevenStar.Shared.Domain.csproj", "{7CEE6CBC-4022-4974-BABD-0399A9C34635}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -52,10 +54,10 @@ Global
 		{11E591AD-88AB-1082-D7C9-3B424936DFB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11E591AD-88AB-1082-D7C9-3B424936DFB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11E591AD-88AB-1082-D7C9-3B424936DFB1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6F5ADBF1-86AB-FB8A-F04F-6D954CE891E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6F5ADBF1-86AB-FB8A-F04F-6D954CE891E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6F5ADBF1-86AB-FB8A-F04F-6D954CE891E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6F5ADBF1-86AB-FB8A-F04F-6D954CE891E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8DBCA27-D928-EA9C-8316-C399BB8B7BC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8DBCA27-D928-EA9C-8316-C399BB8B7BC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8DBCA27-D928-EA9C-8316-C399BB8B7BC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8DBCA27-D928-EA9C-8316-C399BB8B7BC4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2DC899A3-3374-49FE-AB6A-D8F8CD63FBBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2DC899A3-3374-49FE-AB6A-D8F8CD63FBBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DC899A3-3374-49FE-AB6A-D8F8CD63FBBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -68,16 +70,21 @@ Global
 		{D44D00FA-56A1-4BFD-A644-B06A6D19C094}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D44D00FA-56A1-4BFD-A644-B06A6D19C094}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D44D00FA-56A1-4BFD-A644-B06A6D19C094}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CEE6CBC-4022-4974-BABD-0399A9C34635}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CEE6CBC-4022-4974-BABD-0399A9C34635}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CEE6CBC-4022-4974-BABD-0399A9C34635}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CEE6CBC-4022-4974-BABD-0399A9C34635}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{11E591AD-88AB-1082-D7C9-3B424936DFB1} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
-		{6F5ADBF1-86AB-FB8A-F04F-6D954CE891E6} = {CA30A22E-3142-40CF-BCF6-13A0A2453C6B}
+		{E8DBCA27-D928-EA9C-8316-C399BB8B7BC4} = {CA30A22E-3142-40CF-BCF6-13A0A2453C6B}
 		{2DC899A3-3374-49FE-AB6A-D8F8CD63FBBE} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{4CB6FCDB-5914-4976-BCC6-D9622A723120} = {CA30A22E-3142-40CF-BCF6-13A0A2453C6B}
 		{D44D00FA-56A1-4BFD-A644-B06A6D19C094} = {EC8CF188-7A5F-4340-B348-A13731E6ED20}
+		{7CEE6CBC-4022-4974-BABD-0399A9C34635} = {CA30A22E-3142-40CF-BCF6-13A0A2453C6B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0C4DA5FA-CDAC-4B6C-B21C-2894EB0B22DB}
