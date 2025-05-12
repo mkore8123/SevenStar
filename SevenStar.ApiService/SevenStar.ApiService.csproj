@@ -11,6 +11,7 @@
     <ProjectReference Include="..\SevenStar.ServiceDefaults\SevenStar.ServiceDefaults.csproj" />
     <ProjectReference Include="..\SevenStar.Shared\SevenStar.Shared.Domain.Api\SevenStar.Shared.Domain.Api.csproj" />
     <ProjectReference Include="..\SevenStar.Shared\SevenStar.Shared.Domain.Imp\SevenStar.Shared.Domain.Imp.csproj" />
+    <ProjectReference Include="..\SevenStar.Shared\SevenStar.Shared.Domain\SevenStar.Shared.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

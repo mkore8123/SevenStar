@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using SevenStar.ApiService.Controllers;
 using SevenStar.Shared.Domain.Enums;
-using SevenStar.Shared.Domain.Interface;
+using SevenStar.Shared.Domain.Repository;
 using System;
 using System.Collections.Generic;
 using System.Text;
