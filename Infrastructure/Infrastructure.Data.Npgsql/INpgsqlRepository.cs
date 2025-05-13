@@ -11,15 +11,12 @@ public interface INpgsqlRepository<T>
     /// <summary>
     /// PostgreSQL 的原始連線
     /// </summary>
-    protected NpgsqlConnection   Connection { get; }
+    public NpgsqlConnection Connection { get; }
 
     /// <summary>
     /// 當前交易（可選）
     /// </summary>
-    protected NpgsqlTransaction? Transaction { get; set; }
-
-
-
+    public NpgsqlTransaction? Transaction { get; set; }
 }
 
 

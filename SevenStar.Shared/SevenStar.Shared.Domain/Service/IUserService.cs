@@ -6,5 +6,5 @@ namespace SevenStar.Shared.Domain.Service;
 
 public interface IUserService
 {
-    public Task Create(string name);
+    public Task CreateAsync(string name);
 }

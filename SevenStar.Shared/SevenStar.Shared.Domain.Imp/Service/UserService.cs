@@ -1,4 +1,4 @@
-﻿using Common.Enum;
+﻿using Common.Enums;
 using Infrastructure.Data.Npgsql;
 using Microsoft.Extensions.DependencyInjection;
 using SevenStar.Shared.Domain.Entity;
@@ -18,21 +18,14 @@ public class UserService : IUserService
         _companyDb = serviceProvider.GetRequiredService<ICompanyGameDb>();
     }
 
-    public async Task Create(string name)
+    public async Task CreateAsync(string name)
     {
         var user = new UserEntity { Name = name };
 
-        await _companyDb.ExecuteAsyncV2(async (uow, transaction) =>
+        await _companyDb.ExecuteAsync(async (transaction) =>
         {
-            await _companyDb.GetRepository<IUserRepository>().Set(transaction).GetUsersAsync();
-
+            var userRepository = await _companyDb.GetRepository<IUserRepository>();
+            var users = await userRepository.GetAsync();
         });
-
-        // _unitOfWork.GetRepository<IUserRepository>();
-        //await _unitOfWork.ExecuteAsync(async (connection, transaction) =>
-        //{
-
-        //    await _userRepository.Set(connection, transaction).Create(user);
-        //});
     }
 }

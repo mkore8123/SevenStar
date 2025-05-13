@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SevenStar.Shared.Domain.Repository;
 
-public interface IUserRepository : IBaseRepository<IUserRepository>
+public interface IUserRepository
 {
-    Task<List<UserEntity>> GetUsersAsync();
+    Task<List<UserEntity>> GetAsync();
 }

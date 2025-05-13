@@ -7,5 +7,10 @@ namespace SevenStar.Shared.Domain;
 
 public interface ICompanyGameDb : INpgsqlUnitOfWork
 {
-    TRepository GetRepository<TRepository>() where TRepository : class;
+    /// <summary>
+    /// 取得註冊的 Repository
+    /// </summary>
+    /// <typeparam name="TRepository"></typeparam>
+    /// <returns></returns>
+    Task<TRepository> GetRepository<TRepository>() where TRepository : class;
 }

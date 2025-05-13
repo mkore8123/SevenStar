@@ -1,47 +1,71 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
+using System.Transactions;
 
 namespace Infrastructure.Data.Npgsql;
 
 
-public class NpgsqlUnitOfWork : INpgsqlUnitOfWork 
+public class NpgsqlUnitOfWork : INpgsqlUnitOfWork
 {
-    private readonly IServiceProvider _provider;
-    private readonly NpgsqlDataSource _dataSource;
+    protected readonly NpgsqlDataSource _dataSource;
 
-    private readonly Dictionary<Type, object> _repoCache = new();
-
-    public NpgsqlConnection   Cconnection { get; set; }
+    public NpgsqlConnection Cconnection { get; set; } //= null;
 
     public NpgsqlTransaction? Transaction { get; set; } = null;
 
-    public NpgsqlUnitOfWork(IServiceProvider provider, NpgsqlDataSource dataSource)
+    public NpgsqlUnitOfWork(NpgsqlDataSource dataSource)
     {
-        _provider = provider;
         _dataSource = dataSource;
     }
 
-    public virtual async Task ExecuteAsyncV2(Func<NpgsqlUnitOfWork, NpgsqlTransaction, Task> operation)
+    protected async Task OpenConnectionAsync()
     {
-        Cconnection = await _dataSource.OpenConnectionAsync();
+        Cconnection ??= await _dataSource.OpenConnectionAsync();
+    }
+
+    public virtual async Task ExecuteAsync(Func<NpgsqlTransaction, Task> operation)
+    {
+        await OpenConnectionAsync();
         Transaction = await Cconnection.BeginTransactionAsync(System.Data.IsolationLevel.ReadCommitted);
+
 
         try
         {
-            await operation(this, Transaction);
+            await operation(Transaction);
             await Transaction.CommitAsync();
         }
         catch (Exception ex)
         {
-            // _logger.LogError(ex, "Transaction failed, rolling back.");
             await Transaction.RollbackAsync();
             throw;
         }
         finally
         {
+            await Transaction.DisposeAsync();
+            Transaction = null;
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if(Transaction != null)
+            await Transaction.DisposeAsync();
+
+        if (Cconnection != null)
+        {
             await Cconnection.CloseAsync();
-            await Cconnection.DisposeAsync(); // 建議補上釋放資源
-            Cconnection = null;
+            await Cconnection.DisposeAsync();
+        }
+    }
+
+    public void Dispose()
+    {
+        Transaction?.Dispose();
+
+        if (Cconnection != null)
+        {
+            Cconnection.Close();
+            Cconnection.Dispose();
         }
     }
 }

@@ -32,7 +32,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Data.Npgsql"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SevenStar.Data", "SevenStar.Data", "{FD21780B-8A8E-4FE7-B5E8-5CC5CC463085}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenStar.Data.Company.Nppgsql", "SevenStar.Data\SevenStar.Data.Company.Nppgsql\SevenStar.Data.Company.Nppgsql.csproj", "{25A9A4AA-8830-4F00-B78C-2FF432A83AB9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenStar.Data.Company.Npgsql", "SevenStar.Data\SevenStar.Data.Company.Npgsql\SevenStar.Data.Company.Npgsql.csproj", "{25A9A4AA-8830-4F00-B78C-2FF432A83AB9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Data", "Infrastructure\Infrastructure.Data\Infrastructure.Data.csproj", "{763E12F6-7E74-46FF-B0AE-634AA95DFEE8}"
 EndProject

@@ -14,6 +14,8 @@ public static class NpgsqlExtension
     /// </summary>
     public static IServiceCollection AddNpgSqlHandler(this IServiceCollection services, string npgSqlConnectionString)
     {
+
+
         services.AddSingleton<NpgsqlDataSource>(serviceProvider =>
         {
             var dataSourceBuilder = new NpgsqlDataSourceBuilder(npgSqlConnectionString);

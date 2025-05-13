@@ -1,9 +1,13 @@
 ﻿
 using Dapper;
+using Infrastructure.Data;
 using Infrastructure.Data.Npgsql;
 using Microsoft.AspNetCore.Mvc;
 using Npgsql;
+using SevenStar.Shared.Domain;
 using SevenStar.Shared.Domain.Entity;
+using SevenStar.Shared.Domain.Repository;
+using SevenStar.Shared.Domain.Service;
 using System.Data.Common;
 
 namespace SevenStar.ApiService.Controllers;
@@ -11,12 +15,15 @@ namespace SevenStar.ApiService.Controllers;
 public class ValuesController : ApiControllerBase
 {
     private readonly NpgsqlDataSource _dataSource;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly ICompanyGameDb _companyGameDb;
+    private readonly IUserService _userService;
+    
 
-    public ValuesController(NpgsqlDataSource dataSource, INpgsqlUnitOfWork unitOfWork)
+    public ValuesController(NpgsqlDataSource dataSource, ICompanyGameDb companyGameDb)
     {
         _dataSource = dataSource;
-        _unitOfWork = unitOfWork;
+        _companyGameDb = companyGameDb;
+        // _userService = userService;
     }
 
     [HttpGet]
@@ -35,7 +42,17 @@ public class ValuesController : ApiControllerBase
     [HttpGet]
     public async Task<string> TestUnitOfWork()
     {
-        _unitOfWork
+        var userRepository1 = await _companyGameDb.GetRepository<IUserRepository>();
+        var users1 = await userRepository1.GetAsync();
+
+        await _companyGameDb.ExecuteAsync(async (transaction) =>
+        {
+            var userRepository = await _companyGameDb.GetRepository<IUserRepository>();
+            var users = await userRepository.GetAsync();
+        });
+
+        // var userRepository2 = await _companyGameDb.GetRepository<IUserRepository>();
+        var users2 = await userRepository1.GetAsync();
 
         return "abc";
     }
