@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
+using System.Data;
 using System.Transactions;
 
 namespace Infrastructure.Data.Npgsql;
@@ -9,63 +10,67 @@ public class NpgsqlUnitOfWork : INpgsqlUnitOfWork
 {
     protected readonly NpgsqlDataSource _dataSource;
 
-    public NpgsqlConnection Cconnection { get; set; } //= null;
+    public NpgsqlConnection Connection { get; set; }
 
-    public NpgsqlTransaction? Transaction { get; set; } = null;
+    public NpgsqlUnitOfWork(NpgsqlConnection connection)
+    {
+        Connection = connection;
+    }
 
     public NpgsqlUnitOfWork(NpgsqlDataSource dataSource)
     {
         _dataSource = dataSource;
     }
 
-    protected async Task OpenConnectionAsync()
-    {
-        Cconnection ??= await _dataSource.OpenConnectionAsync();
-    }
-
-    public virtual async Task ExecuteAsync(Func<NpgsqlTransaction, Task> operation)
+    public virtual async Task ExecuteAsync(Func<IDbTransaction, Task> operation)
     {
         await OpenConnectionAsync();
-        Transaction = await Cconnection.BeginTransactionAsync(System.Data.IsolationLevel.ReadCommitted);
-
+        await using var transaction = await Connection.BeginTransactionAsync(System.Data.IsolationLevel.ReadCommitted);
 
         try
         {
-            await operation(Transaction);
-            await Transaction.CommitAsync();
+            await operation(transaction);
+            await transaction.CommitAsync();
         }
         catch (Exception ex)
         {
-            await Transaction.RollbackAsync();
+            await transaction.RollbackAsync();
             throw;
         }
         finally
         {
-            await Transaction.DisposeAsync();
-            Transaction = null;
+            await transaction.DisposeAsync();
         }
     }
 
+    protected async Task OpenConnectionAsync()
+    {
+        if (Connection == null)
+        {
+            Connection = await _dataSource.OpenConnectionAsync();
+        }
+        else if (Connection.State != ConnectionState.Open)
+        {
+            Connection.Open();
+        }
+    }
+
+
     public async ValueTask DisposeAsync()
     {
-        if(Transaction != null)
-            await Transaction.DisposeAsync();
-
-        if (Cconnection != null)
+        if (Connection != null)
         {
-            await Cconnection.CloseAsync();
-            await Cconnection.DisposeAsync();
+            await Connection.CloseAsync();
+            await Connection.DisposeAsync();
         }
     }
 
     public void Dispose()
     {
-        Transaction?.Dispose();
-
-        if (Cconnection != null)
+        if (Connection != null)
         {
-            Cconnection.Close();
-            Cconnection.Dispose();
+            Connection.Close();
+            Connection.Dispose();
         }
     }
 }

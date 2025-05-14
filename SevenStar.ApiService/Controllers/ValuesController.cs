@@ -42,17 +42,15 @@ public class ValuesController : ApiControllerBase
     [HttpGet]
     public async Task<string> TestUnitOfWork()
     {
-        var userRepository1 = await _companyGameDb.GetRepository<IUserRepository>();
-        var users1 = await userRepository1.GetAsync();
+        var userRepository = _companyGameDb.GetRepository<IUserRepository>();
+        var user = await userRepository.GetAsync(1);
 
         await _companyGameDb.ExecuteAsync(async (transaction) =>
         {
-            var userRepository = await _companyGameDb.GetRepository<IUserRepository>();
-            var users = await userRepository.GetAsync();
+            await userRepository.Create(user, transaction);
+            await userRepository.Create(user, transaction);
         });
 
-        // var userRepository2 = await _companyGameDb.GetRepository<IUserRepository>();
-        var users2 = await userRepository1.GetAsync();
 
         return "abc";
     }

@@ -7,9 +7,5 @@ namespace Infrastructure.Data.Npgsql;
 
 public interface INpgsqlUnitOfWork : IUnitOfWork
 {
-    public NpgsqlConnection Cconnection { get; set; }
-
-    public NpgsqlTransaction? Transaction { get; set; }
-
-    Task ExecuteAsync(Func<NpgsqlTransaction, Task> operation);
+    public NpgsqlConnection Connection { get; set; }
 }

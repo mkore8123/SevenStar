@@ -12,5 +12,5 @@ public interface ICompanyGameDb : INpgsqlUnitOfWork
     /// </summary>
     /// <typeparam name="TRepository"></typeparam>
     /// <returns></returns>
-    Task<TRepository> GetRepository<TRepository>() where TRepository : class;
+    TRepository GetRepository<TRepository>() where TRepository : class;
 }

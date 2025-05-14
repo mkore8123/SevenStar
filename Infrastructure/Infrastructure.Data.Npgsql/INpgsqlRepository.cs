@@ -6,17 +6,12 @@ using System.Text;
 
 namespace Infrastructure.Data.Npgsql;
 
-public interface INpgsqlRepository<T>
+public interface INpgsqlRepository
 {
     /// <summary>
     /// PostgreSQL 的原始連線
     /// </summary>
     public NpgsqlConnection Connection { get; }
-
-    /// <summary>
-    /// 當前交易（可選）
-    /// </summary>
-    public NpgsqlTransaction? Transaction { get; set; }
 }
 
 

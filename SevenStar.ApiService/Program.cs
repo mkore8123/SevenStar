@@ -18,9 +18,8 @@ try
     var serilogConfig = new ApiSerilogConfiguration();
     builder.Services.AddScoped<ICompanyGameDb>(sp =>
     {
-        var provider = sp.GetRequiredService<IServiceProvider>();
         var dataSource = sp.GetRequiredService<NpgsqlDataSource>();
-        return new CompanyGameDb(provider, dataSource);
+        return new CompanyGameDb(sp, dataSource);
     });
 
     builder.AddSerilogHandler(serilogConfig);
