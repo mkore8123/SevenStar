@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Infrastructure.Data.Npgsql.Interface;
+using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 using System.Data;
 using System.Transactions;
@@ -8,18 +9,11 @@ namespace Infrastructure.Data.Npgsql;
 
 public class NpgsqlUnitOfWork : INpgsqlUnitOfWork
 {
-    protected readonly NpgsqlDataSource _dataSource;
-
     public NpgsqlConnection Connection { get; set; }
 
     public NpgsqlUnitOfWork(NpgsqlConnection connection)
     {
         Connection = connection;
-    }
-
-    public NpgsqlUnitOfWork(NpgsqlDataSource dataSource)
-    {
-        _dataSource = dataSource;
     }
 
     public virtual async Task ExecuteAsync(Func<IDbTransaction, Task> operation)
@@ -31,6 +25,11 @@ public class NpgsqlUnitOfWork : INpgsqlUnitOfWork
         {
             await operation(transaction);
             await transaction.CommitAsync();
+        }
+        catch (NpgsqlException ex)
+        {
+            await transaction.RollbackAsync();
+            throw;
         }
         catch (Exception ex)
         {
@@ -45,14 +44,8 @@ public class NpgsqlUnitOfWork : INpgsqlUnitOfWork
 
     protected async Task OpenConnectionAsync()
     {
-        if (Connection == null)
-        {
-            Connection = await _dataSource.OpenConnectionAsync();
-        }
-        else if (Connection.State != ConnectionState.Open)
-        {
-            Connection.Open();
-        }
+        if (Connection.State != ConnectionState.Open)
+            await Connection.OpenAsync();
     }
 
 

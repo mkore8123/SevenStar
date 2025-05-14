@@ -10,7 +10,7 @@ public partial class CompanyGameDb : NpgsqlUnitOfWork, ICompanyGameDb
 {
     private readonly IServiceProvider _provider;   
 
-    public CompanyGameDb(IServiceProvider provider, NpgsqlDataSource dataSource) : base(dataSource)
+    public CompanyGameDb(IServiceProvider provider, NpgsqlConnection connection) : base(connection)
     {
         _provider = provider;
     }
@@ -19,5 +19,13 @@ public partial class CompanyGameDb : NpgsqlUnitOfWork, ICompanyGameDb
     {
         var repository = _provider.GetRequiredKeyedService<TRepository>(DataSource.Npgsql);
         return repository;
+    }
+
+    public async Task<ICompanyGameDb> CreateNewInstance()
+    {
+        var npgsqlDataSource = _provider.GetRequiredService<NpgsqlDataSource>();
+        var instance = new CompanyGameDb(_provider, await npgsqlDataSource.OpenConnectionAsync());
+
+        return instance;
     }
 }

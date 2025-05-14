@@ -19,7 +19,9 @@ try
     builder.Services.AddScoped<ICompanyGameDb>(sp =>
     {
         var dataSource = sp.GetRequiredService<NpgsqlDataSource>();
-        return new CompanyGameDb(sp, dataSource);
+        var connection = dataSource.OpenConnection();
+
+        return new CompanyGameDb(sp, connection);
     });
 
     builder.AddSerilogHandler(serilogConfig);

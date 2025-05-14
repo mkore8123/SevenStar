@@ -1,4 +1,5 @@
-﻿using Infrastructure.Data.Npgsql;
+﻿using Infrastructure.Data.Npgsql.Interface;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,9 +9,8 @@ namespace SevenStar.Shared.Domain;
 public interface ICompanyGameDb : INpgsqlUnitOfWork
 {
     /// <summary>
-    /// 取得註冊的 Repository
+    /// 使用目前當前的 ConnectionString 建立新的連線物件; 主要用於平行處理避免使用同一個連線物件造成錯誤
     /// </summary>
-    /// <typeparam name="TRepository"></typeparam>
     /// <returns></returns>
-    TRepository GetRepository<TRepository>() where TRepository : class;
+    Task<ICompanyGameDb> CreateNewInstance();
 }

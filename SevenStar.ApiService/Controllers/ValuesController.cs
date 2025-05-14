@@ -23,7 +23,6 @@ public class ValuesController : ApiControllerBase
     {
         _dataSource = dataSource;
         _companyGameDb = companyGameDb;
-        // _userService = userService;
     }
 
     [HttpGet]
@@ -42,13 +41,13 @@ public class ValuesController : ApiControllerBase
     [HttpGet]
     public async Task<string> TestUnitOfWork()
     {
-        var userRepository = _companyGameDb.GetRepository<IUserRepository>();
-        var user = await userRepository.GetAsync(1);
+        // var userRepository = _companyGameDb.GetRepository<IUserRepository>();
+        // var user = await userRepository.GetAsync(1);
 
         await _companyGameDb.ExecuteAsync(async (transaction) =>
         {
-            await userRepository.Create(user, transaction);
-            await userRepository.Create(user, transaction);
+            //await userRepository.Create(user, transaction);
+            //await userRepository.Create(user, transaction);
         });
 
 

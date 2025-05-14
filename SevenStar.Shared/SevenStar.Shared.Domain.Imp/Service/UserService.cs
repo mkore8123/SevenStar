@@ -24,8 +24,8 @@ public class UserService : IUserService
 
         await _companyDb.ExecuteAsync(async (transaction) =>
         {
-            var userRepository = await _companyDb.GetRepository<IUserRepository>();
-            var users = await userRepository.GetAsync();
+            
+            
         });
     }
 }

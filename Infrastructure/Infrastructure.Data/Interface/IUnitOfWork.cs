@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 
-namespace Infrastructure.Data;
+namespace Infrastructure.Data.Interface;
 
 public interface IUnitOfWork : IDisposable, IAsyncDisposable
 {

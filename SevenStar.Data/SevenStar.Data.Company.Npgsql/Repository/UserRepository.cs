@@ -1,7 +1,7 @@
 ﻿using Common.Attributes;
 using Common.Enums;
 using Dapper;
-using Infrastructure.Data.Npgsql;
+using Infrastructure.Data.Npgsql.Interface;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 using SevenStar.Shared.Domain.Entity;
