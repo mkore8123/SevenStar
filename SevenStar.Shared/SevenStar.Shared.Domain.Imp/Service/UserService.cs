@@ -20,12 +20,12 @@ public class UserService : IUserService
 
     public async Task CreateAsync(string name)
     {
-        var user = new UserEntity { Name = name };
+        //var user = new UserEntity { Name = name };
 
-        await _companyDb.ExecuteAsync(async (transaction) =>
-        {
+        //await _companyDb.ExecuteAsync(async (transaction) =>
+        //{
             
             
-        });
+        //});
     }
 }

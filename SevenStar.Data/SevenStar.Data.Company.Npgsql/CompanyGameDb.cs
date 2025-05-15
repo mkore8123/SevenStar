@@ -8,11 +8,14 @@ namespace SevenStar.Data.Company.Nppgsql;
 
 public partial class CompanyGameDb : NpgsqlUnitOfWork, ICompanyGameDb
 {
-    private readonly IServiceProvider _provider;   
+    private readonly IServiceProvider _provider;
 
-    public CompanyGameDb(IServiceProvider provider, NpgsqlConnection connection) : base(connection)
+    public int CompanyId { get; }
+
+    public CompanyGameDb(IServiceProvider provider, int companyId, NpgsqlConnection connection) : base(connection)
     {
         _provider = provider;
+        CompanyId = companyId;
     }
 
     public TRepository GetRepository<TRepository>() where TRepository : class
@@ -21,11 +24,11 @@ public partial class CompanyGameDb : NpgsqlUnitOfWork, ICompanyGameDb
         return repository;
     }
 
-    public async Task<ICompanyGameDb> CreateNewInstance()
+    public async Task<ICompanyGameDb> CreateNewInstanceAsync()
     {
-        var npgsqlDataSource = _provider.GetRequiredService<NpgsqlDataSource>();
-        var instance = new CompanyGameDb(_provider, await npgsqlDataSource.OpenConnectionAsync());
+        var companyFactory = _provider.GetRequiredService<ICompanyGameDbFactory>();
+        var companyDb  = await companyFactory.CreateCompanyGameDbAsync(CompanyId);
 
-        return instance;
+        return companyDb;
     }
 }

@@ -1,12 +1,11 @@
-﻿using Common.Attributes;
-using Common.Enums;
-using Dapper;
-using Infrastructure.Data.Npgsql.Interface;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Dapper;
 using Npgsql;
-using SevenStar.Shared.Domain.Entity.Company;
-using SevenStar.Shared.Domain.Repository.Company;
 using System.Data;
+using Common.Enums;
+using Common.Attributes;
+using Microsoft.Extensions.DependencyInjection;
+using SevenStar.Shared.Domain.Entity.Company;
+using SevenStar.Shared.Domain.Repository;
 
 
 namespace SevenStar.Data.Company.Npgsql.Repository.Company;
