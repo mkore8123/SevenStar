@@ -1,7 +1,7 @@
 ﻿using Common.Attributes;
 using Microsoft.Extensions.DependencyInjection;
 using SevenStar.Shared.Domain.Enums;
-using SevenStar.Shared.Domain.Interface;
+using SevenStar.Shared.Domain.Repository;
 
 namespace SevenStar.Shared.Domain.Imp.Implement;
 

@@ -20,6 +20,7 @@ public static class SerilogHandlerExtension
         Log.Logger = config.CreateLoggerConfiguration(builder.Configuration).CreateLogger();
 
         builder.Host.UseSerilog();
+        builder.Logging.AddSerilog(Log.Logger);  //需要詳加研究加上這一段的差別
 
         return builder;
     }

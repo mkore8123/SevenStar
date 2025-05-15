@@ -1,9 +1,13 @@
-﻿using Common.Extensions;
-using Common.Api.Extensions;
+﻿using Common.Api.Extensions;
 using Common.Api.Localization;
+using Common.Extensions;
+using Infrastructure.Data.Pg.Extensions;
+using Npgsql;
 using Serilog;
 using SevenStar.Common.Api.Serilog;
 using SevenStar.Common.Extensions;
+using SevenStar.Data.Company.Nppgsql;
+using SevenStar.Shared.Domain;
 using System.Reflection;
 
 
@@ -12,8 +16,16 @@ var builder = WebApplication.CreateBuilder(args);
 try
 {
     var serilogConfig = new ApiSerilogConfiguration();
-    
+    builder.Services.AddScoped<ICompanyGameDb>(sp =>
+    {
+        var dataSource = sp.GetRequiredService<NpgsqlDataSource>();
+        var connection = dataSource.OpenConnection();
+
+        return new CompanyGameDb(sp, connection);
+    });
+
     builder.AddSerilogHandler(serilogConfig);
+    builder.Services.AddNpgSqlHandler("Host=127.0.0.1;Port=5432;Username=postgres;Password=apeter56789;Database=postgres;SearchPath=public;");
     builder.Services.RegisterAssemblyHandling(Assembly.Load("SevenStar.Shared.Domain.Imp"));
 
     // Add service defaults & Aspire client integrations.
