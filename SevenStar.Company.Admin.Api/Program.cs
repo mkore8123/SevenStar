@@ -12,29 +12,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 try
 {
-    var serilogConfig = new ApiSerilogConfiguration();    
+    var serilogConfig = new ApiSerilogConfiguration();
+    // Add service defaults & Aspire client integrations.
+    builder.AddServiceDefaults();
     builder.AddSerilogHandler(serilogConfig);
     builder.Services.AddCompanyDbHandler("Host=127.0.0.1;Port=5432;Username=postgres;Password=apeter56789;Database=postgres;SearchPath=public;");
     builder.Services.RegisterAssemblyHandling(Assembly.Load("SevenStar.Shared.Domain.Imp"));
 
-    // Add service defaults & Aspire client integrations.
-    builder.AddServiceDefaults();
-
     // Add services to the container.
     builder.Services.AddLocalizationHandler(new SevenStarLocalization());
 
-    // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-    builder.Services.AddOpenApi();
-    builder.Services.AddControllers();
-
-    #region Swagger 配置
-
-    // 註冊 Minimal API Explorer
-    builder.Services.AddEndpointsApiExplorer();
-    // 註冊 Swagger 產生器
-    builder.Services.AddSwaggerGenHandler();
-
-    #endregion
+    builder.Services.AddControllers(); 
+    builder.Services.AddSwaggerGenHandler(); // 註冊 Swagger 產生器   
 
     // 客製化例外處理動作
     builder.Services.AddExceptionHandler();
