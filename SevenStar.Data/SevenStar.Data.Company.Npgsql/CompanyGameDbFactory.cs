@@ -12,15 +12,15 @@ namespace SevenStar.Data.Company.Npgsql;
 public class CompanyGameDbFactory : ICompanyGameDbFactory
 {
     private readonly IServiceProvider _provider;
-    private readonly NpgsqlDataSource platformDataSource;
-    private ConcurrentDictionary<int, NpgsqlDataSource> companyDataSource = new();
+    private readonly NpgsqlDataSource _platformDataSource;
+    private ConcurrentDictionary<int, NpgsqlDataSource> _companyDataSource = new();
     private readonly SemaphoreSlim _semaphore = new(1, 1);
 
 
     public CompanyGameDbFactory(IServiceProvider provider, string platformConnectionString)
     {
         _provider = provider;
-        platformDataSource = BuildNpgsqlDataSource(platformConnectionString);
+        _platformDataSource = BuildNpgsqlDataSource(platformConnectionString);
     }
 
     private NpgsqlDataSource BuildNpgsqlDataSource(string connectionString)
@@ -51,7 +51,7 @@ public class CompanyGameDbFactory : ICompanyGameDbFactory
 
     private async Task<string> GetConnectionStringAsync(int companyId)
     {
-        await using var connection = await platformDataSource.OpenConnectionAsync();
+        await using var connection = await _platformDataSource.OpenConnectionAsync();
         var repository = new CompanyRepository(connection);
         var companyModel = await repository.GetAsync(companyId) ?? throw new KeyNotFoundException("查詢不到該公司的連線資訊");
 
@@ -61,7 +61,7 @@ public class CompanyGameDbFactory : ICompanyGameDbFactory
     public async Task<ICompanyGameDb> CreateCompanyGameDbAsync(int companyId)
     {
         CompanyGameDb companyDb;
-        if (companyDataSource.TryGetValue(companyId, out var existingDataSource))
+        if (_companyDataSource.TryGetValue(companyId, out var existingDataSource))
         {
             companyDb = new CompanyGameDb(_provider, await existingDataSource.OpenConnectionAsync());
             return companyDb;
@@ -72,12 +72,12 @@ public class CompanyGameDbFactory : ICompanyGameDbFactory
         try
         {
             // 雙重檢查，避免其他執行緒已經建立了資料來源
-            if (!companyDataSource.TryGetValue(companyId, out existingDataSource))
+            if (!_companyDataSource.TryGetValue(companyId, out existingDataSource))
             {
                 var connectionString = await GetConnectionStringAsync(companyId);
                 existingDataSource = BuildNpgsqlDataSource(connectionString);
-                
-                companyDataSource.TryAdd(companyId, existingDataSource!);
+
+                _companyDataSource.TryAdd(companyId, existingDataSource!);
             }
         }
         catch
@@ -87,7 +87,6 @@ public class CompanyGameDbFactory : ICompanyGameDbFactory
         finally
         {
             _semaphore.Release();
-            
         }
 
         companyDb = new CompanyGameDb(_provider, await existingDataSource.OpenConnectionAsync());
