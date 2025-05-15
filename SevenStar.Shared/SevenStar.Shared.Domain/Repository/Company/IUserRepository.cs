@@ -1,4 +1,4 @@
-﻿using SevenStar.Shared.Domain.Entity;
+﻿using SevenStar.Shared.Domain.Entity.Company;
 using System.Data;
 
 namespace SevenStar.Shared.Domain.Repository;

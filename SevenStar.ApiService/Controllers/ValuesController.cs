@@ -5,7 +5,7 @@ using Infrastructure.Data.Npgsql;
 using Microsoft.AspNetCore.Mvc;
 using Npgsql;
 using SevenStar.Shared.Domain;
-using SevenStar.Shared.Domain.Entity;
+using SevenStar.Shared.Domain.Entity.Company;
 using SevenStar.Shared.Domain.Repository;
 using SevenStar.Shared.Domain.Service;
 using System.Data.Common;

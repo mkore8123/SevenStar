@@ -7,16 +7,9 @@ namespace SevenStar.Shared.Domain;
 public interface ICompanyGameDbFactory
 {
     /// <summary>
-    /// 創建公司遊戲 DB
+    /// 創建公司遊戲 DB，若查詢不到則直接拋出例外，實作方法須確認執行緒安全，能支援平行處理
     /// </summary>
     /// <param name="companyId">公司id</param>
     /// <returns></returns>
-    ICompanyGameDb CreateCompanyGameDb(int companyId);
-
-    /// <summary>
-    /// 創建公司遊戲 DB
-    /// </summary>
-    /// <param name="connectionString">連線字串</param>
-    /// <returns></returns>
-    ICompanyGameDb CreateCompanyGameDb(string connectionString);
+    Task<ICompanyGameDb> CreateCompanyGameDbAsync(int companyId);
 }

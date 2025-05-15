@@ -4,17 +4,17 @@ using Dapper;
 using Infrastructure.Data.Npgsql.Interface;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
-using SevenStar.Shared.Domain.Entity;
-using SevenStar.Shared.Domain.Repository;
+using SevenStar.Shared.Domain.Entity.Company;
+using SevenStar.Shared.Domain.Repository.Company;
 using System.Data;
 
 
-namespace SevenStar.Data.Company.Npgsql.Repository;
+namespace SevenStar.Data.Company.Npgsql.Repository.Company;
 
 [KeyedService(DataSource.Npgsql, ServiceLifetime.Scoped)]
-public class UserRepository : INpgsqlRepository, IUserRepository
+public class UserRepository : IUserRepository
 {
-    public NpgsqlConnection Connection { get; }
+    private NpgsqlConnection Connection { get; }
 
     public UserRepository(NpgsqlConnection connection)
     {
