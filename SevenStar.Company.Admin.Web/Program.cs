@@ -1,5 +1,5 @@
-using SevenStar.Web;
-using SevenStar.Web.Components;
+using SevenStar.Company.Admin.Web.Components;
+using SevenStar.Company.Admin.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 

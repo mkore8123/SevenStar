@@ -6,7 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenStar.AppHost", "SevenS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenStar.Company.Admin.Api", "SevenStar.Company.Admin.Api\SevenStar.Company.Admin.Api.csproj", "{3C355DED-94CA-5203-49D3-E61964C7DD9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenStar.Company.Admin.Web", "SevenStar.Web\SevenStar.Company.Admin.Web.csproj", "{29417E0F-C417-CE54-5B34-581F1D7950BF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenStar.Company.Admin.Web", "SevenStar.Company.Admin.Web\SevenStar.Company.Admin.Web.csproj", "{29417E0F-C417-CE54-5B34-581F1D7950BF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject

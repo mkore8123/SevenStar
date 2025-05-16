@@ -1,4 +1,4 @@
-namespace SevenStar.Web;
+namespace SevenStar.Company.Admin.Web;
 
 public class WeatherApiClient(HttpClient httpClient)
 {
