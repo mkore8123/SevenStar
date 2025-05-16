@@ -16,14 +16,13 @@ try
     // Add service defaults & Aspire client integrations.
     builder.AddServiceDefaults();
     builder.AddSerilogHandler(serilogConfig);
-    builder.Services.AddCompanyDbHandler("Host=127.0.0.1;Port=5432;Username=postgres;Password=apeter56789;Database=postgres;SearchPath=public;");
+    builder.Services.AddCompanyDbHandler(1, "Host=127.0.0.1;Port=5432;Username=postgres;Password=apeter56789;Database=postgres;SearchPath=public;");
     builder.Services.RegisterAssemblyHandling(Assembly.Load("SevenStar.Shared.Domain.Imp"));
 
-    // Add services to the container.
     builder.Services.AddLocalizationHandler(new SevenStarLocalization());
 
     builder.Services.AddControllers(); 
-    builder.Services.AddSwaggerGenHandler(); // 註冊 Swagger 產生器   
+    builder.Services.AddSwaggerGenHandler();
 
     // 客製化例外處理動作
     builder.Services.AddExceptionHandler();
@@ -45,7 +44,7 @@ try
     
     // 套用基本健康檢查用的 http url: health & alive
     app.MapControllers();
-    // app.MapDefaultEndpoints();
+    app.MapDefaultEndpoints();
 
     app.Run();
 }

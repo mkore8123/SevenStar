@@ -1,23 +1,12 @@
 {
-  "$schema": "https://json.schemastore.org/launchsettings.json",
   "profiles": {
-    "http": {
+    "SevenStar.Company.Admin.Web": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
       "launchBrowser": true,
-      "applicationUrl": "http://localhost:5153",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
-    "https": {
-      "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "applicationUrl": "https://localhost:7214;http://localhost:5153",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "https://localhost:57784;http://localhost:57785"
     }
   }
 }

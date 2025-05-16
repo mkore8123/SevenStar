@@ -4,7 +4,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsAspireHost>true</IsAspireHost>
@@ -12,8 +12,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SevenStar.ApiService\SevenStar.ApiService.csproj" />
-    <ProjectReference Include="..\SevenStar.Web\SevenStar.Web.csproj" />
+    <ProjectReference Include="..\SevenStar.Company.Admin.Api\SevenStar.Company.Admin.Api.csproj" />
+    <ProjectReference Include="..\SevenStar.Web\SevenStar.Company.Admin.Web.csproj" />
   </ItemGroup>
 
   <ItemGroup>

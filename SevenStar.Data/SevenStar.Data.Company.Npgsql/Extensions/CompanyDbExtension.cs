@@ -12,7 +12,7 @@ public static class CompanyDbExtension
     /// <summary>
     /// 注入 PostgreSql NpgsqlDataSource，支援進階配置
     /// </summary>
-    public static IServiceCollection AddCompanyDbHandler(this IServiceCollection services, string platformConnectionString)
+    public static IServiceCollection AddCompanyDbHandler(this IServiceCollection services, int companyId, string platformConnectionString)
     {
         services.AddSingleton<ICompanyGameDbFactory>(serviceProvider =>
         {
@@ -23,8 +23,11 @@ public static class CompanyDbExtension
         {
             var currentCompanyId = 1;
             var companyGameDbFactory = serviceProvider.GetService<ICompanyGameDbFactory>();
-            var companyGameDb = companyGameDbFactory.CreateCompanyGameDbAsync(currentCompanyId).Result;
+            var companyGameDb = companyGameDbFactory?.CreateCompanyGameDbAsync(currentCompanyId).Result;
 
+            if (companyGameDb is null)
+                throw new KeyNotFoundException("找不到該公司id 的連線字串!");
+            
             return companyGameDb;
         });
 
