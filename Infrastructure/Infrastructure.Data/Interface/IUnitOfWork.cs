@@ -12,5 +12,5 @@ public interface IUnitOfWork : IDisposable, IAsyncDisposable
     /// </summary>
     /// <param name="operation"></param>
     /// <returns></returns>
-    Task ExecuteAsync(Func<IDbTransaction, Task> operation);
+    Task ExecuteAsync(Func<IDbTransaction, Task> operation, IsolationLevel transLevel = IsolationLevel.ReadCommitted);
 }

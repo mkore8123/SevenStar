@@ -1,6 +1,7 @@
-﻿using Npgsql;
+﻿using Infrastructure.Data.Npgsql;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Npgsql;
 using SevenStar.Data.Company.Npgsql.Repository.Platform;
 using SevenStar.Data.Company.Nppgsql;
 using SevenStar.Shared.Domain;
@@ -48,17 +49,25 @@ public class CompanyGameDbFactory : ICompanyGameDbFactory
 
     public async Task<ICompanyGameDb> CreateCompanyGameDbAsync(int companyId)
     {
+        if (companyId <= 0)
+            throw new InvalidOperationException($"公司 ID {companyId} 的連線字串無效或無法連線。");
+
         if (_companyDataSource.TryGetValue(companyId, out var existingDataSource))
         {
-            return new CompanyGameDb(_provider, companyId, await existingDataSource.OpenConnectionAsync());
+            return new CompanyGameDb(companyId, _provider, await existingDataSource.OpenConnectionAsync());
         }
 
         await _semaphore.WaitAsync();
+
         try
         {
             if (!_companyDataSource.TryGetValue(companyId, out existingDataSource))
             {
                 var connectionString = await GetConnectionStringAsync(companyId);
+                
+                if (!await NpgsqlConnectionValidator.ValidateAsync(connectionString, true))
+                    throw new InvalidOperationException($"公司 ID {companyId} 的連線字串無效或無法連線。");
+
                 existingDataSource = BuildNpgsqlDataSource(connectionString);
                 _companyDataSource.TryAdd(companyId, existingDataSource);
             }
@@ -68,6 +77,6 @@ public class CompanyGameDbFactory : ICompanyGameDbFactory
             _semaphore.Release();
         }
 
-        return new CompanyGameDb(_provider, companyId, await existingDataSource.OpenConnectionAsync());
+        return new CompanyGameDb(companyId, _provider, await existingDataSource.OpenConnectionAsync());
     }
 }

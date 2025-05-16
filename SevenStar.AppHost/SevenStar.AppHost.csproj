@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SevenStar.Company.Admin.Api\SevenStar.Company.Admin.Api.csproj" />
-    <ProjectReference Include="..\SevenStar.Web\SevenStar.Company.Admin.Web.csproj" />
+    <ProjectReference Include="..\SevenStar.Company.Admin.Web\SevenStar.Company.Admin.Web.csproj" />
   </ItemGroup>
 
   <ItemGroup>

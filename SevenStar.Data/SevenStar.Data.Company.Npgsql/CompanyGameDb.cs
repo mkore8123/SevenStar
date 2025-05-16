@@ -12,7 +12,7 @@ public partial class CompanyGameDb : NpgsqlUnitOfWork, ICompanyGameDb
 
     public int CompanyId { get; }
 
-    public CompanyGameDb(IServiceProvider provider, int companyId, NpgsqlConnection connection) : base(connection)
+    public CompanyGameDb(int companyId, IServiceProvider provider, NpgsqlConnection connection) : base(connection)
     {
         _provider = provider;
         CompanyId = companyId;

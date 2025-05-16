@@ -22,13 +22,10 @@ public static class CompanyDbExtension
         services.AddScoped<ICompanyGameDb>(serviceProvider =>
         {
             var currentCompanyId = 1;
-            var companyGameDbFactory = serviceProvider.GetService<ICompanyGameDbFactory>();
-            var companyGameDb = companyGameDbFactory?.CreateCompanyGameDbAsync(currentCompanyId).Result;
-
-            if (companyGameDb is null)
-                throw new KeyNotFoundException("找不到該公司id 的連線字串!");
+            var factory = serviceProvider.GetService<ICompanyGameDbFactory>();
+            var companyGameDb = factory?.CreateCompanyGameDbAsync(currentCompanyId).Result;
             
-            return companyGameDb;
+            return companyGameDb!;
         });
 
         return services;

@@ -1,15 +1,15 @@
-﻿using Npgsql;
-using System.Data;
-using Infrastructure.Data.Npgsql.Interface;
+﻿using System.Data;
+using MySqlConnector;
+using Infrastructure.Data.MySql.Interface;
+
 
 namespace Infrastructure.Data.Npgsql;
 
-
-public class NpgsqlUnitOfWork : INpgsqlUnitOfWork
+public class MySqlUnitOfWork : IMySqlUnitOfWork
 {
-    public NpgsqlConnection Connection { get; set; }
+    public MySqlConnection Connection { get; set; }
 
-    public NpgsqlUnitOfWork(NpgsqlConnection connection)
+    public MySqlUnitOfWork(MySqlConnection connection)
     {
         Connection = connection;
     }
@@ -24,7 +24,7 @@ public class NpgsqlUnitOfWork : INpgsqlUnitOfWork
             await operation(transaction);
             await transaction.CommitAsync();
         }
-        catch (NpgsqlException ex)
+        catch (MySqlException ex)
         {
             await transaction.RollbackAsync();
             throw;
