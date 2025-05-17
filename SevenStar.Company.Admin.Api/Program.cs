@@ -16,6 +16,7 @@ try
     // Add service defaults & Aspire client integrations.
     builder.AddServiceDefaults();
     builder.AddSerilogHandler(serilogConfig);
+    builder.Services.AddHybridCacheHandler("localhost:6379,defaultDatabase=0,allowAdmin=true,connectTimeout=5000,abortConnect=false");
     builder.Services.AddCompanyDbHandler(1, "Host=127.0.0.1;Port=5432;Username=postgres;Password=apeter56789;Database=postgres;SearchPath=public;");
     builder.Services.RegisterAssemblyHandling(Assembly.Load("SevenStar.Shared.Domain.Imp"));
 

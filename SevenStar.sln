@@ -38,6 +38,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenStar.Data.Company.MySq
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Data.MySql", "Infrastructure\Infrastructure.Data.MySql\Infrastructure.Data.MySql.csproj", "{D015EAA1-1EF3-460F-8BDE-9828717C58A1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Caching.EasyCaching", "Infrastructure\Infrastructure.Caching.EasyCaching\Infrastructure.Caching.EasyCaching.csproj", "{B07338B5-6F5B-48F0-897E-F1D4357CDC53}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Caching.Redis", "Infrastructure\Infrastructure.Caching.Redis\Infrastructure.Caching.Redis.csproj", "{3F1F0B62-C923-4799-A6E3-6185511B0FF7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -100,6 +104,14 @@ Global
 		{D015EAA1-1EF3-460F-8BDE-9828717C58A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D015EAA1-1EF3-460F-8BDE-9828717C58A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D015EAA1-1EF3-460F-8BDE-9828717C58A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B07338B5-6F5B-48F0-897E-F1D4357CDC53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B07338B5-6F5B-48F0-897E-F1D4357CDC53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B07338B5-6F5B-48F0-897E-F1D4357CDC53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B07338B5-6F5B-48F0-897E-F1D4357CDC53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F1F0B62-C923-4799-A6E3-6185511B0FF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F1F0B62-C923-4799-A6E3-6185511B0FF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F1F0B62-C923-4799-A6E3-6185511B0FF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F1F0B62-C923-4799-A6E3-6185511B0FF7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -116,6 +128,8 @@ Global
 		{763E12F6-7E74-46FF-B0AE-634AA95DFEE8} = {EC8CF188-7A5F-4340-B348-A13731E6ED20}
 		{A4F7C071-A101-4C78-B4C8-D6239DC45B40} = {FD21780B-8A8E-4FE7-B5E8-5CC5CC463085}
 		{D015EAA1-1EF3-460F-8BDE-9828717C58A1} = {EC8CF188-7A5F-4340-B348-A13731E6ED20}
+		{B07338B5-6F5B-48F0-897E-F1D4357CDC53} = {EC8CF188-7A5F-4340-B348-A13731E6ED20}
+		{3F1F0B62-C923-4799-A6E3-6185511B0FF7} = {EC8CF188-7A5F-4340-B348-A13731E6ED20}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0C4DA5FA-CDAC-4B6C-B21C-2894EB0B22DB}

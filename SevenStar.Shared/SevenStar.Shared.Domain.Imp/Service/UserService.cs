@@ -1,9 +1,8 @@
-﻿using Common.Enums;
-using Infrastructure.Data.Npgsql;
-using Microsoft.Extensions.DependencyInjection;
-using SevenStar.Shared.Domain.Entity;
+﻿using Microsoft.Extensions.DependencyInjection;
+using SevenStar.Shared.Domain.Entity.Company;
 using SevenStar.Shared.Domain.Repository;
 using SevenStar.Shared.Domain.Service;
+using System.Data;
 
 
 namespace SevenStar.Shared.Domain.Imp.Service;
@@ -18,14 +17,16 @@ public class UserService : IUserService
         _companyDb = serviceProvider.GetRequiredService<ICompanyGameDb>();
     }
 
-    public async Task CreateAsync(string name)
+    public async Task<Func<IDbTransaction, Task>> PrepareCreateAsync(string name)
     {
-        //var user = new UserEntity { Name = name };
+        var value = await Task.FromResult(1);
 
-        //await _companyDb.ExecuteAsync(async (transaction) =>
-        //{
-            
-            
-        //});
+        return async (transaction) =>
+        {
+            var repository = _companyDb.GetRepository<IUserRepository>();
+            var result = await repository.CreateAsync(new UserEntity { Name = name }, transaction);
+
+            return;
+        };
     }
 }

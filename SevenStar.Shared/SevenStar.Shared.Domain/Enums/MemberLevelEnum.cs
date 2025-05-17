@@ -7,7 +7,7 @@ namespace SevenStar.Shared.Domain.Enums;
 /// <summary>
 /// 會員層級
 /// </summary>
-public enum MemberLevel
+public enum MemberLevelEnum
 {
     /// <summary>
     /// 總控

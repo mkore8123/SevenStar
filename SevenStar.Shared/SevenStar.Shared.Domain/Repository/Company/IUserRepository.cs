@@ -23,5 +23,5 @@ public interface IUserRepository
     /// <param name="entity"></param>
     /// <param name="transaction"></param>
     /// <returns></returns>
-    Task<int> Create(UserEntity entity, IDbTransaction? transaction = null);
+    Task<int> CreateAsync(UserEntity entity, IDbTransaction? transaction = null);
 }

@@ -18,4 +18,11 @@ public interface ICompanyGameDb : INpgsqlUnitOfWork
     /// </summary>
     /// <returns></returns>
     Task<ICompanyGameDb> CreateNewInstanceAsync();
+
+    /// <summary>
+    /// 取得指定的 Repository 物件
+    /// </summary>
+    /// <typeparam name="TRepository"></typeparam>
+    /// <returns></returns>
+    TRepository GetRepository<TRepository>() where TRepository : class;
 }
