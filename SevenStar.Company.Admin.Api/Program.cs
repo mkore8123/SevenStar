@@ -40,7 +40,7 @@ try
     }
 
     app.UseSwaggerUIHandling();
-    app.UseExceptionHandling();
+    app.UseAuthorizationHandling();
     app.UseRouting();
     
     // 套用基本健康檢查用的 http url: health & alive

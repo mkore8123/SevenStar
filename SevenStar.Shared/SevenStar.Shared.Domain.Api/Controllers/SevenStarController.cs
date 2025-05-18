@@ -14,7 +14,7 @@ public class SevenStarController : ApiControllerBase
 {
     private readonly IRebateService _discountService;
 
-    public SevenStarController([FromKeyedServices(MemberLevel.Lv1)] IRebateService discountService)
+    public SevenStarController([FromKeyedServices(MemberLevelEnum.Lv1)] IRebateService discountService)
     {
         _discountService = discountService;
     }

@@ -17,7 +17,7 @@ public enum BetNoCategoryEnum
     /// 二字現
     /// </summary>
     [Description("二字现")]
-    TwoDigitCombo = 20,
+    TwoNumberCombo = 20,
 
     /// <summary>
     /// 二定位
@@ -29,19 +29,19 @@ public enum BetNoCategoryEnum
     /// 五位二定
     /// </summary>
     [Description("五位二定")]
-    Straight2Of5 = 25,
+    TwoFixedFiveFree = 25,
 
     /// <summary>
     /// 三字現
     /// </summary>
     [Description("三字现")]
-    ThreeDigitCombo = 30,
+    ThreeNumberCombo = 30,
 
     /// <summary>
     /// 三定位
     /// </summary>
     [Description("三定位")]
-    TriplePositionBet = 34,
+    FourNumberCombo = 34,
 
     /// <summary>
     /// 四字現

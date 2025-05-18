@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Common.Api.Extensions;
 
 /// <summary>
-/// Web Api 自訂例外處理流程
+/// 配置混合快取服務
 /// </summary>
 public static class EasyCachingExtension
 {

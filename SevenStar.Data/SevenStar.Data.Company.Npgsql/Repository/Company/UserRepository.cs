@@ -36,7 +36,7 @@ public class UserRepository : IUserRepository
         return user;
     }
 
-    public async Task<int> Create(UserEntity entity, IDbTransaction? transaction = null)
+    public async Task<int> CreateAsync(UserEntity entity, IDbTransaction? transaction = null)
     {
         var sql = new SqlBuilder();
         var abc = sql.AddTemplate("");

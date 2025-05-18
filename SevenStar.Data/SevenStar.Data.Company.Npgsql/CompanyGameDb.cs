@@ -10,6 +10,10 @@ public partial class CompanyGameDb : NpgsqlUnitOfWork, ICompanyGameDb
 {
     private readonly IServiceProvider _provider;
 
+    private ICompanyGameDbFactory companyGameDbFactory => companyGameDbFactory ?? _provider.GetRequiredService<ICompanyGameDbFactory>();
+
+    public int BackendId { get; }
+
     public int CompanyId { get; }
 
     public CompanyGameDb(int companyId, IServiceProvider provider, NpgsqlConnection connection) : base(connection)
@@ -24,11 +28,9 @@ public partial class CompanyGameDb : NpgsqlUnitOfWork, ICompanyGameDb
         return repository;
     }
 
-    public async Task<ICompanyGameDb> CreateNewInstanceAsync()
+    public async Task<ICompanyGameDb> CreateInstanceAsync()
     {
-        var companyFactory = _provider.GetRequiredService<ICompanyGameDbFactory>();
-        var companyDb  = await companyFactory.CreateCompanyGameDbAsync(CompanyId);
-
+        var companyDb  = await companyGameDbFactory.CreateCompanyGameDbAsync(CompanyId);
         return companyDb;
     }
 }

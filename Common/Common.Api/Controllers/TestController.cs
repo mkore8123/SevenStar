@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using System.Security.Authentication;
@@ -46,5 +47,21 @@ public class TestController : ApiControllerBase
     {
         var message = _localizer["Greeting.Hello"];
         return Ok(new { message = message });
+    }
+
+    [HttpGet]
+    public IActionResult Login([FromBody] LoginRequest request)
+    {
+        //// ⛔ TODO: 這裡請替換為實際帳密驗證
+        //if (request.Username == "admin" && request.Password == "123456")
+        //{
+        //    var token = _jwt.GenerateToken("user123", "Admin");
+
+        //    return Ok(new { token });
+        //}
+
+        //return Unauthorized();
+
+        return Unauthorized();
     }
 }
