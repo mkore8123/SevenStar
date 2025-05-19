@@ -23,21 +23,24 @@ public abstract class JwtTokenServiceBase<TModel> : IJwtMetadataService, ITokenS
     /// </summary>
     /// <param name="principal"></param>
     /// <returns></returns>
-    protected abstract TModel ExtractModelFromClaims(ClaimsPrincipal principal);
+    public abstract TModel ExtractModelFromClaims(ClaimsPrincipal principal);
 
     /// <summary>
     /// 壓縮生成  JWT Token 所需的 Claims
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
-    protected abstract List<Claim> BuildClaimsFromModel(TModel model);
+    public abstract List<Claim> BuildClaimsFromModel(TModel model);
 
     /// <summary>
     /// 建立 JwtBearerEvents，可在 DI 註冊 JwtBearerOptions 時使用
     /// </summary>
     /// <param name="serviceProvider">目前的 DI 容器</param>
     /// <returns>自定義事件處理器</returns>
-    public abstract JwtBearerEvents CreateJwtBearerEvents();
+    public virtual JwtBearerEvents CreateJwtBearerEvents()
+    {
+        return new JwtBearerEvents();
+    }
 
 
     public string GenerateToken(TModel model)

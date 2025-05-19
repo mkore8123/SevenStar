@@ -9,16 +9,16 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace SevenStar.Shared.Domain.Api.Token;
 
-public class SevenStarJwtTokenService : JwtTokenServiceBase<SampleMemberModel>
+public class JwtTokenService : JwtTokenServiceBase<SampleMemberModel>
 {
     private readonly IServiceProvider _provider;
 
-    public SevenStarJwtTokenService(IServiceProvider provider, JwtOptions options) : base(options) 
+    public JwtTokenService(IServiceProvider provider, JwtOptions options) : base(options) 
     {
         _provider = provider;
     }
 
-    protected override SampleMemberModel ExtractModelFromClaims(ClaimsPrincipal principal)
+    public override SampleMemberModel ExtractModelFromClaims(ClaimsPrincipal principal)
     {
         var userId = principal.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
         var role = principal.FindFirst(ClaimTypes.Role)?.Value;
@@ -42,7 +42,7 @@ public class SevenStarJwtTokenService : JwtTokenServiceBase<SampleMemberModel>
         };
     }
 
-    protected override List<Claim> BuildClaimsFromModel(SampleMemberModel model)
+    public override List<Claim> BuildClaimsFromModel(SampleMemberModel model)
     {
         var claims = new List<Claim>
         {
@@ -60,8 +60,6 @@ public class SevenStarJwtTokenService : JwtTokenServiceBase<SampleMemberModel>
 
     public override JwtBearerEvents CreateJwtBearerEvents()
     {
-        var redis = _provider.GetRequiredService<IConnectionMultiplexer>();
-
-        return new JwtBearerEventsBase(redis);
+        return new JwtEventHandler(_provider, this);
     }
 }

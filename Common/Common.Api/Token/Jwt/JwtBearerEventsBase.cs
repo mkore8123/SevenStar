@@ -11,18 +11,9 @@ namespace Common.Api.Token.Jwt;
 /// </summary>
 /// <typeparam name="TUserModel"></typeparam>
 public class JwtBearerEventsBase : JwtBearerEvents
-    // where TUserModel : class
 {
-    private readonly IConnectionMultiplexer _redis;
-    // private readonly ILogger<CustomJwtBearerEvents<TUserModel>> _logger;
-
-    public JwtBearerEventsBase(
-        IConnectionMultiplexer redis
-        /*ILogger<CustomJwtBearerEvents<TUserModel>> logger*/)
+    public JwtBearerEventsBase()
     {
-        _redis = redis;
-        // _logger = logger;
-
         OnMessageReceived = HandleMessageReceivedAsync;
         OnChallenge = HandleChallengeAsync;
         OnTokenValidated = HandleTokenValidatedAsync;
@@ -35,7 +26,7 @@ public class JwtBearerEventsBase : JwtBearerEvents
     /// </summary>
     /// <param name="context"></param>
     /// <returns></returns>
-    private Task HandleMessageReceivedAsync(MessageReceivedContext context)
+    protected virtual Task HandleMessageReceivedAsync(MessageReceivedContext context)
     {
         return Task.CompletedTask;
     }
@@ -45,27 +36,9 @@ public class JwtBearerEventsBase : JwtBearerEvents
     /// </summary>
     /// <param name="context"></param>
     /// <returns></returns>
-    private async Task HandleTokenValidatedAsync(TokenValidatedContext context)
+    protected virtual Task HandleTokenValidatedAsync(TokenValidatedContext context)
     {
-        var userId = context.Principal?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
-        var tokenVersion = context.Principal?.FindFirst("token_version")?.Value;
-
-        if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(tokenVersion))
-        {
-            // _logger.LogWarning("JWT claims 缺失，userId: {UserId}, token_version: {TokenVersion}", userId, tokenVersion);
-            context.Fail("Token claims 不完整");
-            return;
-        }
-
-        var redisVersion = await _redis.GetDatabase().HashGetAsync("token_versions", userId);
-        if (!redisVersion.HasValue || redisVersion.ToString() != tokenVersion)
-        {
-            // _logger.LogWarning("Token version 不符，JWT: {TokenVersion}, Redis: {RedisVersion}", tokenVersion, redisVersion);
-            context.Fail("Token 已被撤銷或版本錯誤");
-            return;
-        }
-
-        // _logger.LogInformation("Token 驗證通過，UserId: {UserId}, token_version: {TokenVersion}", userId, tokenVersion);
+        return Task.CompletedTask;
     }
 
     /// <summary>
@@ -73,14 +46,9 @@ public class JwtBearerEventsBase : JwtBearerEvents
     /// </summary>
     /// <param name="context"></param>
     /// <returns></returns>
-    private Task HandleAuthFailedAsync(AuthenticationFailedContext context)
+    protected virtual Task HandleAuthFailedAsync(AuthenticationFailedContext context)
     {
-        // _logger.LogError(context.Exception, "Token 驗證失敗");
-
-        context.NoResult();
-        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-        context.Response.ContentType = "application/json";
-        return context.Response.WriteAsync("{\"error\": \"Token 驗證失敗\"}");
+        return Task.CompletedTask;
     }
 
     /// <summary>
@@ -88,18 +56,8 @@ public class JwtBearerEventsBase : JwtBearerEvents
     /// </summary>
     /// <param name="context"></param>
     /// <returns></returns>
-    private Task HandleChallengeAsync(JwtBearerChallengeContext context)
+    protected virtual Task HandleChallengeAsync(JwtBearerChallengeContext context)
     {
-        if (!context.Response.HasStarted)
-        {
-            // _logger.LogWarning("Token 驗證失敗或未提供，Challenge 中止預設處理");
-            context.HandleResponse();
-
-            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-            context.Response.ContentType = "application/json";
-            return context.Response.WriteAsync("{\"error\": \"請提供有效的 Token\"}");
-        }
-
         return Task.CompletedTask;
     }
 
@@ -108,12 +66,8 @@ public class JwtBearerEventsBase : JwtBearerEvents
     /// </summary>
     /// <param name="context"></param>
     /// <returns></returns>
-    private Task HandleForbiddenAsync(ForbiddenContext context)
+    protected virtual Task HandleForbiddenAsync(ForbiddenContext context)
     {
-        // _logger.LogWarning("權限不足，403 Forbidden");
-
-        context.Response.StatusCode = StatusCodes.Status403Forbidden;
-        context.Response.ContentType = "application/json";
-        return context.Response.WriteAsync("{\"error\": \"禁止存取\"}");
+        return Task.CompletedTask;
     }
 }
