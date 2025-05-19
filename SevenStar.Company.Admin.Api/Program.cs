@@ -11,7 +11,9 @@ using Serilog;
 using SevenStar.Common.Api.Serilog;
 using SevenStar.Common.Extensions;
 using SevenStar.Data.Company.Npgsql.Extensions;
+using SevenStar.Shared.Domain.Api.Extensions;
 using SevenStar.Shared.Domain.Api.Token;
+using SevenStar.Shared.Domain.Extensions;
 using StackExchange.Redis;
 using System.Reflection;
 
@@ -27,32 +29,9 @@ try
 
     #region jwt
 
-    // builder.Services.AddScoped<JwtTokenServiceBase<UserClaimModel>, JwtTokenService>();
-
-    builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
-    {
-        return ConnectionMultiplexer.Connect("localhost:6379,defaultDatabase=0,allowAdmin=true,connectTimeout=5000,abortConnect=false");
-    });
-
-
-    foreach (var dbEnum in Enum.GetValues(typeof(RedisDbEnum)))
-    {
-        builder.Services.AddKeyedSingleton<IDatabaseAsync>(dbEnum, (sp, _) =>
-        {
-            var redis = sp.GetRequiredService<IConnectionMultiplexer>();
-            return redis.GetDatabase((int)dbEnum);
-        });
-    }
-
-    builder.Services.AddScoped<ICompanyJwtOptionsProvider, CompanyJwtOptionsProvider>();
-    builder.Services.AddScoped<JwtTokenService>(serviceProvider =>
-    {
-        var jwtOptionProvider = serviceProvider.GetRequiredService<ICompanyJwtOptionsProvider>();
-        var jwtOption = jwtOptionProvider.GetAsync(1).Result;
-
-        return new JwtTokenService(serviceProvider, jwtOption);
-    });
-
+    builder.Services.AddJwtOptionProvider();
+    builder.Services.AddSingleRedusDbHandler("localhost:6379,defaultDatabase=0,allowAdmin=true,connectTimeout=5000,abortConnect=false");
+    
     builder.Services.AddAuthorization();
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
 
