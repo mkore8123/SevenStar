@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Common.Api.Token.Jwt;
 
-public abstract class JwtTokenServiceBase<TModel> : IJwtMetadataService, ITokenService<TModel>
+public abstract class JwtTokenServiceBase<TModel> : ITokenService<TModel>, ITokenValidationParametersProvider
 {
     private readonly JwtOptions _options;
     private readonly JwtSecurityTokenHandler _tokenHandler = new();
@@ -19,20 +19,6 @@ public abstract class JwtTokenServiceBase<TModel> : IJwtMetadataService, ITokenS
     }
 
     /// <summary>
-    /// 解密 JWT Token 以取得 Model
-    /// </summary>
-    /// <param name="principal"></param>
-    /// <returns></returns>
-    public abstract TModel ExtractModelFromClaims(ClaimsPrincipal principal);
-
-    /// <summary>
-    /// 壓縮生成  JWT Token 所需的 Claims
-    /// </summary>
-    /// <param name="model"></param>
-    /// <returns></returns>
-    public abstract List<Claim> BuildClaimsFromModel(TModel model);
-
-    /// <summary>
     /// 建立 JwtBearerEvents，可在 DI 註冊 JwtBearerOptions 時使用
     /// </summary>
     /// <param name="serviceProvider">目前的 DI 容器</param>
@@ -41,6 +27,21 @@ public abstract class JwtTokenServiceBase<TModel> : IJwtMetadataService, ITokenS
     {
         return new JwtBearerEvents();
     }
+
+    /// <summary>
+    /// 將用戶資訊轉換成 jwt token 所需的 claims
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    public abstract List<Claim> BuildClaimsFromModel(TModel model);
+
+
+    /// <summary>
+    /// 提取 jwt token 取出用戶資訊轉換成指定物件
+    /// </summary>
+    /// <param name="principal"></param>
+    /// <returns></returns>
+    public abstract TModel ExtractModelFromClaims(ClaimsPrincipal principal);
 
 
     public string GenerateToken(TModel model)

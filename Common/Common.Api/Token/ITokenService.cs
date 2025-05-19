@@ -1,4 +1,6 @@
 ﻿
+using System.Security.Claims;
+
 namespace Common.Api.Token;
 
 /// <summary>
@@ -8,19 +10,18 @@ namespace Common.Api.Token;
 public interface ITokenService<T>
 {
     /// <summary>
-    /// 根據參數生成 jwt，若成功則為回傳 jwt，若失敗則拋出例外。
-    /// </summary>
-    /// <param name="model"></param>
-    /// <param name="jwt"></param>
-    /// <returns></returns>
-    string GenerateToken(T model);
-
-    /// <summary>
     /// 解密 jwt，若成功則為回傳指定 Model，若失敗則拋出例外
     /// </summary>
     /// <param name="jwt"></param>
     /// <returns></returns>
     T DecrypteToken(string jwt);
+
+    /// <summary>
+    /// 根據參數生成 jwt，若成功則為回傳 jwt，若失敗則拋出例外。
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    string GenerateToken(T model);
 
     /// <summary>
     /// 嘗試根據參數生成 jwt，若成功則為 true，並將 jwt 賦值給 jwtToken，若失敗則為 false，jwt 為 null。

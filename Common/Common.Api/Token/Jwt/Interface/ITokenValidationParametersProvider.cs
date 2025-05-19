@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Common.Api.Token.Jwt.Interface;
 
-public interface IJwtMetadataService
+public interface ITokenValidationParametersProvider
 {
     TokenValidationParameters CreateValidationParameters();
 }

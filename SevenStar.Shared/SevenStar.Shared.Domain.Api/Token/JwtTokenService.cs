@@ -1,15 +1,16 @@
-﻿using StackExchange.Redis;
-using System.Security.Claims;
-using System.IdentityModel.Tokens.Jwt;
-using Common.Api.Option;
+﻿using Common.Api.Option;
 using Common.Api.Token.Jwt;
+using Infrastructure.Caching.Redis;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace SevenStar.Shared.Domain.Api.Token;
 
-public class JwtTokenService : JwtTokenServiceBase<SampleMemberModel>
+public class JwtTokenService : JwtTokenServiceBase<UserClaimModel>
 {
     private readonly IServiceProvider _provider;
 
@@ -18,14 +19,14 @@ public class JwtTokenService : JwtTokenServiceBase<SampleMemberModel>
         _provider = provider;
     }
 
-    public override SampleMemberModel ExtractModelFromClaims(ClaimsPrincipal principal)
+    public override UserClaimModel ExtractModelFromClaims(ClaimsPrincipal principal)
     {
-        var userId = principal.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+        var userId = long.Parse(principal.FindFirst(JwtRegisteredClaimNames.Sub)?.Value);
         var role = principal.FindFirst(ClaimTypes.Role)?.Value;
         var email = principal.FindFirst(ClaimTypes.Email)?.Value;
         var tokenVersion = principal.FindFirst("token_version")?.Value;
 
-        if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(role))
+        if (userId < 0 || string.IsNullOrEmpty(role))
             throw new SecurityTokenException("Required claims missing.");
 
         var currentVersion = "0"; // 從 redis 取回該用戶的版本號
@@ -34,20 +35,19 @@ public class JwtTokenService : JwtTokenServiceBase<SampleMemberModel>
             throw new UnauthorizedAccessException("Token 已被撤銷");
         }
 
-        return new SampleMemberModel
+        return new UserClaimModel
         {
             UserId = userId,
-            Role = role,
             Email = email
         };
     }
 
-    public override List<Claim> BuildClaimsFromModel(SampleMemberModel model)
+    public override List<Claim> BuildClaimsFromModel(UserClaimModel model)
     {
         var claims = new List<Claim>
         {
-            new(JwtRegisteredClaimNames.Sub, model.UserId),
-            new(ClaimTypes.Role, model.Role),
+            new(JwtRegisteredClaimNames.Sub, model.UserId.ToString()),
+            // new(ClaimTypes.Role, model.Role),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new("token_version", model.TokenVersion.ToString())
         };
@@ -60,6 +60,7 @@ public class JwtTokenService : JwtTokenServiceBase<SampleMemberModel>
 
     public override JwtBearerEvents CreateJwtBearerEvents()
     {
-        return new JwtEventHandler(_provider, this);
+        var redisDb = _provider.GetRequiredKeyedService<IDatabaseAsync>(RedisDbEnum.Token);
+        return new JwtEventHandler(redisDb, this);
     }
 }

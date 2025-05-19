@@ -1,6 +1,7 @@
 ﻿using Common.Api.Token.Jwt.Model;
 using Microsoft.IdentityModel.Tokens;
 using StackExchange.Redis;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text.Json; // Add this namespace for System.Text.Json
 
@@ -55,5 +56,15 @@ public class RefreshTokenRedisService : ITokenService<RefreshTokenModel>
             throw new SecurityTokenException("Refresh Token 已過期或被撤銷");
 
         return model;
+    }
+
+    public RefreshTokenModel ExtractModelFromClaims(ClaimsPrincipal principal)
+    {
+        throw new NotImplementedException();
+    }
+
+    public List<Claim> BuildClaimsFromModel(RefreshTokenModel model)
+    {
+        throw new NotImplementedException();
     }
 }

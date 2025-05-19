@@ -11,15 +11,16 @@ namespace SevenStar.Shared.Domain.Api.Token;
 
 public class JwtEventHandler : JwtBearerEventsBase
 {
-    private readonly IConnectionMultiplexer _redis;
-    private readonly ILogger<JwtEventHandler> _logger;
-    private readonly JwtTokenServiceBase<SampleMemberModel> _tokenService;
+    private readonly IDatabaseAsync _redisTokenDb;
+    private readonly JwtTokenServiceBase<UserClaimModel> _tokenService;
 
-    public JwtEventHandler(IServiceProvider provider, JwtTokenServiceBase<SampleMemberModel> tokenService) 
+    /// private readonly ILogger<JwtEventHandler> _logger;
+
+
+    public JwtEventHandler(IDatabaseAsync redisTokenDb, JwtTokenServiceBase<UserClaimModel> tokenService) 
     {
+        _redisTokenDb = redisTokenDb;
         _tokenService = tokenService;
-        _redis = provider.GetRequiredService<IConnectionMultiplexer>();
-        _logger = provider.GetRequiredService<ILogger<JwtEventHandler>>();
     }
 
     protected override Task HandleMessageReceivedAsync(MessageReceivedContext context)
@@ -32,27 +33,28 @@ public class JwtEventHandler : JwtBearerEventsBase
     /// </summary>
     /// <param name="context"></param>
     /// <returns></returns>
-    protected override async Task HandleTokenValidatedAsync(TokenValidatedContext context)
+    protected override Task HandleTokenValidatedAsync(TokenValidatedContext context)
     {
-        var model = _tokenService.ExtractModelFromClaims(context.Principal);
-        if (model == null)
-            throw new Exception("");
+        return Task.CompletedTask;
+        //var model = _tokenService.ExtractModelFromClaims(context.Principal);
+        //if (model == null)
+        //    throw new Exception("");
 
         
-        if (string.IsNullOrEmpty(model.UserId) || model.TokenVersion == null)
-        {
-            // _logger.LogWarning("JWT claims 缺失，userId: {UserId}, token_version: {TokenVersion}", userId, tokenVersion);
-            context.Fail("Token claims 不完整");
-            return;
-        }
+        //if (string.IsNullOrEmpty(model.UserId) || model.TokenVersion == null)
+        //{
+        //    // _logger.LogWarning("JWT claims 缺失，userId: {UserId}, token_version: {TokenVersion}", userId, tokenVersion);
+        //    context.Fail("Token claims 不完整");
+        //    return;
+        //}
 
-        var redisVersion = await _redis.GetDatabase().HashGetAsync("token_versions", model.UserId);
-        if (!redisVersion.HasValue || redisVersion.ToString() != model.TokenVersion.ToString())
-        {
-            // _logger.LogWarning("Token version 不符，JWT: {TokenVersion}, Redis: {RedisVersion}", tokenVersion, redisVersion);
-            context.Fail("Token 已被撤銷或版本錯誤");
-            return;
-        }
+        //var redisVersion = await _redis.GetDatabase().HashGetAsync("token_versions", model.UserId);
+        //if (!redisVersion.HasValue || redisVersion.ToString() != model.TokenVersion.ToString())
+        //{
+        //    // _logger.LogWarning("Token version 不符，JWT: {TokenVersion}, Redis: {RedisVersion}", tokenVersion, redisVersion);
+        //    context.Fail("Token 已被撤銷或版本錯誤");
+        //    return;
+        //}
 
         // _logger.LogInformation("Token 驗證通過，UserId: {UserId}, token_version: {TokenVersion}", userId, tokenVersion);
     }

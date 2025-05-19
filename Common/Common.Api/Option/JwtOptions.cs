@@ -32,13 +32,13 @@ public class JwtOptions
     /// </summary>
     public int AccessTokenExpirationMinutes { get; set; }
 
-    /// <summary>
-    /// Refresh Token 有效時間（天）
-    /// </summary>
-    public int RefreshTokenExpirationDays { get; set; }
+    ///// <summary>
+    ///// Refresh Token 有效時間（天）
+    ///// </summary>
+    //public int RefreshTokenExpirationDays { get; set; }
 
-    /// <summary>
-    /// 是否啟用 TokenVersion 檢查
-    /// </summary>
-    public bool EnableTokenVersionCheck { get; set; } = true;
+    ///// <summary>
+    ///// 是否啟用 TokenVersion 檢查
+    ///// </summary>
+    //public bool EnableTokenVersionCheck { get; set; } = true;
 }
