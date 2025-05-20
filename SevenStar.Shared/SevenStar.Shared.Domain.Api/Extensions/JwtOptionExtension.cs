@@ -16,13 +16,13 @@ public static class JwtOptionExtension
     /// <param name="builder"></param>
     /// <param name="config">客製化的 Serilog 配置檔案，會調用 CreateLoggerConfiguration 方法，可覆寫自行調整，傳入後會啟用</param>
     /// <returns></returns>
-    public static IServiceCollection AddJwtOptionProvider(this IServiceCollection services)
+    public static IServiceCollection AddJwtOptionProvider(this IServiceCollection services, int companyId)
     {
-        services.AddScoped<ICompanyJwtOptionsProvider, CompanyJwtOptionsProvider>();
+        services.AddSingleton<ICompanyJwtOptionsProvider, CompanyJwtOptionsProvider>();
         services.AddScoped<JwtTokenService>(serviceProvider =>
         {
-            var jwtOptionProvider = serviceProvider.GetRequiredService<ICompanyJwtOptionsProvider>();
-            var jwtOption = jwtOptionProvider.GetAsync(1).Result;
+            var provider = serviceProvider.GetRequiredService<ICompanyJwtOptionsProvider>();
+            var jwtOption = provider.GetAsync(companyId).Result;
 
             return new JwtTokenService(serviceProvider, jwtOption);
         });

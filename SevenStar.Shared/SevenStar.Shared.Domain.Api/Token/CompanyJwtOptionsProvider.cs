@@ -20,7 +20,7 @@ public class CompanyJwtOptionsProvider : ICompanyJwtOptionsProvider
             Secret = "m9U4f!2F@1Kqz7R$Lw3TgVx8pY6bCnDz", 
             Issuer = "SevenStar.ApiService",          
             Audience = "SevenStar.FrontendApp",      
-            Algorithms = SecurityAlgorithms.HmacSha256,
+            Algorithm = SecurityAlgorithms.HmacSha256,
             AccessTokenExpirationMinutes = 60        
         };
 

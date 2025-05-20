@@ -1,10 +1,6 @@
 ﻿using Infrastructure.Data.Npgsql.Interface;
-using Npgsql;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace SevenStar.Shared.Domain;
+namespace SevenStar.Shared.Domain.Database;
 
 /// <summary>
 /// 公司遊戲資料庫操作功能

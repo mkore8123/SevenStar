@@ -1,33 +1,18 @@
-﻿using Serilog;
-using StackExchange.Redis;
-using Infrastructure.Caching.Redis;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using SevenStar.Shared.Domain.Database;
+using SevenStar.Shared.Domain.RedisCache;
 
 namespace SevenStar.Shared.Domain.Extensions;
 
 public static class RedisDbExtension
 {
-    /// <summary>
-    /// 註冊配置 Serilog 的設置項目，並將其設置為全域的日誌記錄器。
-    /// </summary>
-    /// <param name="builder"></param>
-    /// <param name="config">客製化的 Serilog 配置檔案，會調用 CreateLoggerConfiguration 方法，可覆寫自行調整，傳入後會啟用</param>
-    /// <returns></returns>
-    public static IServiceCollection AddSingleRedusDbHandler(this IServiceCollection services, string redisConnectionString)
+    public static IServiceCollection AddCompanyRedisDatabases(this IServiceCollection services, int companyId)
     {
-        services.AddSingleton<IConnectionMultiplexer>(sp =>
+        services.AddSingleton<ICompanyRedisDbFactory>(sp =>
         {
-            return ConnectionMultiplexer.Connect(redisConnectionString);
+            var platformDb = sp.GetRequiredService<IPlatformDb>();
+            return new CompanyRedisDbFactory(platformDb, companyId);
         });
-
-        foreach (var dbEnum in Enum.GetValues(typeof(RedisDbEnum)))
-        {
-            services.AddKeyedSingleton<IDatabaseAsync>(dbEnum, (sp, _) =>
-            {
-                var redis = sp.GetRequiredService<IConnectionMultiplexer>();
-                return redis.GetDatabase((int)dbEnum);
-            });
-        }
 
         return services;
     }

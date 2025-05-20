@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SevenStar.Shared.Domain.Database;
 using SevenStar.Shared.Domain.Entity.Company;
 using SevenStar.Shared.Domain.Repository;
 using SevenStar.Shared.Domain.Service;

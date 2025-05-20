@@ -1,8 +1,8 @@
 ﻿using Npgsql;
 using Common.Enums;
 using Infrastructure.Data.Npgsql;
-using SevenStar.Shared.Domain;
 using Microsoft.Extensions.DependencyInjection;
+using SevenStar.Shared.Domain.Database;
 
 namespace SevenStar.Data.Company.Nppgsql;
 

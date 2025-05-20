@@ -1,6 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using SevenStar.Shared.Domain;
-using System;
+﻿using SevenStar.Shared.Domain.Database;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SevenStar.Data.Company.Npgsql.Extensions;
 

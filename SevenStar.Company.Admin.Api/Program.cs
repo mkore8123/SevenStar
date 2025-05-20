@@ -17,7 +17,7 @@ using SevenStar.Shared.Domain.Extensions;
 using StackExchange.Redis;
 using System.Reflection;
 
-
+var companyId = 1;
 var builder = WebApplication.CreateBuilder(args);
 
 try
@@ -29,8 +29,9 @@ try
 
     #region jwt
 
-    builder.Services.AddJwtOptionProvider();
-    builder.Services.AddSingleRedusDbHandler("localhost:6379,defaultDatabase=0,allowAdmin=true,connectTimeout=5000,abortConnect=false");
+    
+    builder.Services.AddJwtOptionProvider(companyId);
+    builder.Services.AddCompanyRedisDatabases(companyId);
     
     builder.Services.AddAuthorization();
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
