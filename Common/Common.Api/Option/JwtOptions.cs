@@ -23,22 +23,52 @@ public class JwtOptions
     public string Audience { get; set; } = default!;
 
     /// <summary>
-    /// 選擇的加密演算法
+    /// 選擇的加密演算法（例如：HmacSha256）
     /// </summary>
-    public string Algorithms { get; set; } = SecurityAlgorithms.HmacSha256;
+    public string Algorithm { get; set; } = SecurityAlgorithms.HmacSha256;
 
     /// <summary>
     /// Access Token 有效時間（分鐘）
     /// </summary>
-    public int AccessTokenExpirationMinutes { get; set; }
+    public int AccessTokenExpirationMinutes { get; set; } = 60;
 
-    ///// <summary>
-    ///// Refresh Token 有效時間（天）
-    ///// </summary>
-    //public int RefreshTokenExpirationDays { get; set; }
+    /// <summary>
+    /// Refresh Token 有效時間（分鐘）
+    /// </summary>
+    public int RefreshTokenExpirationMinutes { get; set; } = 43200; // 30 天
 
-    ///// <summary>
-    ///// 是否啟用 TokenVersion 檢查
-    ///// </summary>
-    //public bool EnableTokenVersionCheck { get; set; } = true;
+    /// <summary>
+    /// 是否驗證 Token 的發行者
+    /// </summary>
+    public bool ValidateIssuer { get; set; } = true;
+
+    /// <summary>
+    /// 是否驗證 Token 的接收者
+    /// </summary>
+    public bool ValidateAudience { get; set; } = true;
+
+    /// <summary>
+    /// 是否驗證 Token 的簽章
+    /// </summary>
+    public bool ValidateIssuerSigningKey { get; set; } = true;
+
+    /// <summary>
+    /// 是否驗證 Token 的有效期限
+    /// </summary>
+    public bool ValidateLifetime { get; set; } = true;
+
+    /// <summary>
+    /// Token 過期前的容許時間差（秒）
+    /// </summary>
+    public int ClockSkewSeconds { get; set; } = 300;
+
+    /// <summary>
+    /// Token 的類型（例如："at+jwt"）
+    /// </summary>
+    public string? TokenType { get; set; }
+
+    /// <summary>
+    /// 是否要求 Token 包含過期時間
+    /// </summary>
+    public bool RequireExpirationTime { get; set; } = true;
 }
