@@ -4,7 +4,6 @@ using System.Text;
 
 namespace SevenStar.Shared.Domain.Entity.Platform;
 
-public class CompanyEntity : IPlatoformDb
+public interface IPlatoformDb
 {
-    
 }

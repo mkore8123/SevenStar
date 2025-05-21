@@ -47,7 +47,7 @@ public abstract class JwtTokenServiceBase<TModel> : ITokenService<TModel>, IToke
     public string GenerateToken(TModel model)
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Secret));
-        var creds = new SigningCredentials(key, _options.Algorithms);
+        var creds = new SigningCredentials(key, _options.Algorithm);
 
         var claims = BuildClaimsFromModel(model);
 
@@ -80,7 +80,7 @@ public abstract class JwtTokenServiceBase<TModel> : ITokenService<TModel>, IToke
         var principal = _tokenHandler.ValidateToken(jwtToken, CreateValidationParameters(), out var validatedToken);
 
         if (validatedToken is not JwtSecurityToken jwt ||
-            !jwt.Header.Alg.Equals(_options.Algorithms, StringComparison.OrdinalIgnoreCase))
+            !jwt.Header.Alg.Equals(_options.Algorithm, StringComparison.OrdinalIgnoreCase))
         {
             throw new SecurityTokenException("Invalid token algorithm.");
         }

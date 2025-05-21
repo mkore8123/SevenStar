@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SevenStar.Shared.Domain.Entity.Company;
 
-public class UserEntity
+public class UserEntity : ICompanyDb
 {
     public long Id { get; set; }
 

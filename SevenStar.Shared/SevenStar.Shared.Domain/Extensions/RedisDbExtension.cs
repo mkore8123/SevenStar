@@ -6,7 +6,7 @@ namespace SevenStar.Shared.Domain.Extensions;
 
 public static class RedisDbExtension
 {
-    public static IServiceCollection AddCompanyRedisDatabases(this IServiceCollection services, int companyId)
+    public static IServiceCollection AddCompanyRedisDb(this IServiceCollection services, int companyId)
     {
         services.AddSingleton<ICompanyRedisDbFactory>(sp =>
         {

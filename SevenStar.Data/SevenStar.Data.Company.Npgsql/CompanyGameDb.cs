@@ -3,10 +3,11 @@ using Common.Enums;
 using Infrastructure.Data.Npgsql;
 using Microsoft.Extensions.DependencyInjection;
 using SevenStar.Shared.Domain.Database;
+using SevenStar.Shared.Domain.Entity.Company;
 
 namespace SevenStar.Data.Company.Nppgsql;
 
-public partial class CompanyGameDb : NpgsqlUnitOfWork, ICompanyGameDb
+public partial class CompanyGameDb : NpgsqlUnitOfWork, Shared.Domain.Database.ICompanyGameDb
 {
     private readonly IServiceProvider _provider;
 
@@ -22,7 +23,7 @@ public partial class CompanyGameDb : NpgsqlUnitOfWork, ICompanyGameDb
         CompanyId = companyId;
     }
 
-    public TRepository GetRepository<TRepository>() where TRepository : class
+    public TRepository GetRepository<TRepository>() where TRepository : ICompanyDb, new()
     {
         var repository = _provider.GetRequiredKeyedService<TRepository>(DataSource.Npgsql);
         return repository;

@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Data.Npgsql.Interface;
+using SevenStar.Shared.Domain.Entity.Company;
 
 namespace SevenStar.Shared.Domain.Database;
 
@@ -29,5 +30,5 @@ public interface ICompanyGameDb : INpgsqlUnitOfWork
     /// </summary>
     /// <typeparam name="TRepository"></typeparam>
     /// <returns></returns>
-    TRepository GetRepository<TRepository>() where TRepository : class;
+    TRepository GetRepository<TRepository>() where TRepository : ICompanyDb, new();
 }

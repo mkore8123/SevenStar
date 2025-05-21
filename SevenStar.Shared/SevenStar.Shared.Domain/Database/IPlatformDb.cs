@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Caching.Redis;
+using SevenStar.Shared.Domain.Entity.Company;
 using SevenStar.Shared.Domain.Entity.Platform;
 using System;
 using System.Collections.Generic;
@@ -22,4 +23,11 @@ public interface IPlatformDb
     /// <param name="redisDb"></param>
     /// <returns></returns>
     Task<CompanyRedisDbEntity> GetCompanyRedisDb(int companyId, RedisDbEnum redisDb);
+
+    /// <summary>
+    /// 取得指定的 Repository 物件
+    /// </summary>
+    /// <typeparam name="TRepository"></typeparam>
+    /// <returns></returns>
+    TRepository GetRepository<TRepository>() where TRepository : IPlatformDb, new();
 }

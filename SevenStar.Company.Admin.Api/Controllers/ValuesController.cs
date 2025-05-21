@@ -25,12 +25,12 @@ namespace SevenStar.ApiService.Controllers;
 
 public class ValuesController : ApiControllerBase
 {
-    private readonly ICompanyGameDb _companyGameDb;
+    private readonly Shared.Domain.Database.ICompanyGameDb _companyGameDb;
     private readonly JwtTokenService _tokenService;
     private readonly IUserService _userService;
     private readonly IHybridCachingProvider _cache;
 
-    public ValuesController(IServiceProvider provider, ICompanyGameDb companyGameDb, JwtTokenService tokenService /*, IHybridProviderFactory factory*/)
+    public ValuesController(IServiceProvider provider, Shared.Domain.Database.ICompanyGameDb companyGameDb, JwtTokenService tokenService /*, IHybridProviderFactory factory*/)
     {
         _companyGameDb = companyGameDb;
         _tokenService = tokenService;

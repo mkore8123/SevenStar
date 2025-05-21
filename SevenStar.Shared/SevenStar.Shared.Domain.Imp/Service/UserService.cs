@@ -11,11 +11,11 @@ namespace SevenStar.Shared.Domain.Imp.Service;
 
 public class UserService : IUserService
 {
-    private readonly ICompanyGameDb _companyDb;
+    private readonly Database.ICompanyGameDb _companyDb;
 
     public UserService(IServiceProvider serviceProvider)
     {
-        _companyDb = serviceProvider.GetRequiredService<ICompanyGameDb>();
+        _companyDb = serviceProvider.GetRequiredService<Database.ICompanyGameDb>();
     }
 
     public async Task<Func<IDbTransaction, Task>> PrepareCreateAsync(string name)
