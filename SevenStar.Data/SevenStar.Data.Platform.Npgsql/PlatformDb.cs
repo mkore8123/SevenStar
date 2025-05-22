@@ -15,6 +15,11 @@ public class PlatformDb : NpgsqlUnitOfWork, IPlatformDb
         _provider = provider;
     }
 
+    public Task<CompanyGameDbEntity> GetCompanyGameDb(int companyId)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<CompanyRedisDbEntity> GetCompanyRedisDb(int companyId, RedisDbEnum redisDb)
     {
         throw new NotImplementedException();

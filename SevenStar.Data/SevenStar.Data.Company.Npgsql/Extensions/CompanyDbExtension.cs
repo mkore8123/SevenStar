@@ -13,16 +13,12 @@ public static class CompanyDbExtension
     /// </summary>
     public static IServiceCollection AddCompanyDbHandler(this IServiceCollection services, int companyId, string platformConnectionString)
     {
-        services.AddSingleton<ICompanyGameDbFactory>(serviceProvider =>
-        {
-            return new CompanyGameDbFactory(serviceProvider, platformConnectionString);
-        });
+        services.AddSingleton<ICompanyGameDbFactory, CompanyGameDbFactory>();
 
         services.AddScoped<ICompanyGameDb>(serviceProvider =>
         {
-            var currentCompanyId = 1;
             var factory = serviceProvider.GetService<ICompanyGameDbFactory>();
-            var companyGameDb = factory?.CreateCompanyGameDbAsync(currentCompanyId).Result;
+            var companyGameDb = factory?.CreateCompanyGameDbAsync(companyId).GetAwaiter().GetResult();
             
             return companyGameDb!;
         });

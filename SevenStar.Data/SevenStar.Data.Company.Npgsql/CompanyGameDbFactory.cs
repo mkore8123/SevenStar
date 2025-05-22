@@ -11,14 +11,14 @@ namespace SevenStar.Data.Company.Npgsql;
 
 public class CompanyGameDbFactory : ICompanyGameDbFactory
 {
+    private readonly IPlatformDb _platformDb;
     private readonly IServiceProvider _provider;
-    private readonly NpgsqlDataSource _platformDataSource;
     private readonly ConcurrentDictionary<int, Lazy<Task<NpgsqlDataSource>>> _companyDataSources = new();
 
-    public CompanyGameDbFactory(IServiceProvider provider, string platformConnectionString)
+    public CompanyGameDbFactory(IServiceProvider provider, IPlatformDb platformDb)
     {
+        _platformDb = platformDb;
         _provider = provider ?? throw new ArgumentNullException(nameof(provider));
-        _platformDataSource = BuildNpgsqlDataSource(platformConnectionString);
     }
 
     private NpgsqlDataSource BuildNpgsqlDataSource(string connectionString)
@@ -33,18 +33,6 @@ public class CompanyGameDbFactory : ICompanyGameDbFactory
         return builder.Build();
     }
 
-    private async Task<string> GetConnectionStringAsync(int companyId)
-    {
-        await using var connection = await _platformDataSource.OpenConnectionAsync();
-        var repository = new CompanyRepository(connection);
-
-        // TODO: 改為實際從資料庫取連線字串
-        // var companyModel = await repository.GetAsync(companyId)
-        //     ?? throw new KeyNotFoundException($"公司 ID {companyId} 的連線資訊不存在");
-
-        return "Host=127.0.0.1;Port=5432;Username=postgres;Password=apeter56789;Database=postgres;SearchPath=public;";
-    }
-
     public async Task<ICompanyGameDb> CreateCompanyGameDbAsync(int companyId)
     {
         if (companyId <= 0)
@@ -53,12 +41,12 @@ public class CompanyGameDbFactory : ICompanyGameDbFactory
         var lazy = _companyDataSources.GetOrAdd(companyId, cid =>
             new Lazy<Task<NpgsqlDataSource>>(async () =>
             {
-                var connStr = await GetConnectionStringAsync(cid);
+                var companyDb = await _platformDb.GetCompanyGameDb(companyId);
 
-                if (!await NpgsqlConnectionValidator.ValidateAsync(connStr, true))
+                if (!await NpgsqlConnectionValidator.ValidateAsync(companyDb.ConnectionString, true))
                     throw new InvalidOperationException($"公司 ID {cid} 的連線字串無效或 Redis 連線失敗。");
 
-                return BuildNpgsqlDataSource(connStr);
+                return BuildNpgsqlDataSource(companyDb.ConnectionString);
             }));
 
         try

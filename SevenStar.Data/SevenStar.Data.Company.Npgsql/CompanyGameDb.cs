@@ -17,7 +17,8 @@ public partial class CompanyGameDb : NpgsqlUnitOfWork, Shared.Domain.Database.IC
 
     public int CompanyId { get; }
 
-    public CompanyGameDb(int companyId, IServiceProvider provider, NpgsqlConnection connection) : base(connection)
+    public CompanyGameDb(int companyId, IServiceProvider provider, NpgsqlConnection connection) 
+        : base(connection)
     {
         _provider = provider;
         CompanyId = companyId;
