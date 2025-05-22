@@ -2,7 +2,7 @@
 
 namespace SevenStar.Shared.Domain.Api.Token;
 
-public interface ICompanyJwtOptionsProvider
+public interface IJwtOptionsFactory
 {
     Task<JwtOptions> GetAsync(int companyId);
 }

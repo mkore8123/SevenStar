@@ -1,11 +1,9 @@
-﻿using SevenStar.Shared.Domain.Database;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace SevenStar.Shared.Domain.Entity.Platform;
 
-public class CompanyEntity : IPlatformDbContext
+public class CompanyJwtOptionsEntity
 {
-    
 }

@@ -20,27 +20,18 @@ public class CompanyRedisDbFactory : ICompanyRedisDbFactory
         _companyId = companyId;
     }
 
-    private async Task<string> GetConnectionStringAsync(int companyId, RedisDbEnum redisDb)
-    {
-        // TODO: 從 _platformDb 查出指定公司該用途的連線字串
-        return "localhost:6379,defaultDatabase=0,allowAdmin=true,connectTimeout=5000,abortConnect=false";
-
-        var companyRedisDb = await _platformDb.GetCompanyRedisDb(companyId, redisDb);
-        return companyRedisDb.RedisConnectionString;
-    }
-
     public async Task<IDatabaseAsync> GetDatabaseAsync(RedisDbEnum purpose)
     {
         // 使用 Lazy 保證每個用途的 Redis Cluster 只初始化一次
         var lazy = _connections.GetOrAdd(purpose, key =>
             new Lazy<Task<IConnectionMultiplexer>>(async () =>
             {
-                var connectionString = await GetConnectionStringAsync(_companyId, key);
-
-                if (string.IsNullOrWhiteSpace(connectionString))
+                var redisDb = await _platformDb.GetCompanyRedisDb(_companyId, key);
+                
+                if (string.IsNullOrWhiteSpace(redisDb.RedisConnectionString))
                     throw new InvalidOperationException($"公司 ID {_companyId} 的 {key} redis連線字串無效或無法連線。");
 
-                var config = ConfigurationOptions.Parse(connectionString);
+                var config = ConfigurationOptions.Parse(redisDb.RedisConnectionString);
                 return await ConnectionMultiplexer.ConnectAsync(config);
             }));
 

@@ -7,12 +7,17 @@ namespace Common.Enums;
 public enum DataSource
 {
     /// <summary>
-    /// PostgreSql 
-    /// </summary>
-    Npgsql,
-
-    /// <summary>
     /// MySql
     /// </summary>
-    MySql
+    MySql,
+
+    /// <summary>
+    /// PostgreSql 
+    /// </summary>
+    Postgres,
+
+    /// <summary>
+    /// MsSql
+    /// </summary>
+    SqlServer
 }

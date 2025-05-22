@@ -1,8 +1,7 @@
-﻿using Infrastructure.Data.Npgsql;
+﻿using Npgsql;
+using Infrastructure.Data.Npgsql;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Npgsql;
-using SevenStar.Data.Company.Npgsql.Repository.Platform;
 using SevenStar.Data.Company.Nppgsql;
 using SevenStar.Shared.Domain.Database;
 using System.Collections.Concurrent;
@@ -53,7 +52,7 @@ public class CompanyGameDbFactory : ICompanyGameDbFactory
         {
             var dataSource = await lazy.Value;
             var connection = await dataSource.OpenConnectionAsync();
-            return new CompanyGameDb(companyId, _provider, connection);
+            return new CompanyGameDb(_provider, companyId, companyId, connection);
         }
         catch
         {

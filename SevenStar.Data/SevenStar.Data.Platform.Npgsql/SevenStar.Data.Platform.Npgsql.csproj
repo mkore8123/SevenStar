@@ -12,4 +12,8 @@
     <ProjectReference Include="..\..\SevenStar.Shared\SevenStar.Shared.Domain\SevenStar.Shared.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+
 </Project>

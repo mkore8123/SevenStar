@@ -1,23 +1,17 @@
 ﻿using Common.Api.Extensions;
 using Common.Api.Localization;
-using Common.Api.Option;
-using Common.Api.Token.Jwt;
+using Common.Enums;
 using Common.Extensions;
-using Infrastructure.Caching.Redis;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using SevenStar.Common.Api.Serilog;
 using SevenStar.Common.Extensions;
-using SevenStar.Data.Company.Npgsql.Extensions;
 using SevenStar.Shared.Domain.Api.Extensions;
 using SevenStar.Shared.Domain.Api.Token;
-using SevenStar.Shared.Domain.Extensions;
-using StackExchange.Redis;
 using System.Reflection;
 
 var companyId = 1;
+var platformDbConnectionString = "";
 var builder = WebApplication.CreateBuilder(args);
 
 try
@@ -28,10 +22,12 @@ try
     builder.AddSerilogHandler(serilogConfig);
 
     #region jwt
-
     
-    builder.Services.AddJwtOption(companyId);
+    builder.Services.AddPlatformDb(DataSource.Postgres, platformDbConnectionString);
+    builder.Services.AddCompanyGameDb(DataSource.Postgres, companyId);
     builder.Services.AddCompanyRedisDb(companyId);
+
+    builder.Services.AddJwtOption(companyId);
     
     builder.Services.AddAuthorization();
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
@@ -50,8 +46,7 @@ try
 
     #endregion
 
-
-    builder.Services.AddCompanyDbHandler(1, "Host=127.0.0.1;Port=5432;Username=postgres;Password=apeter56789;Database=postgres;SearchPath=public;");
+    // "Host=127.0.0.1;Port=5432;Username=postgres;Password=apeter56789;Database=postgres;SearchPath=public;"
     builder.Services.RegisterAssemblyHandling(Assembly.Load("SevenStar.Shared.Domain.Imp"));
 
     builder.Services.AddLocalizationHandler(new SevenStarLocalization());

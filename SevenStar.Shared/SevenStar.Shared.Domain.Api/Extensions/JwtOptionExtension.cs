@@ -18,13 +18,13 @@ public static class JwtOptionExtension
     /// <returns></returns>
     public static IServiceCollection AddJwtOption(this IServiceCollection services, int companyId)
     {
-        services.AddSingleton<ICompanyJwtOptionsProvider, CompanyJwtOptionsProvider>();
+        services.AddSingleton<IJwtOptionsFactory, JwtOptionsFactory>();
         services.AddScoped<JwtTokenService>(serviceProvider =>
         {
-            var provider = serviceProvider.GetRequiredService<ICompanyJwtOptionsProvider>();
-            var jwtOption = provider.GetAsync(companyId).Result;
+            var provider = serviceProvider.GetRequiredService<IJwtOptionsFactory>();
+            var option = provider.GetAsync(companyId).GetAwaiter().GetResult();
 
-            return new JwtTokenService(serviceProvider, jwtOption);
+            return new JwtTokenService(serviceProvider, option);
         });
 
         return services;
