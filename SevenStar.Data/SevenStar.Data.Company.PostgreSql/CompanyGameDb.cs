@@ -28,7 +28,7 @@ public partial class CompanyGameDb : NpgsqlUnitOfWork, ICompanyGameDb
 
     public TRepository GetRepository<TRepository>() where TRepository : ICompanyDbContext, new()
     {
-        var repository = _provider.GetRequiredKeyedService<TRepository>(DataSource.Postgres);
+        var repository = _provider.GetRequiredKeyedService<TRepository>(DataSource.PostgreSql);
         return repository;
     }
 

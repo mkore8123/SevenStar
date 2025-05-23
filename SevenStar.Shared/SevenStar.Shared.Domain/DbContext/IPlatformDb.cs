@@ -7,6 +7,13 @@ namespace SevenStar.Shared.Domain.Database;
 public interface IPlatformDb
 {
     /// <summary>
+    /// 取得總控遊戲資料庫連線物件
+    /// </summary>
+    /// <param name="backendId"></param>
+    /// <returns></returns>
+    Task<BackendGameDbEntity> GetBackendGameDb(int backendId);
+
+    /// <summary>
     /// 取得公司遊戲資料庫連線物件
     /// </summary>
     /// <param name="companyId"></param>
@@ -20,7 +27,6 @@ public interface IPlatformDb
     /// <param name="redisDb"></param>
     /// <returns></returns>
     Task<CompanyRedisDbEntity> GetCompanyRedisDb(int companyId, RedisDbEnum redisDb);
-
 
     /// <summary>
     /// 取得公司的 jwt 選項設定

@@ -5,7 +5,7 @@ namespace SevenStar.Shared.Domain.Database;
 /// <summary>
 /// 公司遊戲資料庫操作功能
 /// </summary>
-public interface ICompanyGameDb : INpgsqlUnitOfWork
+public interface ICompanyGameDb
 {
     /// <summary>
     /// 所屬總控id

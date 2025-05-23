@@ -1,13 +1,16 @@
-﻿using Npgsql;
+﻿using Common.Attributes;
+using Common.Enums;
 using Infrastructure.Data.Npgsql;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Npgsql;
 using SevenStar.Data.Company.Nppgsql;
 using SevenStar.Shared.Domain.Database;
 using System.Collections.Concurrent;
 
 namespace SevenStar.Data.Company.Npgsql;
 
+[KeyedService(DataSource.PostgreSql, ServiceLifetime.Singleton)]
 public class CompanyGameDbFactory : ICompanyGameDbFactory
 {
     private readonly IPlatformDb _platformDb;

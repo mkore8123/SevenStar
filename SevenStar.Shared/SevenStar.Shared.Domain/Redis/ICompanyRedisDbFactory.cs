@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SevenStar.Shared.Domain.RedisCache;
+namespace SevenStar.Shared.Domain.Redis;
 
 public interface ICompanyRedisDbFactory
 {

@@ -26,11 +26,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Logging.Seri
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenStar.Shared.Domain", "SevenStar.Shared\SevenStar.Shared.Domain\SevenStar.Shared.Domain.csproj", "{7CEE6CBC-4022-4974-BABD-0399A9C34635}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Data.Npgsql", "Infrastructure\Infrastructure.Data.Npgsql\Infrastructure.Data.Npgsql.csproj", "{D53DEC3F-A8C3-4045-80CF-E08E52BC06CB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Data.PostgreSql", "Infrastructure\Infrastructure.Data.PostgreSql\Infrastructure.Data.PostgreSql.csproj", "{D53DEC3F-A8C3-4045-80CF-E08E52BC06CB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SevenStar.Data", "SevenStar.Data", "{FD21780B-8A8E-4FE7-B5E8-5CC5CC463085}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenStar.Data.Company.Npgsql", "SevenStar.Data\SevenStar.Data.Company.Npgsql\SevenStar.Data.Company.Npgsql.csproj", "{25A9A4AA-8830-4F00-B78C-2FF432A83AB9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenStar.Data.Company.PostgreSql", "SevenStar.Data\SevenStar.Data.Company.PostgreSql\SevenStar.Data.Company.PostgreSql.csproj", "{25A9A4AA-8830-4F00-B78C-2FF432A83AB9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Data", "Infrastructure\Infrastructure.Data\Infrastructure.Data.csproj", "{763E12F6-7E74-46FF-B0AE-634AA95DFEE8}"
 EndProject
@@ -40,7 +40,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Data.MySql",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Caching.Redis", "Infrastructure\Infrastructure.Caching.Redis\Infrastructure.Caching.Redis.csproj", "{3F1F0B62-C923-4799-A6E3-6185511B0FF7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenStar.Data.Platform.Npgsql", "SevenStar.Data\SevenStar.Data.Platform.Npgsql\SevenStar.Data.Platform.Npgsql.csproj", "{D68C07AF-BE1B-44D0-8113-F615682A4475}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenStar.Data.Platform.PostgreSql", "SevenStar.Data\SevenStar.Data.Platform.PostgreSql\SevenStar.Data.Platform.PostgreSql.csproj", "{D68C07AF-BE1B-44D0-8113-F615682A4475}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

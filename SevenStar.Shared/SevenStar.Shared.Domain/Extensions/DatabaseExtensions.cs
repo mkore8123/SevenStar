@@ -17,7 +17,7 @@ public static class DatabaseExtensions
         var assemblyName = databaseType switch
         {
             DataSource.MySql => "SevenStar.Data.Platform.MySql",
-            DataSource.Postgres => "SevenStar.Data.Platform.Npgsql",
+            DataSource.PostgreSql => "SevenStar.Data.Platform.Npgsql",
             _ => throw new NotSupportedException($"不支援的資料庫類型: {databaseType}")
         };
 
@@ -57,7 +57,7 @@ public static class DatabaseExtensions
         var assemblyName = databaseType switch
         {
             DataSource.MySql => "SevenStar.Data.Company.MySql",
-            DataSource.Postgres => "SevenStar.Data.Company.Npgsql",
+            DataSource.PostgreSql => "SevenStar.Data.Company.Npgsql",
             _ => throw new NotSupportedException($"不支援的資料庫類型: {databaseType}")
         };
 

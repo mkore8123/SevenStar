@@ -10,7 +10,7 @@ using SevenStar.Shared.Domain.Repository;
 
 namespace SevenStar.Data.Company.Npgsql.Repository.Company;
 
-[KeyedService(DataSource.Npgsql, ServiceLifetime.Scoped)]
+[KeyedService(DataSource.PostgreSql, ServiceLifetime.Scoped)]
 public class UserRepository : IUserRepository
 {
     private NpgsqlConnection Connection { get; }

@@ -23,8 +23,8 @@ try
 
     #region jwt
     
-    builder.Services.AddPlatformDb(DataSource.Postgres, platformDbConnectionString);
-    builder.Services.AddCompanyGameDb(DataSource.Postgres, companyId);
+    builder.Services.AddPlatformDb(DataSource.PostgreSql, platformDbConnectionString);
+    builder.Services.AddCompanyGameDb(DataSource.PostgreSql, companyId);
     builder.Services.AddCompanyRedisDb(companyId);
 
     builder.Services.AddJwtOption(companyId);

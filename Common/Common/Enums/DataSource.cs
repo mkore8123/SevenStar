@@ -14,7 +14,7 @@ public enum DataSource
     /// <summary>
     /// PostgreSql 
     /// </summary>
-    Postgres,
+    PostgreSql,
 
     /// <summary>
     /// MsSql

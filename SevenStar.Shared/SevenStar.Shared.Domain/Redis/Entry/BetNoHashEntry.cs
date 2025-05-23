@@ -2,7 +2,7 @@
 using SevenStar.Shared.Domain.Enums;
 using StackExchange.Redis;
 
-namespace SevenStar.Shared.Domain.Entry;
+namespace SevenStar.Shared.Domain.Redis.Entry;
 
 public class BetNoHashEntry : IRedisHashInitializable
 {

@@ -3,7 +3,7 @@ using Infrastructure.Caching.Redis;
 using SevenStar.Shared.Domain.Database;
 using System.Collections.Concurrent;
 
-namespace SevenStar.Shared.Domain.RedisCache;
+namespace SevenStar.Shared.Domain.Redis;
 
 
 public class CompanyRedisDbFactory : ICompanyRedisDbFactory

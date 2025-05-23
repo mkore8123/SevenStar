@@ -13,7 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Common\Common.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Infrastructure.Caching.Redis\Infrastructure.Caching.Redis.csproj" />
-    <ProjectReference Include="..\..\Infrastructure\Infrastructure.Data.Npgsql\Infrastructure.Data.Npgsql.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Infrastructure.Data.Npgsql\Infrastructure.Data.PostgreSql.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Infrastructure.Logging.Serilog\Infrastructure.Logging.Serilog.csproj" />
   </ItemGroup>
 

@@ -20,12 +20,12 @@ public class PlatformDb : NpgsqlUnitOfWork, IPlatformDb
         throw new NotImplementedException();
     }
 
-    public Task<CompanyRedisDbEntity> GetCompanyRedisDb(int companyId, RedisDbEnum redisDb)
+    public Task<CompanyJwtOptionsEntity> GetCompanyJwtOptions(int companyId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<List<CompanyRedisDbEntity>> GetCompanyRedisDb(int companyId)
+    public Task<CompanyRedisDbEntity> GetCompanyRedisDb(int companyId, RedisDbEnum redisDb)
     {
         throw new NotImplementedException();
     }
