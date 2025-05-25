@@ -1,51 +1,44 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SevenStar.Shared.Domain.Database;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using SevenStar.Shared.Domain.DbContext.Entity.Platform;
+using System.Collections.Concurrent;
 
 namespace SevenStar.Shared.Domain.DbContext;
 
 /// <summary>
 /// 路由器：根據公司 ID 找出所需的資料庫類型，並呼叫對應的 Factory 來產出 ICompanyGameDb
 /// </summary>
-public class GeneralDbFactory
+public partial class GeneralDbFactory : IGeneralDbFactory
 {
-    private readonly IServiceProvider _provider;
+    /// <summary>
+    /// 平台庫
+    /// </summary>
     private readonly IPlatformDb _platformDb;
+    private readonly ISingletonCacheService _cache;
+    private readonly IServiceProvider _provider;
+    
+    // 快取：companyId => 資料庫類型 (DataSource)
+    private readonly ConcurrentDictionary<int, Lazy<Task<CompanyGameDbEntity>>> _companyDbSourceCache = new();
 
-    public GeneralDbFactory(IServiceProvider provider, IPlatformDb platformDb)
+    public GeneralDbFactory(IServiceProvider provider, IPlatformDb platformDb,
+        ISingletonCacheService cache)
     {
         _provider = provider;
         _platformDb = platformDb;
+        _cache = cache;
     }
-
-    //public async Task<ICompanyGameDb> CreateBackendGameDbAsync(int backendId)
-    //{
-    //    if (backendId <= 0)
-    //        throw new ArgumentOutOfRangeException(nameof(backendId), "總控 ID 無效。");
-
-    //    // 查詢平台資料，取得該公司使用的資料庫類型
-    //    var backendDb = await _platformDb.GetBackendGameDb(backendId);
-    //    var dbType = backendDb.DataSource; // DataSource 是 enum: MySql / PostgreSql / SqlServer 等
-
-    //    // 利用 KeyedService 根據 dbType 解析對應的 Factory
-    //    var factory = _provider.GetRequiredKeyedService<IBackendGameDbFactory>(dbType);
-
-    //    return await factory.CreateBackendGameDbAsync(backendId);
-    //}
 
     public async Task<ICompanyGameDb> CreateCompanyGameDbAsync(int companyId)
     {
         if (companyId <= 0)
-            throw new ArgumentOutOfRangeException(nameof(companyId), "公司 ID 無效。");
+            throw new ArgumentOutOfRangeException(nameof(companyId));
 
-        // 查詢平台資料，取得該公司使用的資料庫類型
-        var companyDb = await _platformDb.GetCompanyGameDb(companyId);     
+        var entity = await _cache.CompnayGetOrAddAsync(companyId, () => _platformDb.GetCompanyGameDb(companyId));
+        var factory = _provider.GetRequiredKeyedService<ICompanyGameDbFactory>(entity.DataSource);
 
-        // 利用 KeyedService 根據 dbType 解析對應的 Factory
-        var factory = _provider.GetRequiredKeyedService<ICompanyGameDbFactory>(companyDb.DataSource);
-
-        return await factory.CreateCompanyGameDbAsync(companyId);
+        return await factory.CreateCompanyGameDbAsync(
+            entity.BackendId,
+            entity.CompanyId,
+            entity.ConnectionString);
     }
 }

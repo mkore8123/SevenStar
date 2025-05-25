@@ -9,4 +9,13 @@ public interface ICompanyGameDbFactory
     /// <param name="companyId">公司id</param>
     /// <returns></returns>
     Task<ICompanyGameDb> CreateCompanyGameDbAsync(int companyId);
+
+    /// <summary>
+    /// 直接建立透過提供的連線字串建立 CompanyGameDb，並且不由 CompanyGameDbFactory 維護併發管理
+    /// </summary>
+    /// <param name="baackendId"></param>
+    /// <param name="companyId"></param>
+    /// <param name="connectionString"></param>
+    /// <returns></returns>
+    Task<ICompanyGameDb> CreateCompanyGameDbAsync(int baackendId, int companyId, string connectionString);
 }

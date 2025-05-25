@@ -1,4 +1,5 @@
-﻿using Infrastructure.Data.Npgsql.Interface;
+﻿using Common.Enums;
+using Infrastructure.Data.Npgsql.Interface;
 
 namespace SevenStar.Shared.Domain.Database;
 
@@ -18,6 +19,11 @@ public interface ICompanyGameDb
     int CompanyId { get;  }
 
     /// <summary>
+    /// 資料庫類型
+    /// </summary>
+    public DataSource DataSource { get; }
+
+    /// <summary>
     /// 創建新實例的資料庫連線存取資源，避免與預設的連線物件相同，造成在平行處理使用相同連線物件造成衝突
     /// 通常用於 Parallel.ForEach 或 Task.Run 平行處理，又要使用到連線物件時使用
     /// </summary>
@@ -29,5 +35,5 @@ public interface ICompanyGameDb
     /// </summary>
     /// <typeparam name="TRepository"></typeparam>
     /// <returns></returns>
-    TRepository GetRepository<TRepository>() where TRepository : ICompanyDbContext, new();
+    TRepository GetRepository<TRepository>() where TRepository : class, ICompanyGameDbContext, new();
 }

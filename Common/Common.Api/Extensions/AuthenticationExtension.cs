@@ -1,4 +1,5 @@
-﻿using Common.Api.Token.Jwt;
+﻿using Common.Api.Option;
+using Common.Api.Token.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,19 +13,21 @@ namespace Common.Api.Extensions;
 public static class AuthenticationExtension
 {
     /// <summary>
-    /// 註冊例外處理所需服務
+    /// 註冊 JWT 驗證所需服務
     /// </summary>
-    public static IServiceCollection AddJwtAuthentication(this IServiceCollection services)
+    public static IServiceCollection AddJwtAuthentication<T1, T2>(this IServiceCollection services)
+        where T1 : JwtTokenServiceBase<T2>           // T1: 解析 Jwt Token 實作，必須繼承 JwtTokenServiceBase<T2>
+        where T2 : class                             // T2: Token 儲存的用戶資訊模型，例如 UserClaimModel
     {
+        // services.AddSingleton(jwtOption);
+        services.AddSingleton<T1>();
         services.AddAuthorization();
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
-
-        // 使用 PostConfigure 來設定 JwtBearerOptions
+        
         services.PostConfigure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, async options =>
         {
-            // 注意：這裡才有 ServiceProvider 可用於注入服務
             using var provider = services.BuildServiceProvider();
-            var tokenService = provider.GetRequiredService<JwtTokenServiceBase<SampleMemberModel>>();
+            var tokenService = provider.GetRequiredService<T1>();
 
             options.Events = tokenService.CreateJwtBearerEvents();
             options.TokenValidationParameters = tokenService.CreateValidationParameters();
@@ -34,11 +37,11 @@ public static class AuthenticationExtension
     }
 
     /// <summary>
-    /// 使用例外處理中介層
+    /// 調用身分驗證流程
     /// </summary>
     public static IApplicationBuilder UseAuthorizationHandling(this IApplicationBuilder app)
     {
-        app.UseAuthentication(); // 🔐 必須先加這個
+        app.UseAuthentication(); 
         app.UseAuthorization();
 
         return app;

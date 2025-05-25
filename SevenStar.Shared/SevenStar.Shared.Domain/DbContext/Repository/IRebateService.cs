@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SevenStar.Shared.Domain.Repository;
+namespace SevenStar.Shared.Domain.DbContext.Repository;
 
 public interface IRebateService
 {

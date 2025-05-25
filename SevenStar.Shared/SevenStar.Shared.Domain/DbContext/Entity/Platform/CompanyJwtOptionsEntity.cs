@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SevenStar.Shared.Domain.Entity.Platform;
+namespace SevenStar.Shared.Domain.DbContext.Entity.Platform;
 
 public class CompanyJwtOptionsEntity
 {

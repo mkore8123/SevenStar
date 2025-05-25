@@ -1,9 +1,12 @@
 ﻿using Common.Enums;
 using SevenStar.Shared.Domain.Database;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace SevenStar.Shared.Domain.Entity.Platform;
+namespace SevenStar.Shared.Domain.DbContext.Entity.Platform;
 
-public class BackendGameDbEntity : IPlatformDbContext
+public class CompanyGameDbEntity
 {
     /// <summary>
     /// 總控id
@@ -11,12 +14,17 @@ public class BackendGameDbEntity : IPlatformDbContext
     public int BackendId { get; set; } = -1;
 
     /// <summary>
+    /// 公司id
+    /// </summary>
+    public int CompanyId { get; set; } = -1;
+
+    /// <summary>
     /// 所使用的資料庫類型
     /// </summary>
     public DataSource DataSource { get; set; }
 
     /// <summary>
-    /// 總控遊戲庫連線字串
+    /// 公司遊戲庫連線字串
     /// </summary>
     public string ConnectionString { get; set; } = string.Empty;
 }

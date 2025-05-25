@@ -1,6 +1,6 @@
 ﻿using Npgsql;
-using SevenStar.Shared.Domain.Entity.Platform;
-using SevenStar.Shared.Domain.Repository;
+using SevenStar.Shared.Domain.DbContext.Entity.Platform;
+using SevenStar.Shared.Domain.DbContext.Repository.Platform;
 using System;
 using System.Collections.Generic;
 using System.Data;

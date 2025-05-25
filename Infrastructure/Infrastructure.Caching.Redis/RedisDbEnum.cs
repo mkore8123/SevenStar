@@ -7,4 +7,6 @@ namespace Infrastructure.Caching.Redis;
 public enum RedisDbEnum
 {
     Token = 0,
+
+    RealHold = 1
 }

@@ -1,9 +1,11 @@
-﻿using SevenStar.Shared.Domain.Entity.Company;
+﻿using SevenStar.Shared.Domain.Database;
+using SevenStar.Shared.Domain.DbContext.Entity.Company;
 using System.Data;
 
-namespace SevenStar.Shared.Domain.Repository;
 
-public interface IUserRepository
+namespace SevenStar.Shared.Domain.DbContext.Repository.Company;
+
+public interface IUserRepository : ICompanyGameDbContext
 {
     /// <summary>
     /// 取得所有 User 物件

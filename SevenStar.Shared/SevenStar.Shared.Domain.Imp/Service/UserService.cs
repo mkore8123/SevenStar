@@ -1,9 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using SevenStar.Shared.Domain.Database;
-using SevenStar.Shared.Domain.Entity.Company;
-using SevenStar.Shared.Domain.Repository;
+﻿using System.Data;
 using SevenStar.Shared.Domain.Service;
-using System.Data;
+using Microsoft.Extensions.DependencyInjection;
 
 
 namespace SevenStar.Shared.Domain.Imp.Service;
@@ -24,10 +21,10 @@ public class UserService : IUserService
 
         return async (transaction) =>
         {
-            var repository = _companyDb.GetRepository<IUserRepository>();
-            var result = await repository.CreateAsync(new UserEntity { Name = name }, transaction);
+            //var repository = _companyDb.GetRepository<IUserRepository>();
+            //var result = await repository.CreateAsync(new UserEntity { Name = name }, transaction);
 
-            return;
+            //return;
         };
     }
 }

@@ -2,7 +2,7 @@
 using Infrastructure.Data.Npgsql;
 using Infrastructure.Caching.Redis;
 using SevenStar.Shared.Domain.Database;
-using SevenStar.Shared.Domain.Entity.Platform;
+using SevenStar.Shared.Domain.DbContext.Entity.Platform;
 
 namespace SevenStar.Data.Platform.Npgsql;
 
@@ -13,6 +13,11 @@ public class PlatformDb : NpgsqlUnitOfWork, IPlatformDb
     public PlatformDb(IServiceProvider provider, NpgsqlConnection connection) : base(connection)
     {
         _provider = provider;
+    }
+
+    public Task<BackendGameDbEntity> GetBackendGameDb(int backendId)
+    {
+        throw new NotImplementedException();
     }
 
     public Task<CompanyGameDbEntity> GetCompanyGameDb(int companyId)

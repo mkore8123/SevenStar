@@ -7,6 +7,7 @@ using Npgsql;
 using SevenStar.Data.Company.Nppgsql;
 using SevenStar.Shared.Domain.Database;
 using System.Collections.Concurrent;
+using System.ComponentModel.Design;
 
 namespace SevenStar.Data.Company.Npgsql;
 
@@ -62,5 +63,13 @@ public class CompanyGameDbFactory : ICompanyGameDbFactory
             _companyDataSources.TryRemove(companyId, out _); // 若初始化失敗，清除快取避免卡死
             throw;
         }
+    }
+
+    public async Task<ICompanyGameDb> CreateCompanyGameDbAsync(int baackendId, int companyId, string connectionString)
+    {
+        var dataSource = BuildNpgsqlDataSource(connectionString);
+        var connection = await dataSource.OpenConnectionAsync();
+
+        return new CompanyGameDb(_provider, baackendId, companyId, connection);
     }
 }

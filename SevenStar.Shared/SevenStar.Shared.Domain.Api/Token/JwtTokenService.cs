@@ -14,6 +14,11 @@ public class JwtTokenService : JwtTokenServiceBase<UserClaimModel>
 {
     private readonly IServiceProvider _provider;
 
+    /// <summary>
+    /// 密切注意不可注入 Scope 類型物件
+    /// </summary>
+    /// <param name="provider"></param>
+    /// <param name="options"></param>
     public JwtTokenService(IServiceProvider provider, JwtOptions options) : base(options) 
     {
         _provider = provider;
@@ -21,13 +26,18 @@ public class JwtTokenService : JwtTokenServiceBase<UserClaimModel>
 
     public override UserClaimModel ExtractModelFromClaims(ClaimsPrincipal principal)
     {
-        var userId = long.Parse(principal.FindFirst(JwtRegisteredClaimNames.Sub)?.Value);
+        var userIdClaim = principal.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+        if (string.IsNullOrEmpty(userIdClaim))
+            throw new SecurityTokenException("Required claim 'sub' is missing or null.");
+
+        var userId = long.Parse(userIdClaim);
+
         var role = principal.FindFirst(ClaimTypes.Role)?.Value;
+        if (string.IsNullOrEmpty(role))
+            throw new SecurityTokenException("Required claim 'role' is missing or null.");
+
         var email = principal.FindFirst(ClaimTypes.Email)?.Value;
         var tokenVersion = principal.FindFirst("token_version")?.Value;
-
-        if (userId < 0 || string.IsNullOrEmpty(role))
-            throw new SecurityTokenException("Required claims missing.");
 
         var currentVersion = "0"; // 從 redis 取回該用戶的版本號
         if (tokenVersion != currentVersion)
@@ -60,7 +70,6 @@ public class JwtTokenService : JwtTokenServiceBase<UserClaimModel>
 
     public override JwtBearerEvents CreateJwtBearerEvents()
     {
-        var redisDb = _provider.GetRequiredKeyedService<IDatabaseAsync>(RedisDbEnum.Token);
-        return new JwtEventHandler(redisDb, this);
+        return new JwtEventHandler(_provider, this);
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Infrastructure.Caching.Redis;
-using SevenStar.Shared.Domain.Entity.Platform;
-
+using SevenStar.Shared.Domain.DbContext.Entity.Platform;
 
 namespace SevenStar.Shared.Domain.Database;
 
@@ -40,5 +39,5 @@ public interface IPlatformDb
     /// </summary>
     /// <typeparam name="TRepository"></typeparam>
     /// <returns></returns>
-    TRepository GetRepository<TRepository>() where TRepository : IPlatformDb, new();
+    TRepository GetRepository<TRepository>() where TRepository : IPlatformDbContext, new();
 }

@@ -8,6 +8,7 @@ using System.Text;
 
 namespace Common.Api.Token.Jwt;
 
+
 public abstract class JwtTokenServiceBase<TModel> : ITokenService<TModel>, ITokenValidationParametersProvider
 {
     private readonly JwtOptions _options;
@@ -19,22 +20,11 @@ public abstract class JwtTokenServiceBase<TModel> : ITokenService<TModel>, IToke
     }
 
     /// <summary>
-    /// 建立 JwtBearerEvents，可在 DI 註冊 JwtBearerOptions 時使用
-    /// </summary>
-    /// <param name="serviceProvider">目前的 DI 容器</param>
-    /// <returns>自定義事件處理器</returns>
-    public virtual JwtBearerEvents CreateJwtBearerEvents()
-    {
-        return new JwtBearerEvents();
-    }
-
-    /// <summary>
     /// 將用戶資訊轉換成 jwt token 所需的 claims
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
     public abstract List<Claim> BuildClaimsFromModel(TModel model);
-
 
     /// <summary>
     /// 提取 jwt token 取出用戶資訊轉換成指定物件
@@ -43,6 +33,15 @@ public abstract class JwtTokenServiceBase<TModel> : ITokenService<TModel>, IToke
     /// <returns></returns>
     public abstract TModel ExtractModelFromClaims(ClaimsPrincipal principal);
 
+    /// <summary>
+    /// 建立 JwtBearerEvents，可在 DI 註冊 JwtBearerOptions 時使用
+    /// </summary>
+    /// <param name="serviceProvider">目前的 DI 容器</param>
+    /// <returns>自定義事件處理器</returns>
+    public virtual JwtBearerEvents CreateJwtBearerEvents()
+    {
+        return new JwtBearerEvents();
+    }
 
     public string GenerateToken(TModel model)
     {
@@ -90,7 +89,7 @@ public abstract class JwtTokenServiceBase<TModel> : ITokenService<TModel>, IToke
 
     public TokenValidationParameters CreateValidationParameters()
     {
-        return new TokenValidationParameters
+        var parameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Secret)),
@@ -104,5 +103,7 @@ public abstract class JwtTokenServiceBase<TModel> : ITokenService<TModel>, IToke
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero
         };
+
+        return parameters;
     }
 }

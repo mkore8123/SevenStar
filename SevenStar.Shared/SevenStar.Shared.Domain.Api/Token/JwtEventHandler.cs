@@ -1,5 +1,6 @@
 ﻿using Common.Api.Token;
 using Common.Api.Token.Jwt;
+using Infrastructure.Caching.Redis;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,16 +12,19 @@ namespace SevenStar.Shared.Domain.Api.Token;
 
 public class JwtEventHandler : JwtBearerEventsBase
 {
+    private readonly IServiceProvider _provider;
     private readonly IDatabaseAsync _redisTokenDb;
     private readonly JwtTokenServiceBase<UserClaimModel> _tokenService;
 
     /// private readonly ILogger<JwtEventHandler> _logger;
 
 
-    public JwtEventHandler(IDatabaseAsync redisTokenDb, JwtTokenServiceBase<UserClaimModel> tokenService) 
+    public JwtEventHandler(IServiceProvider provider,// [FromKeyedServices(RedisDbEnum.Token)] IDatabaseAsync redisTokenDb, 
+        JwtTokenServiceBase<UserClaimModel> tokenService) 
     {
-        _redisTokenDb = redisTokenDb;
+        _provider = provider;
         _tokenService = tokenService;
+        _redisTokenDb = provider.GetRequiredKeyedService<IDatabaseAsync>(RedisDbEnum.Token);
     }
 
     protected override Task HandleMessageReceivedAsync(MessageReceivedContext context)
@@ -36,27 +40,6 @@ public class JwtEventHandler : JwtBearerEventsBase
     protected override Task HandleTokenValidatedAsync(TokenValidatedContext context)
     {
         return Task.CompletedTask;
-        //var model = _tokenService.ExtractModelFromClaims(context.Principal);
-        //if (model == null)
-        //    throw new Exception("");
-
-        
-        //if (string.IsNullOrEmpty(model.UserId) || model.TokenVersion == null)
-        //{
-        //    // _logger.LogWarning("JWT claims 缺失，userId: {UserId}, token_version: {TokenVersion}", userId, tokenVersion);
-        //    context.Fail("Token claims 不完整");
-        //    return;
-        //}
-
-        //var redisVersion = await _redis.GetDatabase().HashGetAsync("token_versions", model.UserId);
-        //if (!redisVersion.HasValue || redisVersion.ToString() != model.TokenVersion.ToString())
-        //{
-        //    // _logger.LogWarning("Token version 不符，JWT: {TokenVersion}, Redis: {RedisVersion}", tokenVersion, redisVersion);
-        //    context.Fail("Token 已被撤銷或版本錯誤");
-        //    return;
-        //}
-
-        // _logger.LogInformation("Token 驗證通過，UserId: {UserId}, token_version: {TokenVersion}", userId, tokenVersion);
     }
 
     protected override Task HandleAuthFailedAsync(AuthenticationFailedContext context)

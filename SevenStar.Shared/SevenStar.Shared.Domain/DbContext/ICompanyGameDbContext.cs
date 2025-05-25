@@ -4,6 +4,6 @@ using System.Text;
 
 namespace SevenStar.Shared.Domain.Database;
 
-public interface ICompanyDbContext
+public interface ICompanyGameDbContext
 {
 }

@@ -1,8 +1,13 @@
-﻿using Npgsql;
-using Common.Enums;
+﻿using Common.Enums;
 using Infrastructure.Data.Npgsql;
+using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyModel.Resolution;
+using MySqlConnector;
+using Npgsql;
 using SevenStar.Shared.Domain.Database;
+using SevenStar.Shared.Domain.DbContext.Repository.Company;
+using SevenStar.Shared.Domain.Extensions;
 
 namespace SevenStar.Data.Company.Nppgsql;
 
@@ -12,11 +17,11 @@ public partial class CompanyGameDb : NpgsqlUnitOfWork, ICompanyGameDb
 
     private ICompanyGameDbFactory companyGameDbFactory => companyGameDbFactory ?? _provider.GetRequiredService<ICompanyGameDbFactory>();
 
-
     public int BackendId { get; }
 
     public int CompanyId { get; }
 
+    public DataSource DataSource => DataSource.PostgreSql;
 
     public CompanyGameDb(IServiceProvider provider, int backendId, int companyId, NpgsqlConnection connection) 
         : base(connection)
@@ -26,10 +31,9 @@ public partial class CompanyGameDb : NpgsqlUnitOfWork, ICompanyGameDb
         CompanyId = companyId;
     }
 
-    public TRepository GetRepository<TRepository>() where TRepository : ICompanyDbContext, new()
+    public TRepository GetRepository<TRepository>() where TRepository : class, ICompanyGameDbContext, new()
     {
-        var repository = _provider.GetRequiredKeyedService<TRepository>(DataSource.PostgreSql);
-        return repository;
+        return RepositoryFactoryMap.Create<TRepository>(DataSource, Connection);
     }
 
     public async Task<ICompanyGameDb> CreateInstanceAsync()
@@ -38,3 +42,5 @@ public partial class CompanyGameDb : NpgsqlUnitOfWork, ICompanyGameDb
         return companyDb;
     }
 }
+
+

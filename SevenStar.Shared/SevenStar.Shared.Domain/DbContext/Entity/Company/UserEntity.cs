@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SevenStar.Shared.Domain.Entity.Company;
+namespace SevenStar.Shared.Domain.DbContext.Entity.Company;
 
-public class UserEntity : ICompanyDbContext
+public class UserEntity
 {
     public long Id { get; set; }
 

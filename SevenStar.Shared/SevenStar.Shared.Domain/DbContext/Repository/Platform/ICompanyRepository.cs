@@ -1,10 +1,10 @@
-﻿using SevenStar.Shared.Domain.Entity.Company;
-using SevenStar.Shared.Domain.Entity.Platform;
-using System.Data;
+﻿using System.Data;
+using SevenStar.Shared.Domain.Database;
+using SevenStar.Shared.Domain.DbContext.Entity.Platform;
 
-namespace SevenStar.Shared.Domain.Repository;
+namespace SevenStar.Shared.Domain.DbContext.Repository.Platform;
 
-public interface ICompanyRepository
+public interface ICompanyRepository : IPlatformDbContext
 {
     /// <summary>
     /// 取得所有 Company 物件

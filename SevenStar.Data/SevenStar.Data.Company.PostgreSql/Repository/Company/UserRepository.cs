@@ -4,11 +4,11 @@ using System.Data;
 using Common.Enums;
 using Common.Attributes;
 using Microsoft.Extensions.DependencyInjection;
-using SevenStar.Shared.Domain.Entity.Company;
-using SevenStar.Shared.Domain.Repository;
+using SevenStar.Shared.Domain.DbContext.Repository.Company;
+using SevenStar.Shared.Domain.DbContext.Entity.Company;
 
 
-namespace SevenStar.Data.Company.Npgsql.Repository.Company;
+namespace SevenStar.Data.Company.PostgreSql.Repository.Company;
 
 [KeyedService(DataSource.PostgreSql, ServiceLifetime.Scoped)]
 public class UserRepository : IUserRepository
