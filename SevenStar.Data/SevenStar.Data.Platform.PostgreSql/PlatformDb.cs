@@ -35,7 +35,7 @@ public class PlatformDb : NpgsqlUnitOfWork, IPlatformDb
         throw new NotImplementedException();
     }
 
-    public TRepository GetRepository<TRepository>() where TRepository : IPlatformDb, new()
+    public TRepository GetRepository<TRepository>() where TRepository : IPlatformDbContext, new()
     {
         throw new NotImplementedException();
     }
