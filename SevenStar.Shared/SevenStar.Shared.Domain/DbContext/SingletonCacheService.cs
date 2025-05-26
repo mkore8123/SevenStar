@@ -13,13 +13,13 @@ public class SingletonCacheService : ISingletonCacheService
 
     private readonly ConcurrentDictionary<int, Lazy<Task<CompanyGameDbEntity>>> _backendCache = new();
 
-    public Task<CompanyGameDbEntity> BackendGetOrAddAsync(int backendId, Func<Task<CompanyGameDbEntity>> factory)
+    public Task<CompanyGameDbEntity> GetOrAddBackendDbAsync(int backendId, Func<Task<CompanyGameDbEntity>> factory)
     {
         var lazy = _backendCache.GetOrAdd(backendId, _ => new Lazy<Task<CompanyGameDbEntity>>(factory));
         return lazy.Value;
     }
 
-    public Task<CompanyGameDbEntity> CompnayGetOrAddAsync(int companyId, Func<Task<CompanyGameDbEntity>> factory)
+    public Task<CompanyGameDbEntity> GetOrAddCompnayDbAsync(int companyId, Func<Task<CompanyGameDbEntity>> factory)
     {
         var lazy = _companyCache.GetOrAdd(companyId, _ => new Lazy<Task<CompanyGameDbEntity>>(factory));
         return lazy.Value;

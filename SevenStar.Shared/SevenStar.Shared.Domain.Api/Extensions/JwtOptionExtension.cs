@@ -23,35 +23,32 @@ public static class JwtOptionExtension
     /// <param name="config">客製化的 Serilog 配置檔案，會調用 CreateLoggerConfiguration 方法，可覆寫自行調整，傳入後會啟用</param>
     /// <returns></returns>
     public static IServiceCollection AddCompanyJwtOption(this IServiceCollection services, int companyId)
-    {
-        // services.AddSingleton<IJwtOptionsFactory, JwtOptionsFactory>();
-        var jwtOptions = new JwtOptions
-        {
-            Secret = "ThisIsAStrongSecretKeyWith32Chars!",  // ✅ 至少 32 字元，建議更複雜
-            Issuer = "YourApp.Issuer",
-            Audience = "YourApp.Client",
-            Algorithm = SecurityAlgorithms.HmacSha256,
-
-            AccessTokenExpirationMinutes = 60,     // 1 小時
-            RefreshTokenExpirationMinutes = 43200, // 30 天
-
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateIssuerSigningKey = true,
-            ValidateLifetime = true,
-
-            ClockSkewSeconds = 300, // 容錯時間：5 分鐘
-            TokenType = "at+jwt",
-            RequireExpirationTime = true
-        };
-
-
+    { 
         services.AddSingleton<JwtOptions>(serviceProvider =>
         {
-            //var platformDb = serviceProvider.GetRequiredService<IPlatformDb>();
-            //var jwtOptions = platformDb.GetCompanyJwtOptions(companyId).GetAwaiter().GetResult();
+            var platformDb = serviceProvider.GetRequiredService<IPlatformDb>();
+            var companyJwtOptionEntity = platformDb.GetCompanyJwtOptions(companyId).GetAwaiter().GetResult();
 
-            //return jwtOptions;
+            var jwtOptions = new JwtOptions
+            {
+                Secret = "ThisIsAStrongSecretKeyWith32Chars!",  // ✅ 至少 32 字元，建議更複雜
+                Issuer = "YourApp.Issuer",
+                Audience = "YourApp.Client",
+                Algorithm = SecurityAlgorithms.HmacSha256,
+
+                AccessTokenExpirationMinutes = 60,     // 1 小時
+                RefreshTokenExpirationMinutes = 43200, // 30 天
+
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateIssuerSigningKey = true,
+                ValidateLifetime = true,
+
+                ClockSkewSeconds = 300, // 容錯時間：5 分鐘
+                TokenType = "at+jwt",
+                RequireExpirationTime = true
+            };
+
             return jwtOptions;
         });
 
