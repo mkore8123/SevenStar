@@ -1,16 +1,13 @@
 ﻿using Common.Api.Option;
 using Common.Api.Token.Jwt;
-using Infrastructure.Caching.Redis;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using StackExchange.Redis;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace SevenStar.Shared.Domain.Api.Token;
+namespace SevenStar.Shared.Domain.Api.Token.Jwt;
 
-public class JwtTokenService : JwtTokenServiceBase<UserClaimModel>
+public class JwtTokenManager : JwtTokenServiceBase<UserClaimModel>
 {
     private readonly IServiceProvider _provider;
 
@@ -19,7 +16,7 @@ public class JwtTokenService : JwtTokenServiceBase<UserClaimModel>
     /// </summary>
     /// <param name="provider"></param>
     /// <param name="options"></param>
-    public JwtTokenService(IServiceProvider provider, JwtOptions options) : base(options) 
+    public JwtTokenManager(IServiceProvider provider, JwtOptions options) : base(options) 
     {
         _provider = provider;
     }

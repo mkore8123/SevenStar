@@ -3,7 +3,7 @@ using SevenStar.Shared.Domain.Database;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace SevenStar.Shared.Domain.Extensions;
+namespace SevenStar.Shared.Domain.Extensions.Repository;
 
 public static class RepositoryAutoRegistrar
 {

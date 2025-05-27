@@ -1,8 +1,8 @@
 ﻿using Common.Api.Option;
 
-namespace SevenStar.Shared.Domain.Api.Token;
+namespace SevenStar.Shared.Domain.Api.Token.Jwt;
 
-public interface IJwtOptionsFactory
+public interface IJwtOptionsProvider
 {
     Task<JwtOptions> GetBackendJwtOptionsAsync(int backendId);
 

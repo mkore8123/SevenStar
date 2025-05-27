@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Extensions\**" />
+    <EmbeddedResource Remove="Extensions\**" />
+    <None Remove="Extensions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Serilog.Sinks.Grafana.Loki" Version="8.3.0" />
   </ItemGroup>
 
@@ -14,10 +20,6 @@
     <ProjectReference Include="..\..\Infrastructure\Infrastructure.Data.PostgreSql\Infrastructure.Data.PostgreSql.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Infrastructure.Logging.Serilog\Infrastructure.Logging.Serilog.csproj" />
     <ProjectReference Include="..\SevenStar.Shared.Domain\SevenStar.Shared.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Extensions\" />
   </ItemGroup>
 
 </Project>

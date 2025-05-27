@@ -19,7 +19,6 @@ public static class AuthenticationExtension
         where T1 : JwtTokenServiceBase<T2>           // T1: 解析 Jwt Token 實作，必須繼承 JwtTokenServiceBase<T2>
         where T2 : class                             // T2: Token 儲存的用戶資訊模型，例如 UserClaimModel
     {
-        // services.AddSingleton(jwtOption);
         services.AddSingleton<T1>();
         services.AddAuthorization();
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();

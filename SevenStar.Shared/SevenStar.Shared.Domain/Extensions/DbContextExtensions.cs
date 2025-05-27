@@ -1,22 +1,16 @@
-﻿using Common.Attributes;
-using Common.Enums;
-using Common.Utils;
+﻿using Common.Enums;
 using Infrastructure.Caching.Redis;
 using Infrastructure.Data.MySql;
 using Infrastructure.Data.Npgsql;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using SevenStar.Shared.Domain.Database;
 using SevenStar.Shared.Domain.DbContext;
-using SevenStar.Shared.Domain.Enums;
-using SevenStar.Shared.Domain.Extensions;
+using SevenStar.Shared.Domain.Extensions.Repository;
 using SevenStar.Shared.Domain.Redis;
-using StackExchange.Redis;
-using System.Linq.Expressions;
 using System.Reflection;
 
-namespace SevenStar.Shared.Domain.Api.Extensions;
+namespace SevenStar.Shared.Domain.Extensions;
 
 public static class AssemblyMapping
 {
@@ -139,7 +133,7 @@ public static class DbContextExtensions
 
         services.RegisterFactory<IPlatformDbFactory>(asm, ServiceLifetime.Singleton, platformConnectionString);
 
-        services.AddScoped<IPlatformDb>(sp =>
+        services.AddScoped(sp =>
         {
             var factory = sp.GetRequiredService<IPlatformDbFactory>();
             return factory.CreatePlatformDbAsync().GetAwaiter().GetResult();
@@ -164,7 +158,7 @@ public static class DbContextExtensions
 
         services.TryAddSingleton<ISingletonCacheService, SingletonCacheService>();
         services.AddScoped<IGeneralDbFactory, GeneralDbFactory>();
-        services.AddScoped<ICompanyGameDb>(sp =>
+        services.AddScoped(sp =>
         {
             var generalDbFactory = sp.GetRequiredService<IGeneralDbFactory>();
             var companyDb = generalDbFactory.CreateCompanyGameDbAsync(companyId).GetAwaiter().GetResult();
@@ -193,7 +187,7 @@ public static class DbContextExtensions
 
         redisDbList.ForEach(redisDb =>
         {
-            services.AddKeyedScoped<IDatabaseAsync>(redisDb, (sp, key) =>
+            services.AddKeyedScoped(redisDb, (sp, key) =>
             {
                 var factory = sp.GetRequiredService<ICompanyRedisDbFactory>();
                 return factory.GetDatabaseAsync((RedisDbEnum)key).GetAwaiter().GetResult();

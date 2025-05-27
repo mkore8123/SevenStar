@@ -6,6 +6,8 @@ using SevenStar.Common.Api.Serilog;
 using SevenStar.Common.Extensions;
 using SevenStar.Shared.Domain.Api.Extensions;
 using SevenStar.Shared.Domain.Api.Token;
+using SevenStar.Shared.Domain.Api.Token.Jwt;
+using SevenStar.Shared.Domain.Extensions;
 
 var companyId = 1;
 var platformDbConnectionString = "Host=127.0.0.1;Port=5432;Username=postgres;Password=apeter56789;Database=postgres;SearchPath=public;";
@@ -23,7 +25,6 @@ try
     builder.Services.AddCompanyGamesDb(companyId);
     builder.Services.AddCompanyRedisDb(companyId);
     builder.Services.AddCompanyJwtOption(companyId);
-    builder.Services.AddJwtAuthentication<JwtTokenService, UserClaimModel>();
 
     builder.Services.AddControllers(); 
     builder.Services.AddSwaggerGenHandler();

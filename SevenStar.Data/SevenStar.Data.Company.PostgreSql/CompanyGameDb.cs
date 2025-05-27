@@ -7,7 +7,7 @@ using MySqlConnector;
 using Npgsql;
 using SevenStar.Shared.Domain.Database;
 using SevenStar.Shared.Domain.DbContext.Repository.Company;
-using SevenStar.Shared.Domain.Extensions;
+using SevenStar.Shared.Domain.Extensions.Repository;
 
 namespace SevenStar.Data.Company.Nppgsql;
 

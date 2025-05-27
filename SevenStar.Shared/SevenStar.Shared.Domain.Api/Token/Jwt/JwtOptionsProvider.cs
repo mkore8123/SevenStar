@@ -1,25 +1,18 @@
 ﻿using Common.Api.Option;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using SevenStar.Shared.Domain.Database;
-using SevenStar.Shared.Domain.DbContext;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace SevenStar.Shared.Domain.Api.Token;
+namespace SevenStar.Shared.Domain.Api.Token.Jwt;
 
-public class JwtOptionsFactory : IJwtOptionsFactory
+public class JwtOptionsProvider : IJwtOptionsProvider
 {
+    private readonly IPlatformDb _platformDb;
     private readonly IServiceProvider _provider;
-    private readonly ISingletonCacheService _cacheService;
 
-    // private readonly IPlatformDb _platformDb;
-
-    public JwtOptionsFactory(IServiceProvider provider, ISingletonCacheService cacheService)
+    public JwtOptionsProvider(IServiceProvider provider, IPlatformDb platformDb)
     {
         _provider = provider;
-        _cacheService = cacheService;
+        _platformDb = platformDb;
     }
 
     public Task<JwtOptions> GetBackendJwtOptionsAsync(int backendId)
@@ -47,19 +40,12 @@ public class JwtOptionsFactory : IJwtOptionsFactory
         return Task.FromResult(jwtOptions);
     }
 
-    public Task<JwtOptions> GetCompanyJwtOptionsAsync(int companyId)
+    public async Task<JwtOptions> GetCompanyJwtOptionsAsync(int companyId)
     {
         if (companyId <= 0)
             throw new ArgumentOutOfRangeException(nameof(companyId));
 
-        //var entity = await _cacheService.CompnayGetOrAddAsync(companyId, () => _platformDb.GetCompanyGameDb(companyId));
-        //var factory = _provider.GetRequiredKeyedService<ICompanyGameDbFactory>(entity.DataSource);
-
-        //return await factory.CreateCompanyGameDbAsync(
-        //    entity.BackendId,
-        //    entity.CompanyId,
-        //    entity.ConnectionString);
-
+        var companyJwtEntity = await _platformDb.GetCompanyJwtOptions(companyId);
 
         var jwtOptions = new JwtOptions
         {
@@ -81,6 +67,6 @@ public class JwtOptionsFactory : IJwtOptionsFactory
             RequireExpirationTime = true
         };
 
-        return Task.FromResult(jwtOptions);
+        return jwtOptions;
     }
 }

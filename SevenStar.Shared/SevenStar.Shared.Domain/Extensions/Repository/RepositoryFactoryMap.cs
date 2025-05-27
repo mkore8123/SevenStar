@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SevenStar.Shared.Domain.Extensions;
+namespace SevenStar.Shared.Domain.Extensions.Repository;
 
 public static class RepositoryFactoryMap
 {

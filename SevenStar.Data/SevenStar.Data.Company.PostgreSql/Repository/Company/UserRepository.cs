@@ -6,6 +6,7 @@ using Common.Attributes;
 using Microsoft.Extensions.DependencyInjection;
 using SevenStar.Shared.Domain.DbContext.Repository.Company;
 using SevenStar.Shared.Domain.DbContext.Entity.Company;
+using System.Data.Common;
 
 
 namespace SevenStar.Data.Company.PostgreSql.Repository.Company;
