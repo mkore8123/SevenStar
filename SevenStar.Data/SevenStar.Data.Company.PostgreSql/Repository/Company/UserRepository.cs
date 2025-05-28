@@ -39,10 +39,11 @@ public class UserRepository : IUserRepository
 
     public async Task<int> CreateAsync(UserEntity entity, IDbTransaction? transaction = null)
     {
-        var sql = new SqlBuilder();
-        var abc = sql.AddTemplate("");
+        throw new NotImplementedException("CreateAsync method is not implemented.");
+        //var sql = new SqlBuilder();
+        //var abc = sql.AddTemplate("");
 
-        var result = await Connection.ExecuteAsync(abc.RawSql, transaction);
-        return result;
+        //var result = await Connection.ExecuteAsync(abc.RawSql, transaction);
+        //return result;
     }
 }

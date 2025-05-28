@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Common.Api.Token.Jwt.Interface;
+namespace Common.Api.Authentication.Jwt.Interface;
 
 public interface ITokenValidationParametersProvider
 {

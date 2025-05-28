@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SevenStar.Shared.Domain.Api.Token;
-using SevenStar.Shared.Domain.Api.Token.Jwt;
+using SevenStar.Shared.Domain.Api.Auth;
+using SevenStar.Shared.Domain.Api.Auth.Jwt;
 using SevenStar.Shared.Domain.Service;
 
 namespace SevenStar.ApiService.Controllers;

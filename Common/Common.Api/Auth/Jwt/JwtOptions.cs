@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Common.Api.Option;
+namespace Common.Api.Authentication.Jwt;
 
 public class JwtOptions
 {

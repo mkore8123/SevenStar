@@ -1,7 +1,6 @@
-﻿
-using System.Security.Claims;
+﻿using System.Security.Claims;
 
-namespace Common.Api.Token;
+namespace Common.Api.Authentication;
 
 /// <summary>
 /// 加密,解密 jwt 的服務介面
@@ -58,7 +57,7 @@ public interface ITokenService<T>
         }
         catch
         {
-            model = default(T);
+            model = default;
             return false;
         }
     }

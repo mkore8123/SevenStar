@@ -1,5 +1,4 @@
-﻿using Common.Api.Localization;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Localization;
 using System.Globalization;
 
-namespace Common.Api.Extensions;
+namespace Common.Api.Localization;
 
 /// <summary>
 /// Web Api 自訂啟用 多語系 流程
@@ -20,7 +19,7 @@ public static class LocalizationExtension
     public static IServiceCollection AddLocalizationHandler(this IServiceCollection services, LocalizationBase localizationBase)
     {
         var factory = localizationBase.GetLocalizerFactory();
-        services.AddSingleton<IStringLocalizerFactory>(factory);
+        services.AddSingleton(factory);
         services.AddSingleton(factory); // 用來手動更新資料
 
         services.AddLocalization();

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Common.Api.Token.Jwt;
+namespace Common.Api.Authentication.Jwt;
 
 public class SampleMemberModel
 {

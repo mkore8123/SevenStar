@@ -1,11 +1,12 @@
-﻿using Common.Api.Token.Jwt;
+﻿using Common.Api.Auth.Jwt.Event;
+using Common.Api.Authentication.Jwt;
 using Infrastructure.Caching.Redis;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
 
-namespace SevenStar.Shared.Domain.Api.Token.Jwt;
+namespace SevenStar.Shared.Domain.Api.Auth.Jwt.Event;
 
 public class JwtEventHandler : JwtBearerEventsBase
 {

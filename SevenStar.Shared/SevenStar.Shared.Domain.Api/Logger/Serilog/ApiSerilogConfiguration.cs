@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SevenStar.Common.Api.Serilog;
+namespace SevenStar.Shared.Domain.Api.Logger.Serilog;
 
 public class ApiSerilogConfiguration : SerilogConfigurationBase
 {

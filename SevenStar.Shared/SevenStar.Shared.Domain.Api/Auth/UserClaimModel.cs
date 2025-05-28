@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SevenStar.Shared.Domain.Api.Token;
+namespace SevenStar.Shared.Domain.Api.Auth;
 
 public class UserClaimModel
 {

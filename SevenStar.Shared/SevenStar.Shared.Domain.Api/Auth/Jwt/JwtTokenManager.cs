@@ -1,11 +1,11 @@
-﻿using Common.Api.Option;
-using Common.Api.Token.Jwt;
+﻿using Common.Api.Authentication.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using SevenStar.Shared.Domain.Api.Auth.Jwt.Event;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace SevenStar.Shared.Domain.Api.Token.Jwt;
+namespace SevenStar.Shared.Domain.Api.Auth.Jwt;
 
 public class JwtTokenManager : JwtTokenServiceBase<UserClaimModel>
 {

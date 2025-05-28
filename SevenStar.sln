@@ -18,7 +18,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenStar.Shared.Domain.Api
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common\Common.csproj", "{2DC899A3-3374-49FE-AB6A-D8F8CD63FBBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenStar.Shared.Domain.Imp", "SevenStar.Shared\SevenStar.Shared.Domain.Imp\SevenStar.Shared.Domain.Imp.csproj", "{4CB6FCDB-5914-4976-BCC6-D9622A723120}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenStar.Shared.Domain.Service", "SevenStar.Shared\SevenStar.Shared.Domain.Service\SevenStar.Shared.Domain.Service.csproj", "{4CB6FCDB-5914-4976-BCC6-D9622A723120}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{EC8CF188-7A5F-4340-B348-A13731E6ED20}"
 EndProject

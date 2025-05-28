@@ -1,12 +1,12 @@
-﻿using Common.Api.Extensions;
+﻿using Common.Api.Authentication;
+using Common.Api.Exception;
 using Common.Api.Localization;
+using Common.Api.Swagger;
 using Common.Enums;
 using Serilog;
-using SevenStar.Common.Api.Serilog;
 using SevenStar.Common.Extensions;
 using SevenStar.Shared.Domain.Api.Extensions;
-using SevenStar.Shared.Domain.Api.Token;
-using SevenStar.Shared.Domain.Api.Token.Jwt;
+using SevenStar.Shared.Domain.Api.Logger.Serilog;
 using SevenStar.Shared.Domain.Extensions;
 
 var companyId = 1;

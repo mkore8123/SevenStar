@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 
-namespace Common.Api.Token.Jwt;
+namespace Common.Api.Auth.Jwt.Event;
 
 /// <summary>
 /// 自訂 Jwt 驗證處理事件基底類別（可繼承覆寫）

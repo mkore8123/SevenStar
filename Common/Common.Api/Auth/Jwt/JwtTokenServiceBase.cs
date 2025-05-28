@@ -1,12 +1,11 @@
-﻿using Common.Api.Option;
-using Common.Api.Token.Jwt.Interface;
+﻿using Common.Api.Authentication.Jwt.Interface;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Common.Api.Token.Jwt;
+namespace Common.Api.Authentication.Jwt;
 
 public abstract class JwtTokenServiceBase<TModel> : ITokenService<TModel>, ITokenValidationParametersProvider
 {

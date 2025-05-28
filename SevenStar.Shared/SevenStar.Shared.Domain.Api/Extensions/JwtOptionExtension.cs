@@ -1,10 +1,10 @@
-﻿using Common.Api.Extensions;
-using Common.Api.Option;
+﻿using Common.Api.Authentication;
+using Common.Api.Authentication.Jwt;
 using Infrastructure.Caching.Redis;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using SevenStar.Shared.Domain.Api.Token;
-using SevenStar.Shared.Domain.Api.Token.Jwt;
+using SevenStar.Shared.Domain.Api.Auth;
+using SevenStar.Shared.Domain.Api.Auth.Jwt;
 using SevenStar.Shared.Domain.Database;
 using SevenStar.Shared.Domain.DbContext;
 using SevenStar.Shared.Domain.DbContext.Entity.Platform;

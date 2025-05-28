@@ -1,11 +1,10 @@
-﻿using Common.Api.Option;
-using Common.Api.Token.Jwt;
+﻿using Common.Api.Authentication.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 
-namespace Common.Api.Extensions;
+namespace Common.Api.Authentication;
 
 /// <summary>
 /// Web Api 自訂例外處理流程

@@ -1,11 +1,10 @@
-﻿using Common.Api.Exception;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Common.Api.Extensions;
+namespace Common.Api.Exception;
 
 /// <summary>
 /// Web Api 自訂例外處理流程

@@ -1,8 +1,8 @@
-﻿using Common.Api.Option;
+﻿using Common.Api.Authentication.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using SevenStar.Shared.Domain.Database;
 
-namespace SevenStar.Shared.Domain.Api.Token.Jwt;
+namespace SevenStar.Shared.Domain.Api.Auth.Jwt;
 
 public class JwtOptionsProvider : IJwtOptionsProvider
 {

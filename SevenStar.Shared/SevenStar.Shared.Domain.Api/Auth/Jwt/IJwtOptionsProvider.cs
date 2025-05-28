@@ -1,6 +1,6 @@
-﻿using Common.Api.Option;
+﻿using Common.Api.Authentication.Jwt;
 
-namespace SevenStar.Shared.Domain.Api.Token.Jwt;
+namespace SevenStar.Shared.Domain.Api.Auth.Jwt;
 
 public interface IJwtOptionsProvider
 {

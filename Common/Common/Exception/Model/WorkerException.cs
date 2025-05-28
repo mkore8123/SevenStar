@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Common.Model.Exception;
+namespace Common.Exception.Model;
 
 public class WorkerException : System.Exception
 {

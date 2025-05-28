@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Common.Api.Extensions;
+namespace Common.Api.Swagger;
 
 /// <summary>
 /// Web Api 自訂啟用 Swagger 流程
