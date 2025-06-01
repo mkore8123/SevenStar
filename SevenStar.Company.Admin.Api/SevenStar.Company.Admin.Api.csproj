@@ -8,12 +8,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.Api\Common.Api.csproj" />
-    <ProjectReference Include="..\SevenStar.Data\SevenStar.Data.Company.MySql\SevenStar.Data.Company.MySql.csproj" />
-    <ProjectReference Include="..\SevenStar.Data\SevenStar.Data.Company.PostgreSql\SevenStar.Data.Company.PostgreSql.csproj" />
-    <ProjectReference Include="..\SevenStar.Data\SevenStar.Data.Platform.PostgreSql\SevenStar.Data.Platform.PostgreSql.csproj" />
     <ProjectReference Include="..\SevenStar.Shared\SevenStar.Shared.Domain.Api\SevenStar.Shared.Domain.Api.csproj" />
-    <ProjectReference Include="..\SevenStar.Shared\SevenStar.Shared.Domain.Imp\SevenStar.Shared.Domain.Imp.csproj" />
-    <ProjectReference Include="..\SevenStar.Shared\SevenStar.Shared.Domain\SevenStar.Shared.Domain.csproj" />
+    <ProjectReference Include="..\SevenStar.Shared\SevenStar.Shared.Domain.Service\SevenStar.Shared.Domain.Service.csproj" />
   </ItemGroup>
 
 </Project>

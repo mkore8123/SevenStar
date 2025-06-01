@@ -2,6 +2,7 @@
 using Serilog;
 using Serilog.AspNetCore;
 using Serilog.Events;
+using Serilog.Sinks.SystemConsole.Themes;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,6 +14,10 @@ public class ApiSerilogConfiguration : SerilogConfigurationBase
     public override LoggerConfiguration CreateLoggerConfiguration(IConfiguration? configuration = null)
     {
         var loggerConfig = base.CreateLoggerConfiguration();
+        
+        loggerConfig.WriteTo.Console(
+            theme: AnsiConsoleTheme.Literate,
+            outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj} {Properties:j}{NewLine}{Exception}");
 
         return loggerConfig;
     }

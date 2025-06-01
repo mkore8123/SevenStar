@@ -1,26 +1,27 @@
 ﻿using Common.Attributes;
 using Common.Enums;
-using Infrastructure.Data.Npgsql;
+using Infrastructure.Data.PostgreSql;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Npgsql;
-using SevenStar.Data.Company.Nppgsql;
-using SevenStar.Shared.Domain.Database;
+using SevenStar.Data.Company.PostgreSql;
+using SevenStar.Shared.Domain.DbContext.Company;
+using SevenStar.Shared.Domain.DbContext.Platform;
 using System.Collections.Concurrent;
-using System.ComponentModel.Design;
 
-namespace SevenStar.Data.Company.Npgsql;
+namespace SevenStar.Data.Company.PostgreSql;
 
 [KeyedService(DataSource.PostgreSql, ServiceLifetime.Singleton)]
 public class CompanyGameDbFactory : ICompanyGameDbFactory
 {
-    private readonly IPlatformDb _platformDb;
     private readonly IServiceProvider _provider;
+    private readonly IPlatformDbFactory _platformDbFactory;
+    
     private readonly ConcurrentDictionary<int, Lazy<Task<NpgsqlDataSource>>> _companyDataSources = new();
 
-    public CompanyGameDbFactory(IServiceProvider provider, IPlatformDb platformDb)
+    public CompanyGameDbFactory(IServiceProvider provider, IPlatformDbFactory platformDbFactory)
     {
-        _platformDb = platformDb;
+        _platformDbFactory = platformDbFactory;
         _provider = provider ?? throw new ArgumentNullException(nameof(provider));
     }
 
@@ -44,19 +45,22 @@ public class CompanyGameDbFactory : ICompanyGameDbFactory
         var lazy = _companyDataSources.GetOrAdd(companyId, cid =>
             new Lazy<Task<NpgsqlDataSource>>(async () =>
             {
-                var companyDb = await _platformDb.GetCompanyGameDb(companyId);
+                var platformDb = await _platformDbFactory.CreatePlatformDbAsync();
+                var companyGameDb = await platformDb.GetCompanyGameDb(companyId);
 
-                if (!await NpgsqlConnectionValidator.ValidateAsync(companyDb.ConnectionString, true))
+                if (!await NpgsqlConnectionValidator.ValidateAsync(companyGameDb.ConnectionString, true))
                     throw new InvalidOperationException($"公司 ID {cid} 的連線字串無效或 Redis 連線失敗。");
 
-                return BuildNpgsqlDataSource(companyDb.ConnectionString);
-            }));
+                return BuildNpgsqlDataSource(companyGameDb.ConnectionString);
+            }, LazyThreadSafetyMode.ExecutionAndPublication));
 
         try
         {
             var dataSource = await lazy.Value;
             var connection = await dataSource.OpenConnectionAsync();
-            return new CompanyGameDb(_provider, companyId, companyId, connection);
+
+            // 建立獨立的 scope provider，否則傳進去的 provider 會是 singleton
+            return new CompanyGameDb(_provider.CreateScope().ServiceProvider, companyId, companyId, connection);
         }
         catch
         {
@@ -70,6 +74,7 @@ public class CompanyGameDbFactory : ICompanyGameDbFactory
         var dataSource = BuildNpgsqlDataSource(connectionString);
         var connection = await dataSource.OpenConnectionAsync();
 
-        return new CompanyGameDb(_provider, baackendId, companyId, connection);
+        // 建立獨立的 scope provider，否則傳進去的 provider 會是 singleton
+        return new CompanyGameDb(_provider.CreateScope().ServiceProvider, baackendId, companyId, connection);
     }
 }

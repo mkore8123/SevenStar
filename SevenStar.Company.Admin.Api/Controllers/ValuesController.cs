@@ -1,32 +1,35 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SevenStar.Shared.Domain.Api.Auth;
 using SevenStar.Shared.Domain.Api.Auth.Jwt;
+using SevenStar.Shared.Domain.DbContext.Company;
+using SevenStar.Shared.Domain.DbContext.Platform;
+using SevenStar.Shared.Domain.Enums;
 using SevenStar.Shared.Domain.Service;
 
 namespace SevenStar.ApiService.Controllers;
 
 public class ValuesController : ApiControllerBase
 {
-    private readonly Shared.Domain.Database.ICompanyGameDb _companyGameDb;
-    private readonly JwtTokenManager _tokenService;
-    private readonly IUserService _userService;
+    private readonly IServiceProvider _provider;
+    private readonly ICompanyGameDb _companyDb;
 
-    public ValuesController(IServiceProvider provider, Shared.Domain.Database.ICompanyGameDb companyGameDb, JwtTokenManager tokenService /*, IHybridProviderFactory factory*/)
+    public ValuesController(IServiceProvider provider, ICompanyGameDb companyDb)
     {
-        _companyGameDb = companyGameDb;
-        _tokenService = tokenService;
+        //_db = db;
+        //_dbFactory = dbFactory;
+        _provider = provider;
+        _companyDb = companyDb;
     }
 
     [HttpGet]
-    public async Task<string> TestUnitOfWork()
+    public async Task<string> Test()
     {
-        var model = new UserClaimModel()
-        {
-            UserId = 1,
-            UserName = "test123"
-        };
-
-        var jwt = _tokenService.GenerateToken(model);
-        return await Task.FromResult(jwt);
+        // var platformDb = _dbFactory.CreatePlatformDbAsync();
+        var abc = _provider.GetRequiredKeyedService<IUserService>(MemberLevelEnum.Member);
+        var fun = await abc.PrepareCreateMemberAsync(_companyDb, "111");
+        // await _companyDb.UserService.PrepareCreateMemberAsync("test");
+        var user1 = _companyDb.User.GetAsync();
+        var user2 = _companyDb.User.GetAsync();
+        return "abc";
     }
 }

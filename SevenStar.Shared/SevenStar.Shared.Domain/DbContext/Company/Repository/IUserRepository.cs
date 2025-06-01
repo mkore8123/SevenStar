@@ -1,9 +1,8 @@
-﻿using SevenStar.Shared.Domain.Database;
-using SevenStar.Shared.Domain.DbContext.Entity.Company;
+﻿using SevenStar.Shared.Domain.DbContext.Entity.Company;
 using System.Data;
 
 
-namespace SevenStar.Shared.Domain.DbContext.Repository.Company;
+namespace SevenStar.Shared.Domain.DbContext.Company.Repository;
 
 public interface IUserRepository : ICompanyGameDbContext
 {

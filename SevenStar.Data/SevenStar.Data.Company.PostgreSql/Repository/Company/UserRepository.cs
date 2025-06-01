@@ -4,9 +4,8 @@ using System.Data;
 using Common.Enums;
 using Common.Attributes;
 using Microsoft.Extensions.DependencyInjection;
-using SevenStar.Shared.Domain.DbContext.Repository.Company;
 using SevenStar.Shared.Domain.DbContext.Entity.Company;
-using System.Data.Common;
+using SevenStar.Shared.Domain.DbContext.Company.Repository;
 
 
 namespace SevenStar.Data.Company.PostgreSql.Repository.Company;
@@ -26,7 +25,8 @@ public class UserRepository : IUserRepository
         var sql = "SELECT \"Id\", \"Name\" FROM public.\"User\" ";
 
         var users = await Connection.QueryAsync<UserEntity>(sql);
-        return users.ToList();
+        var user1 = users.ToList();
+        return user1;
     }
 
     public async Task<UserEntity> GetAsync(long id)

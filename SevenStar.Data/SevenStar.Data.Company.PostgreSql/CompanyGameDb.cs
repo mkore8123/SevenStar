@@ -1,15 +1,12 @@
 ﻿using Common.Enums;
-using Infrastructure.Data.Npgsql;
-using Microsoft.AspNetCore.Authentication.OAuth.Claims;
+using Infrastructure.Data.PostgreSql;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyModel.Resolution;
-using MySqlConnector;
 using Npgsql;
-using SevenStar.Shared.Domain.Database;
-using SevenStar.Shared.Domain.DbContext.Repository.Company;
-using SevenStar.Shared.Domain.Extensions.Repository;
+using SevenStar.Shared.Domain.DbContext.Company;
+using SevenStar.Shared.Domain.Service;
 
-namespace SevenStar.Data.Company.Nppgsql;
+namespace SevenStar.Data.Company.PostgreSql;
+
 
 public partial class CompanyGameDb : NpgsqlUnitOfWork, ICompanyGameDb
 {
@@ -29,11 +26,6 @@ public partial class CompanyGameDb : NpgsqlUnitOfWork, ICompanyGameDb
         _provider = provider;
         BackendId = backendId;
         CompanyId = companyId;
-    }
-
-    public TRepository GetRepository<TRepository>() where TRepository : class, ICompanyGameDbContext, new()
-    {
-        return RepositoryFactoryMap.Create<TRepository>(DataSource, Connection);
     }
 
     public async Task<ICompanyGameDb> CreateInstanceAsync()

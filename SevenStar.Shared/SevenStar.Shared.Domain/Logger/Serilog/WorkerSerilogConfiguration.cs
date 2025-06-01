@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Serilog;
 
-namespace SevenStar.Shared.Domain.Serilog;
+namespace SevenStar.Shared.Domain.Logger.Serilog;
 
 public class WorkerSerilogConfiguration : SerilogConfigurationBase
 {

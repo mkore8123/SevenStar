@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Infrastructure.Data.Npgsql.Interface;
+namespace Infrastructure.Data.PostgreSql.Interface;
 
 public interface INpgsqlUnitOfWork : IUnitOfWork
 {

@@ -1,5 +1,4 @@
-﻿
-namespace SevenStar.Shared.Domain.Database;
+﻿namespace SevenStar.Shared.Domain.DbContext.Company;
 
 public interface ICompanyGameDbFactory
 {

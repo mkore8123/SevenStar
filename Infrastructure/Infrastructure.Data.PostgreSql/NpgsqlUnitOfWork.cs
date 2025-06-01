@@ -1,8 +1,8 @@
 ﻿using Npgsql;
 using System.Data;
-using Infrastructure.Data.Npgsql.Interface;
+using Infrastructure.Data.PostgreSql.Interface;
 
-namespace Infrastructure.Data.Npgsql;
+namespace Infrastructure.Data.PostgreSql;
 
 
 public class NpgsqlUnitOfWork : INpgsqlUnitOfWork

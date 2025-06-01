@@ -1,4 +1,5 @@
-﻿using SevenStar.Shared.Domain.Database;
+﻿using SevenStar.Shared.Domain.DbContext.Company;
+using SevenStar.Shared.Domain.Service;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,4 +14,11 @@ public partial interface IGeneralDbFactory
     /// <param name="companyId"></param>
     /// <returns></returns>
     Task<ICompanyGameDb> CreateCompanyGameDbAsync(int companyId);
+
+    /// <summary>
+    /// 根據總控 ID 創建總控遊戲資料庫實例。
+    /// </summary>
+    /// <param name="companyId"></param>
+    /// <returns></returns>
+    // Task<IBackendGameDb> CreateBackendGameDbAsync(int backendId);
 }

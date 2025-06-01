@@ -1,5 +1,4 @@
 ﻿using Common.Enums;
-using SevenStar.Shared.Domain.Database;
 using System;
 using System.Collections.Generic;
 using System.Text;

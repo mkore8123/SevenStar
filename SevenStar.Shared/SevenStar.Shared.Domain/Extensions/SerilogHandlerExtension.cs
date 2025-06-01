@@ -1,7 +1,7 @@
 ﻿using Serilog;
 using Microsoft.AspNetCore.Builder;
 
-namespace SevenStar.Common.Extensions;
+namespace SevenStar.Shared.Domain.Extensions;
 
 /// <summary>
 /// 注入 Serilog 的擴充方法
@@ -19,8 +19,11 @@ public static class SerilogHandlerExtension
         config ??= new SerilogConfigurationBase();
         Log.Logger = config.CreateLoggerConfiguration(builder.Configuration).CreateLogger();
 
+        // 告訴 ASP.NET Core Host 使用你剛剛設定的 Log.Logger 作為應用程式主記錄器。
         builder.Host.UseSerilog();
-        builder.Logging.AddSerilog(Log.Logger);  //需要詳加研究加上這一段的差別
+
+        // 替代 ILogger<T> 系統，讓應用內部使用 Serilog 作為主要的 log 提供者
+        builder.Logging.AddSerilog(Log.Logger); 
 
         return builder;
     }

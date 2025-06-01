@@ -1,12 +1,13 @@
 ﻿using Common.Enums;
-using Infrastructure.Data.Npgsql.Interface;
+using Infrastructure.Data.PostgreSql.Interface;
+using SevenStar.Shared.Domain.DbContext.Company.Repository;
 
-namespace SevenStar.Shared.Domain.Database;
+namespace SevenStar.Shared.Domain.DbContext.Company;
 
 /// <summary>
 /// 公司遊戲資料庫操作功能
 /// </summary>
-public interface ICompanyGameDb
+public partial interface ICompanyGameDb
 {
     /// <summary>
     /// 所屬總控id
@@ -21,7 +22,7 @@ public interface ICompanyGameDb
     /// <summary>
     /// 資料庫類型
     /// </summary>
-    public DataSource DataSource { get; }
+    DataSource DataSource { get; }
 
     /// <summary>
     /// 創建新實例的資料庫連線存取資源，避免與預設的連線物件相同，造成在平行處理使用相同連線物件造成衝突
@@ -35,5 +36,5 @@ public interface ICompanyGameDb
     /// </summary>
     /// <typeparam name="TRepository"></typeparam>
     /// <returns></returns>
-    TRepository GetRepository<TRepository>() where TRepository : class, ICompanyGameDbContext, new();
+    // TRepository GetRepository<TRepository>() where TRepository : class, ICompanyGameDbContext;
 }

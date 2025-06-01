@@ -8,11 +8,10 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using SevenStar.Shared.Domain.DbContext;
 using SevenStar.Shared.Domain.DbContext.Company;
 using SevenStar.Shared.Domain.DbContext.Platform;
-using SevenStar.Shared.Domain.Extensions.Repository;
 using SevenStar.Shared.Domain.Redis;
 using System.Reflection;
 
-namespace SevenStar.Shared.Domain.Extensions;
+namespace SevenStar.Shared.Domain.Service.Extensions;
 
 
 
@@ -21,18 +20,6 @@ namespace SevenStar.Shared.Domain.Extensions;
 /// </summary>
 public static class DbContextExtensions
 {
-    /// <summary>
-    /// 根據資料庫類型取得對應的組件名稱。
-    /// </summary>
-    /// <param name="map">資料庫類型與組件名稱的映射。</param>
-    /// <param name="source">資料庫類型。</param>
-    /// <returns>對應的組件名稱。</returns>
-    /// <exception cref="NotSupportedException">當指定的資料庫類型未在映射中定義時拋出。</exception>
-    private static string GetAssemblyName(Dictionary<DataSource, string> map, DataSource source) =>
-        map.TryGetValue(source, out var name)
-            ? name
-            : throw new NotSupportedException($"在 AssemblyMapping 中找不到 DataSource = {source} 的對應組件名稱。");
-
     /// <summary>
     /// 根據資料庫類型驗證連線字串的有效性。
     /// </summary>
@@ -45,6 +32,18 @@ public static class DbContextExtensions
         DataSource.PostgreSql => await NpgsqlConnectionValidator.ValidateAsync(conn),
         _ => false
     };
+
+    /// <summary>
+    /// 根據資料庫類型取得對應的組件名稱。
+    /// </summary>
+    /// <param name="map">資料庫類型與組件名稱的映射。</param>
+    /// <param name="source">資料庫類型。</param>
+    /// <returns>對應的組件名稱。</returns>
+    /// <exception cref="NotSupportedException">當指定的資料庫類型未在映射中定義時拋出。</exception>
+    private static string GetAssemblyName(Dictionary<DataSource, string> map, DataSource source) =>
+        map.TryGetValue(source, out var name)
+            ? name
+            : throw new NotSupportedException($"在 AssemblyMapping 中找不到 DataSource = {source} 的對應組件名稱。");
 
     /// <summary>
     /// 安全地載入指定名稱的組件。
@@ -111,7 +110,7 @@ public static class DbContextExtensions
 
         services.RegisterFactory<IPlatformDbFactory>(asm, ServiceLifetime.Singleton, platformConnectionString);
 
-        services.AddScoped<IPlatformDb>(sp =>
+        services.AddScoped(sp =>
         {
             var factory = sp.GetRequiredService<IPlatformDbFactory>();
             return factory.CreatePlatformDbAsync().GetAwaiter().GetResult();
@@ -132,14 +131,13 @@ public static class DbContextExtensions
         {
             var assembly = LoadAssemblySafely(assemblyKvp.Value);
             services.RegisterKeyedServicesFromAssembly<ICompanyGameDbFactory>(assembly);
-            //RepositoryAutoRegistrar.RegisterFromAssembly<ICompanyGameDbContext>(assembly, assemblyKvp.Key);
-        }     
+        }
 
         services.TryAddSingleton<ISingletonCacheService, SingletonCacheService>();
         services.AddScoped<IGeneralDbFactory, GeneralDbFactory>();
-        services.AddScoped<ICompanyGameDb>(sp =>
+        services.AddScoped(provider =>
         {
-            var factory = sp.GetRequiredService<IGeneralDbFactory>();
+            var factory = provider.GetRequiredService<IGeneralDbFactory>();
             var companyDb = factory.CreateCompanyGameDbAsync(companyId).GetAwaiter().GetResult();
 
             return companyDb;
@@ -174,43 +172,5 @@ public static class DbContextExtensions
         });
 
         return services;
-    }
-
-
-    public static void RegisterKeyedServicesFromAssembly<TService>(
-        this IServiceCollection services,
-        Assembly assembly)
-    {
-        var serviceTypeToRegister = typeof(TService);
-
-        var typesWithAttribute = assembly.GetTypes()
-            .Where(t => t.IsClass && !t.IsAbstract && serviceTypeToRegister.IsAssignableFrom(t))
-            .Select(t => new
-            {
-                ImplementationType = t,
-                Attribute = t.GetCustomAttribute<KeyedServiceAttribute>()
-            })
-            .Where(x => x.Attribute != null);
-
-        foreach (var item in typesWithAttribute)
-        {
-            var attribute = item.Attribute!;
-            var key = attribute.Key;
-            var lifetime = attribute.Lifetime;
-
-            // 根據生命週期註冊
-            switch (lifetime)
-            {
-                case ServiceLifetime.Singleton:
-                    services.AddKeyedSingleton(serviceTypeToRegister, key, item.ImplementationType);
-                    break;
-                case ServiceLifetime.Scoped:
-                    services.AddKeyedScoped(serviceTypeToRegister, key, item.ImplementationType);
-                    break;
-                case ServiceLifetime.Transient:
-                    services.AddKeyedTransient(serviceTypeToRegister, key, item.ImplementationType);
-                    break;
-            }
-        }
     }
 }

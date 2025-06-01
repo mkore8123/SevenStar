@@ -15,13 +15,13 @@ public class SingletonCacheService : ISingletonCacheService
 
     public Task<CompanyGameDbEntity> GetOrAddBackendDbAsync(int backendId, Func<Task<CompanyGameDbEntity>> factory)
     {
-        var lazy = _backendCache.GetOrAdd(backendId, _ => new Lazy<Task<CompanyGameDbEntity>>(factory));
+        var lazy = _backendCache.GetOrAdd(backendId, _ => new Lazy<Task<CompanyGameDbEntity>>(factory, LazyThreadSafetyMode.ExecutionAndPublication));
         return lazy.Value;
     }
 
     public Task<CompanyGameDbEntity> GetOrAddCompnayDbAsync(int companyId, Func<Task<CompanyGameDbEntity>> factory)
     {
-        var lazy = _companyCache.GetOrAdd(companyId, _ => new Lazy<Task<CompanyGameDbEntity>>(factory));
+        var lazy = _companyCache.GetOrAdd(companyId, _ => new Lazy<Task<CompanyGameDbEntity>>(factory, LazyThreadSafetyMode.ExecutionAndPublication));
         return lazy.Value;
     }
 }

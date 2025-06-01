@@ -1,6 +1,6 @@
 ﻿using Npgsql;
 
-namespace Infrastructure.Data.Npgsql;
+namespace Infrastructure.Data.PostgreSql;
 
 public class NpgsqlConnectionValidator
 {

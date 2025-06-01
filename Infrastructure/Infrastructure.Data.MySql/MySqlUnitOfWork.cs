@@ -3,7 +3,7 @@ using MySqlConnector;
 using Infrastructure.Data.MySql.Interface;
 
 
-namespace Infrastructure.Data.Npgsql;
+namespace Infrastructure.Data.MySql;
 
 public class MySqlUnitOfWork : IMySqlUnitOfWork
 {
@@ -45,7 +45,6 @@ public class MySqlUnitOfWork : IMySqlUnitOfWork
         if (Connection.State != ConnectionState.Open)
             await Connection.OpenAsync();
     }
-
 
     public async ValueTask DisposeAsync()
     {

@@ -1,7 +1,7 @@
 ﻿using StackExchange.Redis;
 using Infrastructure.Caching.Redis;
-using SevenStar.Shared.Domain.Database;
 using System.Collections.Concurrent;
+using SevenStar.Shared.Domain.DbContext.Platform;
 
 namespace SevenStar.Shared.Domain.Redis;
 
@@ -33,7 +33,7 @@ public class CompanyRedisDbFactory : ICompanyRedisDbFactory
 
                 var config = ConfigurationOptions.Parse(redisDb.RedisConnectionString);
                 return await ConnectionMultiplexer.ConnectAsync(config);
-            }));
+            }, LazyThreadSafetyMode.ExecutionAndPublication));
 
         var mux = await lazy.Value;
         return mux.GetDatabase(0); // Redis Cluster 通常僅支援 DB 0

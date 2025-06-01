@@ -5,14 +5,14 @@ using Infrastructure.Data.MySql;
 using Infrastructure.Data.PostgreSql;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using SevenStar.Data.Register;
 using SevenStar.Shared.Domain.DbContext;
 using SevenStar.Shared.Domain.DbContext.Company;
 using SevenStar.Shared.Domain.DbContext.Platform;
-using SevenStar.Shared.Domain.Extensions.Repository;
 using SevenStar.Shared.Domain.Redis;
 using System.Reflection;
 
-namespace SevenStar.Shared.Domain.Extensions;
+namespace SevenStar.Data.Registrar;
 
 
 
@@ -21,18 +21,6 @@ namespace SevenStar.Shared.Domain.Extensions;
 /// </summary>
 public static class DbContextExtensions
 {
-    /// <summary>
-    /// 根據資料庫類型取得對應的組件名稱。
-    /// </summary>
-    /// <param name="map">資料庫類型與組件名稱的映射。</param>
-    /// <param name="source">資料庫類型。</param>
-    /// <returns>對應的組件名稱。</returns>
-    /// <exception cref="NotSupportedException">當指定的資料庫類型未在映射中定義時拋出。</exception>
-    private static string GetAssemblyName(Dictionary<DataSource, string> map, DataSource source) =>
-        map.TryGetValue(source, out var name)
-            ? name
-            : throw new NotSupportedException($"在 AssemblyMapping 中找不到 DataSource = {source} 的對應組件名稱。");
-
     /// <summary>
     /// 根據資料庫類型驗證連線字串的有效性。
     /// </summary>
@@ -45,6 +33,18 @@ public static class DbContextExtensions
         DataSource.PostgreSql => await NpgsqlConnectionValidator.ValidateAsync(conn),
         _ => false
     };
+
+    /// <summary>
+    /// 根據資料庫類型取得對應的組件名稱。
+    /// </summary>
+    /// <param name="map">資料庫類型與組件名稱的映射。</param>
+    /// <param name="source">資料庫類型。</param>
+    /// <returns>對應的組件名稱。</returns>
+    /// <exception cref="NotSupportedException">當指定的資料庫類型未在映射中定義時拋出。</exception>
+    private static string GetAssemblyName(Dictionary<DataSource, string> map, DataSource source) =>
+        map.TryGetValue(source, out var name)
+            ? name
+            : throw new NotSupportedException($"在 AssemblyMapping 中找不到 DataSource = {source} 的對應組件名稱。");
 
     /// <summary>
     /// 安全地載入指定名稱的組件。
@@ -132,14 +132,13 @@ public static class DbContextExtensions
         {
             var assembly = LoadAssemblySafely(assemblyKvp.Value);
             services.RegisterKeyedServicesFromAssembly<ICompanyGameDbFactory>(assembly);
-            //RepositoryAutoRegistrar.RegisterFromAssembly<ICompanyGameDbContext>(assembly, assemblyKvp.Key);
-        }     
+        }
 
         services.TryAddSingleton<ISingletonCacheService, SingletonCacheService>();
         services.AddScoped<IGeneralDbFactory, GeneralDbFactory>();
-        services.AddScoped<ICompanyGameDb>(sp =>
+        services.AddScoped<ICompanyGameDb>(provider =>
         {
-            var factory = sp.GetRequiredService<IGeneralDbFactory>();
+            var factory = provider.GetRequiredService<IGeneralDbFactory>();
             var companyDb = factory.CreateCompanyGameDbAsync(companyId).GetAwaiter().GetResult();
 
             return companyDb;
@@ -176,7 +175,12 @@ public static class DbContextExtensions
         return services;
     }
 
-
+    /// <summary>
+    /// 根據 TService 介類型從指定的組件中註冊帶有 KeyedServiceAttribute 的服務。
+    /// </summary>
+    /// <typeparam name="TService"></typeparam>
+    /// <param name="services"></param>
+    /// <param name="assembly"></param>
     public static void RegisterKeyedServicesFromAssembly<TService>(
         this IServiceCollection services,
         Assembly assembly)

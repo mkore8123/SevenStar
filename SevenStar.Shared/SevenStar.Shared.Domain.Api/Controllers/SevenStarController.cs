@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using SevenStar.ApiService.Controllers;
-using SevenStar.Shared.Domain.DbContext.Repository;
+using SevenStar.Shared.Domain.DbContext.Company.Repository;
 using SevenStar.Shared.Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -12,17 +12,16 @@ namespace SevenStar.Shared.Domain.Api.Controllers;
 
 public class SevenStarController : ApiControllerBase
 {
-    private readonly IRebateService _discountService;
 
-    public SevenStarController([FromKeyedServices(MemberLevelEnum.Lv1)] IRebateService discountService)
+    public SevenStarController()
     {
-        _discountService = discountService;
+
     }
 
     [HttpGet("apply-discount")]
     public IActionResult ApplyDiscount(decimal amount)
     {
-        var discountedAmount = _discountService.CalculateRebate(amount);
-        return Ok(discountedAmount);
+        // var discountedAmount = _discountService.CalculateRebate(amount);
+        return Ok("ok");
     }
 }

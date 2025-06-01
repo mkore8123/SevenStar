@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using SevenStar.Shared.Domain.Database;
+using SevenStar.Shared.Domain.DbContext.Company;
 using SevenStar.Shared.Domain.DbContext.Entity.Platform;
+using SevenStar.Shared.Domain.DbContext.Platform;
+using SevenStar.Shared.Domain.Service;
 using System.Collections.Concurrent;
 
 namespace SevenStar.Shared.Domain.DbContext;
@@ -14,11 +16,16 @@ public partial class GeneralDbFactory : IGeneralDbFactory
     /// 平台庫
     /// </summary>
     private readonly IPlatformDb _platformDb;
-    private readonly ISingletonCacheService _cache;
-    private readonly IServiceProvider _provider;
     
-    // 快取：companyId => 資料庫類型 (DataSource)
-    private readonly ConcurrentDictionary<int, Lazy<Task<CompanyGameDbEntity>>> _companyDbSourceCache = new();
+    /// <summary>
+    /// 單一控管所有公司的連線物件快取
+    /// </summary>
+    private readonly ISingletonCacheService _cache;
+
+    /// <summary>
+    /// 服務提供者
+    /// </summary>
+    private readonly IServiceProvider _provider;
 
     public GeneralDbFactory(IServiceProvider provider, IPlatformDb platformDb,
         ISingletonCacheService cache)

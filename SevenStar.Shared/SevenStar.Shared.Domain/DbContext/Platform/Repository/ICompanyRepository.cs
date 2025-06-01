@@ -1,8 +1,7 @@
 ﻿using System.Data;
-using SevenStar.Shared.Domain.Database;
 using SevenStar.Shared.Domain.DbContext.Entity.Platform;
 
-namespace SevenStar.Shared.Domain.DbContext.Repository.Platform;
+namespace SevenStar.Shared.Domain.DbContext.Platform.Repository;
 
 public interface ICompanyRepository : IPlatformDbContext
 {
