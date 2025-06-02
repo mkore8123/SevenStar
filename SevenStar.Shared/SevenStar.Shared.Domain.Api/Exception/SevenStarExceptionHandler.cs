@@ -1,5 +1,5 @@
 ﻿using Common.Api.Exception;
-using Common.Model.Exception;
+using Common.Exception.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

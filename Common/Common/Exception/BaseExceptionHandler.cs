@@ -1,4 +1,4 @@
-﻿using Common.Model.Exception;
+﻿using Common.Exception.Model;
 using System.ComponentModel.DataAnnotations;
 using System.Security;
 using System.Security.Authentication;

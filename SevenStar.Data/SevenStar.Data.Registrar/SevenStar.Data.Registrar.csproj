@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\SevenStar.Shared\SevenStar.Shared.Domain\SevenStar.Shared.Domain.csproj" />
+    <ProjectReference Include="..\SevenStar.Data.Company.MySql\SevenStar.Data.Company.MySql.csproj" />
+    <ProjectReference Include="..\SevenStar.Data.Company.PostgreSql\SevenStar.Data.Company.PostgreSql.csproj" />
+    <ProjectReference Include="..\SevenStar.Data.Platform.PostgreSql\SevenStar.Data.Platform.PostgreSql.csproj" />
+  </ItemGroup>
+
+</Project>

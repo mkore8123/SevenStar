@@ -1,41 +1,35 @@
-﻿
-using Dapper;
-using EasyCaching.Core;
-using EasyCaching.Core.Serialization;
-using Infrastructure.Caching.Redis;
-using Infrastructure.Caching.Redis.Implement;
-using Infrastructure.Data;
-using Infrastructure.Data.Npgsql;
-using Microsoft.AspNetCore.DataProtection.KeyManagement;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Npgsql;
-using SevenStar.Shared.Domain;
-using SevenStar.Shared.Domain.Entity.Company;
-using SevenStar.Shared.Domain.Repository;
+﻿using Microsoft.AspNetCore.Mvc;
+using SevenStar.Shared.Domain.Api.Auth;
+using SevenStar.Shared.Domain.Api.Auth.Jwt;
+using SevenStar.Shared.Domain.DbContext.Company;
+using SevenStar.Shared.Domain.DbContext.Platform;
+using SevenStar.Shared.Domain.Enums;
 using SevenStar.Shared.Domain.Service;
-using StackExchange.Redis;
-using System.Data.Common;
-using System.Diagnostics;
 
 namespace SevenStar.ApiService.Controllers;
 
 public class ValuesController : ApiControllerBase
 {
-    private readonly ICompanyGameDb _companyGameDb;
-    private readonly IUserService _userService;
-    private readonly IHybridCachingProvider _cache;
+    private readonly IServiceProvider _provider;
+    private readonly ICompanyGameDb _companyDb;
 
-    public ValuesController(IServiceProvider provider, ICompanyGameDb companyGameDb, IHybridProviderFactory factory)
+    public ValuesController(IServiceProvider provider, ICompanyGameDb companyDb)
     {
-        _companyGameDb = companyGameDb;
-        _cache = factory.GetHybridCachingProvider("hybrid");
+        //_db = db;
+        //_dbFactory = dbFactory;
+        _provider = provider;
+        _companyDb = companyDb;
     }
 
     [HttpGet]
-    public async Task<string> TestUnitOfWork()
+    public async Task<string> Test()
     {
-        return await Task.FromResult("ok");
+        // var platformDb = _dbFactory.CreatePlatformDbAsync();
+        var abc = _provider.GetRequiredKeyedService<IUserService>(MemberLevelEnum.Member);
+        var fun = await abc.PrepareCreateMemberAsync(_companyDb, "111");
+        // await _companyDb.UserService.PrepareCreateMemberAsync("test");
+        var user1 = _companyDb.User.GetAsync();
+        var user2 = _companyDb.User.GetAsync();
+        return "abc";
     }
 }

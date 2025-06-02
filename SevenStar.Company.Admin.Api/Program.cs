@@ -1,32 +1,40 @@
-﻿using Common.Api.Extensions;
+﻿using Common.Api.Authentication;
+using Common.Api.Exception;
 using Common.Api.Localization;
-using Common.Extensions;
+using Common.Api.Swagger;
+using Common.Enums;
 using Serilog;
-using SevenStar.Common.Api.Serilog;
 using SevenStar.Common.Extensions;
-using SevenStar.Data.Company.Npgsql.Extensions;
+using SevenStar.Shared.Domain.Api.Logger.Serilog;
+using SevenStar.Shared.Domain.Extensions;
+using SevenStar.Shared.Domain.Imp.Service;
+using SevenStar.Shared.Domain.Service;
+using SevenStar.Shared.Domain.Service.Extensions;
 using System.Reflection;
 
-
+var companyId = 1;
+var platformDbConnectionString = "Host=127.0.0.1;Port=5432;Username=postgres;Password=apeter56789;Database=postgres;SearchPath=public;";
 var builder = WebApplication.CreateBuilder(args);
 
 try
 {
     var serilogConfig = new ApiSerilogConfiguration();
+    
     // Add service defaults & Aspire client integrations.
     builder.AddServiceDefaults();
     builder.AddSerilogHandler(serilogConfig);
-    builder.Services.AddHybridCacheHandler("localhost:6379,defaultDatabase=0,allowAdmin=true,connectTimeout=5000,abortConnect=false");
-    builder.Services.AddCompanyDbHandler(1, "Host=127.0.0.1;Port=5432;Username=postgres;Password=apeter56789;Database=postgres;SearchPath=public;");
-    builder.Services.RegisterAssemblyHandling(Assembly.Load("SevenStar.Shared.Domain.Imp"));
+    
+    builder.Services.AddPlatformDb(DataSource.PostgreSql, platformDbConnectionString);
+    builder.Services.AddCompanyGamesDb(companyId);
+    builder.Services.AddCompanyRedisDb(companyId);
+    builder.Services.AddDomainKeyedServices();
 
-    builder.Services.AddLocalizationHandler(new SevenStarLocalization());
+    // builder.Services.AddCompanyJwtOption(companyId);
 
     builder.Services.AddControllers(); 
     builder.Services.AddSwaggerGenHandler();
-
-    // 客製化例外處理動作
-    builder.Services.AddExceptionHandler();
+    builder.Services.AddExceptionHandler(); // 客製化例外處理動作
+    builder.Services.AddLocalizationHandler(new SevenStarLocalization());
 
     var app = builder.Build();
     app.UseLocalizationHandling();
@@ -40,7 +48,7 @@ try
     }
 
     app.UseSwaggerUIHandling();
-    app.UseAuthorizationHandling();
+    // app.UseAuthorizationHandling();
     app.UseRouting();
     
     // 套用基本健康檢查用的 http url: health & alive

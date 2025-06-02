@@ -1,5 +1,5 @@
 ﻿using Common.Exception;
-using Common.Model.Exception;
+using Common.Exception.Model;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

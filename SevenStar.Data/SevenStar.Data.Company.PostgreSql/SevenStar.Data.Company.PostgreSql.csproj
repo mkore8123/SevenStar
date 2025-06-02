@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Extensions\**" />
+    <EmbeddedResource Remove="Extensions\**" />
+    <None Remove="Extensions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Common\Common.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Infrastructure.Data.PostgreSql\Infrastructure.Data.PostgreSql.csproj" />
+    <ProjectReference Include="..\..\SevenStar.Shared\SevenStar.Shared.Domain\SevenStar.Shared.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
