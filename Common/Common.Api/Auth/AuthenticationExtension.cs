@@ -1,4 +1,5 @@
-﻿using Common.Api.Authentication.Jwt;
+﻿using Common.Api.Auth.Jwt;
+using Common.Api.Authentication.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,7 +29,7 @@ public static class AuthenticationExtension
             var tokenService = provider.GetRequiredService<T1>();
 
             options.Events = tokenService.CreateJwtBearerEvents();
-            options.TokenValidationParameters = tokenService.CreateValidationParameters();
+            options.TokenValidationParameters = tokenService._options.ToTokenValidationParameters();
         });
 
         return services;

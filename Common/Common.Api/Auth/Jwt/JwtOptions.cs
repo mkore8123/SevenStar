@@ -1,74 +1,118 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Common.Api.Auth.Jwt;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Text;
 
 namespace Common.Api.Authentication.Jwt;
 
 public class JwtOptions
 {
-    /// <summary>
-    /// JWT Token 簽章金鑰（至少 32 字元）
-    /// </summary>
-    public string Secret { get; set; } = default!;
+    // ======================================
+    // Issuer 設定（是否驗證由是否有設定 ValidIssuers 決定）
+    // ======================================
 
     /// <summary>
-    /// Token 發行者
+    /// 合法的發行者（iss），若未設定則不驗證 Issuer
     /// </summary>
-    public string Issuer { get; set; } = default!;
+    public List<string>? ValidIssuers { get; set; }
+
+    // ======================================
+    // Audience 設定（是否驗證由是否有設定 ValidAudiences 決定）
+    // ======================================
 
     /// <summary>
-    /// Token 接收者（通常是前端 App 或使用者）
+    /// 合法的接收者（aud），若未設定則不驗證 Audience
     /// </summary>
-    public string Audience { get; set; } = default!;
+    public List<string>? ValidAudiences { get; set; }
+
+    // ======================================
+    // 簽章金鑰（是否驗證由 SigningKeys 是否設定決定）
+    // ======================================
 
     /// <summary>
-    /// 選擇的加密演算法（例如：HmacSha256）
+    /// 簽章金鑰清單（支援金鑰輪替）。若未設定則不驗證簽章。
     /// </summary>
-    public string Algorithm { get; set; } = SecurityAlgorithms.HmacSha256;
+    public List<JwtSigningKeyOption>? SigningKeys { get; set; }
 
     /// <summary>
-    /// Access Token 有效時間（分鐘）
+    /// 是否要求 JWT 必須被簽章（預設 true）
     /// </summary>
-    public int AccessTokenExpirationMinutes { get; set; } = 60;
+    public bool RequireSignedTokens { get; set; } = true;
 
     /// <summary>
-    /// Refresh Token 有效時間（分鐘）
+    /// 是否允許嘗試所有簽章金鑰來驗證（預設 true，需搭配 SigningKeys）
     /// </summary>
-    public int RefreshTokenExpirationMinutes { get; set; } = 43200; // 30 天
+    public bool TryAllIssuerSigningKeys { get; set; } = true;
+
+    // ======================================
+    // Token 有效時間驗證
+    // ======================================
 
     /// <summary>
-    /// 是否驗證 Token 的發行者
-    /// </summary>
-    public bool ValidateIssuer { get; set; } = true;
-
-    /// <summary>
-    /// 是否驗證 Token 的接收者
-    /// </summary>
-    public bool ValidateAudience { get; set; } = true;
-
-    /// <summary>
-    /// 是否驗證 Token 的簽章
-    /// </summary>
-    public bool ValidateIssuerSigningKey { get; set; } = true;
-
-    /// <summary>
-    /// 是否驗證 Token 的有效期限
-    /// </summary>
-    public bool ValidateLifetime { get; set; } = true;
-
-    /// <summary>
-    /// Token 過期前的容許時間差（秒）
-    /// </summary>
-    public int ClockSkewSeconds { get; set; } = 300;
-
-    /// <summary>
-    /// Token 的類型（例如："at+jwt"）
-    /// </summary>
-    public string? TokenType { get; set; }
-
-    /// <summary>
-    /// 是否要求 Token 包含過期時間
+    /// 是否強制要求有 exp（過期）欄位（預設 true）
     /// </summary>
     public bool RequireExpirationTime { get; set; } = true;
+
+    /// <summary>
+    /// 允許的時間誤差（預設 2 分鐘）
+    /// </summary>
+    public TimeSpan ClockSkew { get; set; } = TimeSpan.FromMinutes(2);
+
+    /// <summary>
+    /// 自訂最大 token 壽命（如設定則會觸發 Lifetime 驗證）
+    /// </summary>
+    public TimeSpan? MaxTokenAge { get; set; }
+
+    // ======================================
+    // 解密 JWT（JWE）用
+    // ======================================
+
+    /// <summary>
+    /// JWT 為加密格式時使用的解密金鑰
+    /// </summary>
+    public List<string>? TokenDecryptionKeys { get; set; }
+
+    // ======================================
+    // Claim 對應欄位
+    // ======================================
+
+    /// <summary>
+    /// 使用者名稱對應 ClaimType（預設 ClaimTypes.Name）
+    /// </summary>
+    public string NameClaimType { get; set; } = ClaimTypes.Name;
+
+    /// <summary>
+    /// 角色對應 ClaimType（預設 ClaimTypes.Role）
+    /// </summary>
+    public string RoleClaimType { get; set; } = ClaimTypes.Role;
+
+    // ======================================
+    // 防止 Token Replay 攻擊
+    // ======================================
+
+    /// <summary>
+    /// 是否啟用重放攻擊防護（預設 false）
+    /// </summary>
+    public bool EnableReplayDetection { get; set; } = false;
+
+    // ======================================
+    // 其他
+    // ======================================
+
+    /// <summary>
+    /// 是否保留原始 token（例如用於寫入 Cookie）
+    /// </summary>
+    public bool SaveSigninToken { get; set; } = false;
+
+    /// <summary>
+    /// 驗證類型（預設 jwt）
+    /// </summary>
+    public string AuthenticationType { get; set; } = "jwt";
+
+    /// <summary>
+    /// JWT 簽章演算法，預設為 SecurityAlgorithms.HmacSha256
+    /// </summary>
+    public required string SigningAlgorithm { get; set; }
 }
