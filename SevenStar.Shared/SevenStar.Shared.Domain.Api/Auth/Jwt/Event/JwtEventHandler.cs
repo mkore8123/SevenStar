@@ -40,7 +40,7 @@ public class JwtEventHandler : JwtBearerEventsBase
         return Task.CompletedTask;
     }
 
-    protected override Task HandleAuthFailedAsync(AuthenticationFailedContext context)
+    protected override Task HandleAuthenticationFailedAsync(AuthenticationFailedContext context)
     {
         // _logger.LogError(context.Exception, "Token 驗證失敗");
 

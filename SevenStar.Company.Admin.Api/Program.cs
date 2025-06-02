@@ -5,6 +5,7 @@ using Common.Api.Swagger;
 using Common.Enums;
 using Serilog;
 using SevenStar.Common.Extensions;
+using SevenStar.Shared.Domain.Api.Extensions;
 using SevenStar.Shared.Domain.Api.Logger.Serilog;
 using SevenStar.Shared.Domain.Extensions;
 using SevenStar.Shared.Domain.Imp.Service;
@@ -29,7 +30,7 @@ try
     builder.Services.AddCompanyRedisDb(companyId);
     builder.Services.AddDomainKeyedServices();
 
-    // builder.Services.AddCompanyJwtOption(companyId);
+    builder.Services.AddCompanyJwtOption(companyId);
 
     builder.Services.AddControllers(); 
     builder.Services.AddSwaggerGenHandler();

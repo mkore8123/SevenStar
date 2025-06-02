@@ -63,9 +63,4 @@ public class JwtBearerEventsBase : JwtBearerEvents
     {
         return Task.CompletedTask;
     }
-
-    protected virtual Task HandleAuthFailedAsync(AuthenticationFailedContext context)
-    {
-        return Task.CompletedTask;
-    }
 }
