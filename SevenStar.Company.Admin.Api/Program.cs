@@ -1,4 +1,6 @@
-﻿using Common.Api.Authentication;
+﻿using Common.Api.Auth;
+using Common.Api.Auth.Jwt;
+using Common.Api.Authentication;
 using Common.Api.Exception;
 using Common.Api.Localization;
 using Common.Api.Swagger;
@@ -29,8 +31,18 @@ try
     builder.Services.AddCompanyGamesDb(companyId);
     builder.Services.AddCompanyRedisDb(companyId);
     builder.Services.AddDomainKeyedServices();
-
-    builder.Services.AddCompanyJwtOption(companyId);
+    // 註冊動態查詢的 Provider 與 TokenService
+    builder.Services.AddSingleton<IJwtTokenConfigProvider<MyUserModel>, DbJwtTokenConfigProvider>();
+    builder.Services.AddSingleton<IJwtSigningKeyProvider, DbJwtSigningKeyProvider>();
+    builder.Services.AddSingleton<IClaimsMapper<MyUserModel>, MyUserClaimsMapper>();
+    builder.Services.AddKeyedSingleton<ITokenService<MyUserModel>>(TokenType.Jwt, (sp, key) =>
+        new JwtTokenService<MyUserModel>(
+            sp.GetRequiredService<IJwtTokenConfigProvider<MyUserModel>>(),
+            sp.GetRequiredService<IJwtSigningKeyProvider>(),
+            sp.GetRequiredService<IClaimsMapper<MyUserModel>>())
+    );
+    // builder.Services.AddSingleton<ITokenService<MyUserModel>, JwtTokenService<MyUserModel>>();
+    // builder.Services.AddCompanyJwtOption(companyId);
 
     builder.Services.AddControllers(); 
     builder.Services.AddSwaggerGenHandler();

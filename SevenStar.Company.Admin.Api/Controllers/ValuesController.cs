@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Common.Api.Auth;
+using Common.Api.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using SevenStar.Shared.Domain.Api.Auth;
-using SevenStar.Shared.Domain.Api.Auth.Jwt;
 using SevenStar.Shared.Domain.DbContext.Company;
 using SevenStar.Shared.Domain.DbContext.Platform;
 using SevenStar.Shared.Domain.Enums;
@@ -24,6 +25,16 @@ public class ValuesController : ApiControllerBase
     [HttpGet]
     public async Task<string> Test()
     {
+        var tokenService = _provider.GetRequiredKeyedService<ITokenService<MyUserModel>>(TokenType.Jwt);
+        var user = new MyUserModel
+        {
+            UserId = "U123",
+            CompanyId = "companyA",
+            Device = "mobile"
+        };
+        var jwt = tokenService.GenerateToken(user);
+        var parsedUser = tokenService.DecrypteToken(jwt);
+
         // var platformDb = _dbFactory.CreatePlatformDbAsync();
         var abc = _provider.GetRequiredKeyedService<IUserService>(MemberLevelEnum.Member);
         var fun = await abc.PrepareCreateMemberAsync(_companyDb, "111");
