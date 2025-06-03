@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace SevenStar.Shared.Domain.Service.Extensions;
 
-public static class DomainServiceExtensions
+public static class DomainServiceExtension
 {
     /// <summary>
     /// 掃描並註冊 <c>SevenStar.Shared.Domain.Service</c> 組件中所有服務實作類別至 DI 容器，

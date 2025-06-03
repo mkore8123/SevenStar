@@ -3,20 +3,20 @@
 namespace Common.Api.Authentication;
 
 /// <summary>
-/// 加密,解密 jwt 的服務介面
+/// 加密,解密 token 的服務介面
 /// </summary>
 /// <typeparam name="T"></typeparam>
 public interface ITokenService<T>
 {
     /// <summary>
-    /// 解密 jwt，若成功則為回傳指定 Model，若失敗則拋出例外
+    /// 解密 token，若成功則為回傳指定 Model，若失敗則拋出例外
     /// </summary>
     /// <param name="jwt"></param>
     /// <returns></returns>
     T DecrypteToken(string jwt);
 
     /// <summary>
-    /// 根據參數生成 jwt，若成功則為回傳 jwt，若失敗則拋出例外。
+    /// 根據參數生成 token，若成功則為回傳 jwt，若失敗則拋出例外。
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
@@ -28,31 +28,31 @@ public interface ITokenService<T>
     /// <param name="model"></param>
     /// <param name="jwt"></param>
     /// <returns></returns>
-    bool TryGenerateToken(T model, out string jwtToken)
+    bool TryGenerateToken(T model, out string token)
     {
         try
         {
-            jwtToken = GenerateToken(model);
+            token = GenerateToken(model);
             return true;
         }
         catch
         {
-            jwtToken = null!;
+            token = null!;
             return false;
         }
     }
 
     /// <summary>
-    /// 嘗試解密 jwt，若成功則為 true，並將物件賦值給 model，若失敗則為 false，model 為 null。
+    /// 嘗試解密 token，若成功則為 true，並將物件賦值給 model，若失敗則為 false，model 為 null。
     /// </summary>
-    /// <param name="jwtToken"></param>
+    /// <param name="token"></param>
     /// <param name="model"></param>
     /// <returns></returns>
-    bool TryDecrypteToken(string jwtToken, out T? model)
+    bool TryDecrypteToken(string token, out T? model)
     {
         try
         {
-            model = DecrypteToken(jwtToken);
+            model = DecrypteToken(token);
             return true;
         }
         catch

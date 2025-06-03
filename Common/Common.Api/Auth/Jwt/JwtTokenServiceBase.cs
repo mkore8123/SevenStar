@@ -111,7 +111,7 @@ public abstract class JwtTokenServiceBase<TModel> : ITokenService<TModel>
         var principal = _tokenHandler.ValidateToken(jwtToken, _options.ToTokenValidationParameters(), out var validatedToken);
 
         if (validatedToken is not JwtSecurityToken jwt ||
-            (_options.RequireSignedTokens && !jwt.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.OrdinalIgnoreCase)))
+            (_options.RequireSignedTokens && !jwt.Header.Alg.Equals(_options.SigningAlgorithm, StringComparison.OrdinalIgnoreCase)))
         {
             throw new SecurityTokenException("Invalid token algorithm or signature.");
         }

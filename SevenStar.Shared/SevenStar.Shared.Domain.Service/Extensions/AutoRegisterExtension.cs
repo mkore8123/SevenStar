@@ -8,7 +8,7 @@ using System.Text;
 
 namespace SevenStar.Shared.Domain.Service.Extensions;
 
-public static class AutoRegisterExtensions
+public static class AutoRegisterExtension
 {
     /// <summary>
     /// 掃描指定組件中所有實作 <typeparamref name="TService"/> 的類別，
