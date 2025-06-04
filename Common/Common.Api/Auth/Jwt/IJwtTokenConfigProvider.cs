@@ -5,41 +5,26 @@ using System.Text;
 
 namespace Common.Api.Auth.Jwt;
 
+/// <summary>
+/// 提供 JWT Token 設定（<see cref="JwtTokenConfig"/>）的取得機制介面，支援依據模型產生或依據 Token 內容解構對應配置。
+/// 適用於多租戶、多組 JWT 配置（如不同 issuer、audience、keyId），可於發行與驗證流程動態取得正確配置。
+/// </summary>
+/// <typeparam name="TModel">代表 JWT 產生時的應用模型類型（如使用者、租戶資訊等）。</typeparam>
 public interface IJwtTokenConfigProvider<TModel>
 {
-    JwtTokenConfig GetForModel(TModel model);      // 產生 token 時
-    JwtTokenConfig GetForToken(string token);      // 驗證 token 時，須從 token 解構出 iss, aud, kid
-}
+    /// <summary>
+    /// 依據指定的模型（如使用者、租戶、裝置資訊等），取得發行 JWT 所需的 <see cref="JwtTokenConfig"/> 配置。
+    /// 常見於產生 Token 流程，根據模型資訊動態決定要用哪一組 JWT 設定（如 issuer、audience、kid 等）。
+    /// </summary>
+    /// <param name="model">應用於產生 Token 的模型實例，通常包含租戶/公司、裝置、身分等資訊。</param>
+    /// <returns>對應的 <see cref="JwtTokenConfig"/> 配置實例。</returns>
+    JwtTokenConfig GetForModel(TModel model);
 
-
-public class DbJwtTokenConfigProvider : IJwtTokenConfigProvider<MyUserModel>
-{
-    // 模擬資料庫：iss, aud, kid 唯一對應一筆 JWT 配置
-    private readonly List<JwtTokenConfig> _dbJwtOptions = new()
-    {
-        new JwtTokenConfig { Issuer = "companyA", Audience = "mobile", KeyId = "key1", Lifetime = TimeSpan.FromMinutes(30) },
-        new JwtTokenConfig { Issuer = "companyA", Audience = "web",    KeyId = "key2", Lifetime = TimeSpan.FromMinutes(60) },
-        new JwtTokenConfig { Issuer = "companyB", Audience = "web",    KeyId = "key3", Lifetime = TimeSpan.FromMinutes(45) }
-    };
-
-    public JwtTokenConfig GetForModel(MyUserModel model)
-    {
-        return _dbJwtOptions.FirstOrDefault(cfg =>
-            cfg.Issuer == model.CompanyId && cfg.Audience == model.Device)
-            ?? throw new InvalidOperationException("找不到對應 JWT 配置");
-    }
-
-    public JwtTokenConfig GetForToken(string token)
-    {
-        var handler = new JwtSecurityTokenHandler();
-        var jwt = handler.ReadJwtToken(token);
-
-        var kid = jwt.Header.TryGetValue("kid", out var kidObj) ? kidObj?.ToString() : null;
-        var iss = jwt.Issuer;
-        var aud = jwt.Audiences.FirstOrDefault();
-
-        return _dbJwtOptions.FirstOrDefault(cfg =>
-            cfg.Issuer == iss && cfg.Audience == aud && cfg.KeyId == kid)
-            ?? throw new InvalidOperationException("找不到對應 JWT 配置");
-    }
+    /// <summary>
+    /// 根據已產生的 JWT Token 字串，解構出其中的 issuer(iss)、audience(aud)、keyId(kid) 等欄位，
+    /// 以動態取得正確的 <see cref="JwtTokenConfig"/> 配置，用於 Token 驗證或解密流程。
+    /// </summary>
+    /// <param name="token">JWT Token 字串（通常為三段 base64url 編碼的結構）。</param>
+    /// <returns>解析後對應的 <see cref="JwtTokenConfig"/> 配置實例。</returns>
+    JwtTokenConfig GetForToken(string token);
 }

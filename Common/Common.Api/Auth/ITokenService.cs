@@ -3,31 +3,39 @@
 namespace Common.Api.Authentication;
 
 /// <summary>
-/// 加密,解密 token 的服務介面
+/// 定義加解密各類型權杖（Token）的通用服務介面。
+/// 支援泛型 <typeparamref name="T"/> 作為資料模型，適用於 JWT、Cookie Token、API Token、Session Token 等多種身分驗證或授權場景。
 /// </summary>
-/// <typeparam name="T"></typeparam>
+/// <typeparam name="T">
+/// 欲產生或解析的資料模型型別，通常對應於使用者、帳號、租戶、設備等身分資訊結構。
+/// </typeparam>
 public interface ITokenService<T>
 {
     /// <summary>
-    /// 解密 token，若成功則為回傳指定 Model，若失敗則拋出例外
+    /// 驗證並解析指定的權杖字串（如 JWT、Cookie Token），轉換為 <typeparamref name="T"/> 資料模型。
+    /// 若驗證失敗、已過期或格式錯誤，將拋出例外。
     /// </summary>
-    /// <param name="jwt"></param>
-    /// <returns></returns>
-    T DecrypteToken(string jwt);
+    /// <param name="token">待解析的權杖字串（可為 JWT、Cookie Token 等）。</param>
+    /// <returns>解析後對應的 <typeparamref name="T"/> 資料模型。</returns>
+    /// <exception cref="SecurityTokenException">當驗證失敗或內容錯誤時拋出。</exception>
+    T DecrypteToken(string token);
 
     /// <summary>
-    /// 根據參數生成 token，若成功則為回傳 jwt，若失敗則拋出例外。
+    /// 根據指定 <typeparamref name="T"/> 模型內容產生權杖字串（如 JWT、Cookie Token）。
+    /// 產生過程發生錯誤將拋出例外。
     /// </summary>
-    /// <param name="model"></param>
-    /// <returns></returns>
+    /// <param name="model">作為權杖內容來源的資料模型。</param>
+    /// <returns>產生的權杖字串。</returns>
+    /// <exception cref="Exception">產生過程發生例外時拋出。</exception>
     string GenerateToken(T model);
 
     /// <summary>
-    /// 嘗試根據參數生成 jwt，若成功則為 true，並將 jwt 賦值給 jwtToken，若失敗則為 false，jwt 為 null。
+    /// 嘗試根據指定模型產生權杖字串。
+    /// 成功時回傳 true，並將產生的權杖指派給 <paramref name="token"/>；失敗時回傳 false，<paramref name="token"/> 為 null。
     /// </summary>
-    /// <param name="model"></param>
-    /// <param name="jwt"></param>
-    /// <returns></returns>
+    /// <param name="model">欲產生權杖的資料模型。</param>
+    /// <param name="token">產生成功時，輸出對應的權杖字串；否則為 null。</param>
+    /// <returns>產生成功時回傳 true，否則 false。</returns>
     bool TryGenerateToken(T model, out string token)
     {
         try
@@ -43,11 +51,12 @@ public interface ITokenService<T>
     }
 
     /// <summary>
-    /// 嘗試解密 token，若成功則為 true，並將物件賦值給 model，若失敗則為 false，model 為 null。
+    /// 嘗試將指定的權杖字串解密並還原為 <typeparamref name="T"/> 資料模型。
+    /// 成功時回傳 true，並將解析結果指派給 <paramref name="model"/>；失敗時回傳 false，<paramref name="model"/> 為 null。
     /// </summary>
-    /// <param name="token"></param>
-    /// <param name="model"></param>
-    /// <returns></returns>
+    /// <param name="token">待解密的權杖字串（如 JWT、Cookie Token）。</param>
+    /// <param name="model">解密成功時，輸出對應的資料模型；否則為 null。</param>
+    /// <returns>解密成功時回傳 true，否則 false。</returns>
     bool TryDecrypteToken(string token, out T? model)
     {
         try

@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Auth\Jwt\Event\**" />
     <Compile Remove="SevenStar.Common.Api\**" />
+    <EmbeddedResource Remove="Auth\Jwt\Event\**" />
     <EmbeddedResource Remove="SevenStar.Common.Api\**" />
+    <None Remove="Auth\Jwt\Event\**" />
     <None Remove="SevenStar.Common.Api\**" />
   </ItemGroup>
 
@@ -20,10 +23,6 @@
     <ProjectReference Include="..\..\Common\Common.Api\Common.Api.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Infrastructure.Logging.Serilog\Infrastructure.Logging.Serilog.csproj" />
     <ProjectReference Include="..\SevenStar.Shared.Domain\SevenStar.Shared.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Auth\Jwt\Event\" />
   </ItemGroup>
 
 </Project>

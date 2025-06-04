@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Common.Api.Auth;
+namespace Common.Api.Auth.Enum;
 
 public enum TokenType
 {

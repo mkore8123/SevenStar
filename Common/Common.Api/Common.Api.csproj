@@ -7,10 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Auth\Jwt\Event\**" />
     <Compile Remove="Auth\Jwt\Interface\**" />
     <Compile Remove="SevenStar.Common.Api\**" />
+    <EmbeddedResource Remove="Auth\Jwt\Event\**" />
     <EmbeddedResource Remove="Auth\Jwt\Interface\**" />
     <EmbeddedResource Remove="SevenStar.Common.Api\**" />
+    <None Remove="Auth\Jwt\Event\**" />
     <None Remove="Auth\Jwt\Interface\**" />
     <None Remove="SevenStar.Common.Api\**" />
   </ItemGroup>
@@ -30,10 +33,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Auth\Jwt\Event\" />
   </ItemGroup>
 
 </Project>

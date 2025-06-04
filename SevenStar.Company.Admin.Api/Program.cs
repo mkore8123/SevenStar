@@ -1,19 +1,15 @@
-﻿using Common.Api.Auth;
-using Common.Api.Auth.Jwt;
+﻿using Serilog;
+using Common.Enums;
 using Common.Api.Authentication;
 using Common.Api.Exception;
 using Common.Api.Localization;
 using Common.Api.Swagger;
-using Common.Enums;
-using Serilog;
 using SevenStar.Common.Extensions;
-using SevenStar.Shared.Domain.Api.Extensions;
+using SevenStar.Shared.Domain.Api.Auth.Claims;
+using SevenStar.Shared.Domain.Api.Auth.Jwt;
 using SevenStar.Shared.Domain.Api.Logger.Serilog;
 using SevenStar.Shared.Domain.Extensions;
-using SevenStar.Shared.Domain.Imp.Service;
-using SevenStar.Shared.Domain.Service;
 using SevenStar.Shared.Domain.Service.Extensions;
-using System.Reflection;
 
 var companyId = 1;
 var platformDbConnectionString = "Host=127.0.0.1;Port=5432;Username=postgres;Password=apeter56789;Database=postgres;SearchPath=public;";
@@ -31,19 +27,9 @@ try
     builder.Services.AddCompanyGamesDb(companyId);
     builder.Services.AddCompanyRedisDb(companyId);
     builder.Services.AddDomainKeyedServices();
-    // 註冊動態查詢的 Provider 與 TokenService
-    builder.Services.AddSingleton<IJwtTokenConfigProvider<MyUserModel>, DbJwtTokenConfigProvider>();
-    builder.Services.AddSingleton<IJwtSigningKeyProvider, DbJwtSigningKeyProvider>();
-    builder.Services.AddSingleton<IClaimsMapper<MyUserModel>, MyUserClaimsMapper>();
-    builder.Services.AddKeyedSingleton<ITokenService<MyUserModel>>(TokenType.Jwt, (sp, key) =>
-        new JwtTokenService<MyUserModel>(
-            sp.GetRequiredService<IJwtTokenConfigProvider<MyUserModel>>(),
-            sp.GetRequiredService<IJwtSigningKeyProvider>(),
-            sp.GetRequiredService<IClaimsMapper<MyUserModel>>())
-    );
-    // builder.Services.AddSingleton<ITokenService<MyUserModel>, JwtTokenService<MyUserModel>>();
-    // builder.Services.AddCompanyJwtOption(companyId);
 
+    // 註冊動態查詢的 Provider 與 TokenService
+    builder.Services.AddJwtTokenService<MemberClaimModel, DbJwtTokenConfigProvider, DbJwtSigningKeyProvider, MemberClaimMapper>();
     builder.Services.AddControllers(); 
     builder.Services.AddSwaggerGenHandler();
     builder.Services.AddExceptionHandler(); // 客製化例外處理動作
@@ -61,9 +47,13 @@ try
     }
 
     app.UseSwaggerUIHandling();
-    // app.UseAuthorizationHandling();
+    
     app.UseRouting();
     
+    // app.UseAuthorizationHandling();
+    // 加入 JWT Middleware（務必放在 UseAuthorization 之前）
+    app.UseMiddleware<DynamicJwtAuthenticationMiddleware>();
+
     // 套用基本健康檢查用的 http url: health & alive
     app.MapControllers();
     app.MapDefaultEndpoints();

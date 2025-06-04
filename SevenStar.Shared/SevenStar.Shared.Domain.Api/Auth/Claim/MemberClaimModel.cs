@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Common.Api.Auth;
+using Common.Api.Auth.Claims;
+using System.Security.Claims;
 
-namespace SevenStar.Shared.Domain.Api.Auth;
+namespace SevenStar.Shared.Domain.Api.Auth.Claims;
 
-public class UserClaimModel
+public class MemberClaimModel : UserClaimModel
 {
-    public long UserId { get; set; } = 0;
+    public string CompanyId { get; set; } = default!;
 
     public string TokenVersion { get; set; } = string.Empty;
 

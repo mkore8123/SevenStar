@@ -1,5 +1,7 @@
-﻿using Common.Api.Auth;
+﻿using Common.Api.Auth.Claims;
+using Common.Api.Auth.Enum;
 using Common.Api.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SevenStar.Shared.Domain.Api.Auth;
 using SevenStar.Shared.Domain.DbContext.Company;
@@ -23,13 +25,14 @@ public class ValuesController : ApiControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<string> Test()
     {
-        var tokenService = _provider.GetRequiredKeyedService<ITokenService<MyUserModel>>(TokenType.Jwt);
-        var user = new MyUserModel
+        var tokenService = _provider.GetRequiredKeyedService<ITokenService<UserClaimModel>>(TokenType.Jwt);
+        var user = new UserClaimModel
         {
-            UserId = "U123",
-            CompanyId = "companyA",
+            UserId = 123,
+            //CompanyId = "companyA",
             Device = "mobile"
         };
         var jwt = tokenService.GenerateToken(user);
@@ -43,4 +46,16 @@ public class ValuesController : ApiControllerBase
         var user2 = _companyDb.User.GetAsync();
         return "abc";
     }
+
+    //[Authorize]
+    [HttpGet("me")]
+    public IActionResult Me()
+    {
+        return Ok(new
+        {
+            name = User.Identity.Name,
+            claims = User.Claims.Select(c => new { c.Type, c.Value })
+        });
+    }
+
 }
