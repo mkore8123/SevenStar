@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SevenStar.Shared.Domain.DbContext.Company;
-using SevenStar.Shared.Domain.DbContext.Entity.Platform;
 using SevenStar.Shared.Domain.DbContext.Platform;
 using SevenStar.Shared.Domain.Service;
 using System.Collections.Concurrent;

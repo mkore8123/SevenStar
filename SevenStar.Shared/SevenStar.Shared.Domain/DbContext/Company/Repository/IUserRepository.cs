@@ -1,4 +1,4 @@
-﻿using SevenStar.Shared.Domain.DbContext.Entity.Company;
+﻿using SevenStar.Shared.Domain.DbContext.Company.Entity;
 using System.Data;
 
 

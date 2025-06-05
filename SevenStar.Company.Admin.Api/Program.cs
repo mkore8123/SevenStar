@@ -29,7 +29,7 @@ try
     builder.Services.AddDomainKeyedServices();
 
     // 註冊動態查詢的 Provider 與 TokenService
-    builder.Services.AddJwtTokenService<MemberClaimModel, DbJwtTokenConfigProvider, DbJwtSigningKeyProvider, MemberClaimMapper>();
+    builder.Services.AddJwtTokenService();
     builder.Services.AddControllers(); 
     builder.Services.AddSwaggerGenHandler();
     builder.Services.AddExceptionHandler(); // 客製化例外處理動作

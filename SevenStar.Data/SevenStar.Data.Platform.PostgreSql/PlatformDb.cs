@@ -3,8 +3,8 @@ using Infrastructure.Caching.Redis;
 using Infrastructure.Data.PostgreSql;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
-using SevenStar.Shared.Domain.DbContext.Entity.Platform;
 using SevenStar.Shared.Domain.DbContext.Platform;
+using SevenStar.Shared.Domain.DbContext.Platform.Entity;
 
 
 namespace SevenStar.Data.Platform.PostgreSql;

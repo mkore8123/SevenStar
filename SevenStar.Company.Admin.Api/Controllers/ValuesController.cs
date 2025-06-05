@@ -35,8 +35,8 @@ public class ValuesController : ApiControllerBase
             //CompanyId = "companyA",
             Device = "mobile"
         };
-        var jwt = tokenService.GenerateToken(user);
-        var parsedUser = tokenService.DecrypteToken(jwt);
+        var jwt = await tokenService.GenerateToken(user);
+        var parsedUser = await tokenService.DecrypteToken(jwt);
 
         // var platformDb = _dbFactory.CreatePlatformDbAsync();
         var abc = _provider.GetRequiredKeyedService<IUserService>(MemberLevelEnum.Member);

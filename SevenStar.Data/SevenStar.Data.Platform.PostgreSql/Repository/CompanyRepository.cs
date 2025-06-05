@@ -2,12 +2,8 @@
 using Npgsql;
 using SevenStar.Shared.Domain.DbContext.Platform.Entity;
 using SevenStar.Shared.Domain.DbContext.Platform.Repository;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Text;
 
-namespace SevenStar.Data.Company.PostgreSql.Repository.Platform;
+namespace SevenStar.Data.Platform.PostgreSql.Repository;
 
 /// <summary>
 /// 公司主檔 Repository 實作
@@ -36,21 +32,29 @@ public class CompanyRepository : ICompanyRepository
     /// <inheritdoc/>
     public CompanyEntity? GetById(int id)
     {
-        var sql = @"SELECT * FROM company WHERE id = @Id";
+        var sql = @"
+            SELECT id, code, name, is_active, created_at
+            FROM company
+            WHERE id = @Id";
         return _connection.QueryFirstOrDefault<CompanyEntity>(sql, new { Id = id });
     }
 
     /// <inheritdoc/>
     public CompanyEntity? GetByCode(string code)
     {
-        var sql = @"SELECT * FROM company WHERE code = @Code";
+        var sql = @"
+            SELECT id, code, name, is_active, created_at
+            FROM company
+            WHERE code = @Code";
         return _connection.QueryFirstOrDefault<CompanyEntity>(sql, new { Code = code });
     }
 
     /// <inheritdoc/>
     public IEnumerable<CompanyEntity> GetAll()
     {
-        var sql = @"SELECT * FROM company";
+        var sql = @"
+            SELECT id, code, name, is_active, created_at
+            FROM company";
         return _connection.Query<CompanyEntity>(sql);
     }
 

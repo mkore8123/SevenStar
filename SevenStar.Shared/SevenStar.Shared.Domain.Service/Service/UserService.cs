@@ -2,7 +2,7 @@
 using Common.Enums;
 using Microsoft.Extensions.DependencyInjection;
 using SevenStar.Shared.Domain.DbContext.Company;
-using SevenStar.Shared.Domain.DbContext.Entity.Company;
+using SevenStar.Shared.Domain.DbContext.Company.Entity;
 using SevenStar.Shared.Domain.Enums;
 using SevenStar.Shared.Domain.Service;
 using System.Data;

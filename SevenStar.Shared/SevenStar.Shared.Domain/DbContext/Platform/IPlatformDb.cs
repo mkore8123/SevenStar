@@ -1,5 +1,5 @@
 ﻿using Infrastructure.Caching.Redis;
-using SevenStar.Shared.Domain.DbContext.Entity.Platform;
+using SevenStar.Shared.Domain.DbContext.Platform.Entity;
 
 namespace SevenStar.Shared.Domain.DbContext.Platform;
 
