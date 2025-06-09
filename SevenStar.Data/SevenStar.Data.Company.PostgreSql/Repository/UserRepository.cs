@@ -37,7 +37,7 @@ public class UserRepository : IUserRepository
         return user;
     }
 
-    public async Task<int> CreateAsync(UserEntity entity, IDbTransaction? transaction = null)
+    public Task<int> CreateAsync(UserEntity entity, IDbTransaction? transaction = null)
     {
         throw new NotImplementedException("CreateAsync method is not implemented.");
         //var sql = new SqlBuilder();

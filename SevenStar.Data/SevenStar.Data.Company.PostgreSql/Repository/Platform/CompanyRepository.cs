@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Infrastructure.Caching.Redis;
 using Npgsql;
 using SevenStar.Shared.Domain.DbContext.Platform.Entity;
 using SevenStar.Shared.Domain.DbContext.Platform.Repository;
@@ -68,5 +69,20 @@ public class CompanyRepository : ICompanyRepository
     {
         var sql = @"DELETE FROM company WHERE id = @Id";
         _connection.Execute(sql, new { Id = id });
+    }
+
+    public Task<CompanyGameDbEntity> GetCompanyGameDb(int companyId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<CompanyRedisDbEntity> GetCompanyRedisDb(int companyId, RedisDbEnum redisDb)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<CompanyJwtOptionsEntity> GetCompanyJwtOptions(int companyId)
+    {
+        throw new NotImplementedException();
     }
 }

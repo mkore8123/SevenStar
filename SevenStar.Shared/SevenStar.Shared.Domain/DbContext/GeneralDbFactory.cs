@@ -39,7 +39,7 @@ public partial class GeneralDbFactory : IGeneralDbFactory
         if (companyId <= 0)
             throw new ArgumentOutOfRangeException(nameof(companyId));
 
-        var entity = await _cache.GetOrAddCompnayDbAsync(companyId, () => _platformDb.GetCompanyGameDb(companyId));
+        var entity = await _cache.GetOrAddCompnayDbAsync(companyId, () => _platformDb.Company.GetCompanyGameDb(companyId));
         var factory = _provider.GetRequiredKeyedService<ICompanyGameDbFactory>(entity.DataSource);
 
         return await factory.CreateCompanyGameDbAsync(

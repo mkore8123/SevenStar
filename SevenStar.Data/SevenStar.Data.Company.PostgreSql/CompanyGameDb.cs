@@ -4,6 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 using SevenStar.Shared.Domain.DbContext.Company;
 using SevenStar.Shared.Domain.Service;
+using System.Data;
+using System.Runtime.CompilerServices;
 
 namespace SevenStar.Data.Company.PostgreSql;
 
@@ -33,6 +35,9 @@ public partial class CompanyGameDb : NpgsqlUnitOfWork, ICompanyGameDb
         var companyDb  = await companyGameDbFactory.CreateCompanyGameDbAsync(CompanyId);
         return companyDb;
     }
+
+    public override Task ExecuteAsync(Func<IDbTransaction, Task> operation, IsolationLevel transLevel = IsolationLevel.ReadCommitted)
+    {
+        return base.ExecuteAsync(operation, transLevel);
+    }
 }
-
-

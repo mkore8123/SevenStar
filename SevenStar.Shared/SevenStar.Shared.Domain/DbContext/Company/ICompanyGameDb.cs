@@ -1,6 +1,7 @@
 ﻿using Common.Enums;
 using Infrastructure.Data.PostgreSql.Interface;
 using SevenStar.Shared.Domain.DbContext.Company.Repository;
+using System.Data;
 
 namespace SevenStar.Shared.Domain.DbContext.Company;
 
@@ -30,6 +31,14 @@ public partial interface ICompanyGameDb
     /// </summary>
     /// <returns></returns>
     Task<ICompanyGameDb> CreateInstanceAsync();
+
+    /// <summary>
+    /// 進行交易動作
+    /// </summary>
+    /// <param name="operation"></param>
+    /// <param name="transLevel"></param>
+    /// <returns></returns>
+    Task ExecuteAsync(Func<IDbTransaction, Task> operation, IsolationLevel transLevel = IsolationLevel.ReadCommitted);
 
     /// <summary>
     /// 取得指定的 Repository 物件

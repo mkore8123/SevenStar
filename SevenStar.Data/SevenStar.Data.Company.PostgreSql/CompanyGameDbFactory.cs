@@ -46,7 +46,7 @@ public class CompanyGameDbFactory : ICompanyGameDbFactory
             new Lazy<Task<NpgsqlDataSource>>(async () =>
             {
                 var platformDb = await _platformDbFactory.CreatePlatformDbAsync();
-                var companyGameDb = await platformDb.GetCompanyGameDb(companyId);
+                var companyGameDb = await platformDb.Company.GetCompanyGameDb(companyId);
 
                 if (!await NpgsqlConnectionValidator.ValidateAsync(companyGameDb.ConnectionString, true))
                     throw new InvalidOperationException($"公司 ID {cid} 的連線字串無效或 Redis 連線失敗。");

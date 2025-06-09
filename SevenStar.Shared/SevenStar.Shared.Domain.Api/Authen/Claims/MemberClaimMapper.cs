@@ -1,7 +1,7 @@
 ﻿using Common.Api.Auth;
 using System.Security.Claims;
 
-namespace SevenStar.Shared.Domain.Api.Authen.Claim;
+namespace SevenStar.Shared.Domain.Api.Authen.Claims;
 
 public class MemberClaimMapper : IClaimsMapper<MemberClaimModel>
 {

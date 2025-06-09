@@ -26,7 +26,7 @@ public class CompanyRedisDbFactory : ICompanyRedisDbFactory
         var lazy = _connections.GetOrAdd(purpose, key =>
             new Lazy<Task<IConnectionMultiplexer>>(async () =>
             {
-                var redisDb = await _platformDb.GetCompanyRedisDb(_companyId, key);
+                var redisDb = await _platformDb.Company.GetCompanyRedisDb(_companyId, key);
                 
                 if (string.IsNullOrWhiteSpace(redisDb.RedisConnectionString))
                     throw new InvalidOperationException($"公司 ID {_companyId} 的 {key} redis連線字串無效或無法連線。");

@@ -2,7 +2,7 @@
 using Common.Api.Auth.Claims;
 using System.Security.Claims;
 
-namespace SevenStar.Shared.Domain.Api.Authen.Claim;
+namespace SevenStar.Shared.Domain.Api.Authen.Claims;
 
 public class MemberClaimModel : UserClaimModel
 {

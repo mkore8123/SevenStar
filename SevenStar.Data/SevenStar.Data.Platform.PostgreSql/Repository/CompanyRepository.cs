@@ -1,4 +1,6 @@
-﻿using Dapper;
+﻿using Common.Enums;
+using Dapper;
+using Infrastructure.Caching.Redis;
 using Npgsql;
 using SevenStar.Shared.Domain.DbContext.Platform.Entity;
 using SevenStar.Shared.Domain.DbContext.Platform.Repository;
@@ -72,5 +74,28 @@ public class CompanyRepository : ICompanyRepository
     {
         var sql = @"DELETE FROM company WHERE id = @Id";
         _connection.Execute(sql, new { Id = id });
+    }
+
+    public async Task<CompanyGameDbEntity> GetCompanyGameDb(int companyId)
+    {
+        var entity = new CompanyGameDbEntity
+        {
+            BackendId = 1, // Example value, replace with actual logic to retrieve backend ID
+            CompanyId = companyId,
+            ConnectionString = "Host=127.0.0.1;Port=5432;Username=postgres;Password=apeter56789;Database=postgres;SearchPath=public;", // Example connection string, replace with actual logic
+            DataSource = DataSource.PostgreSql
+        };
+
+        return await Task.FromResult(entity);
+    }
+
+    public Task<CompanyRedisDbEntity> GetCompanyRedisDb(int companyId, RedisDbEnum redisDb)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<CompanyJwtOptionsEntity> GetCompanyJwtOptions(int companyId)
+    {
+        throw new NotImplementedException();
     }
 }

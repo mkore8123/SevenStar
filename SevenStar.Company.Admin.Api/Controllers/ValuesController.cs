@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SevenStar.Shared.Domain.Api.Auth;
 using SevenStar.Shared.Domain.DbContext.Company;
+using SevenStar.Shared.Domain.DbContext.Company.Entity;
 using SevenStar.Shared.Domain.DbContext.Platform;
 using SevenStar.Shared.Domain.Enums;
 using SevenStar.Shared.Domain.Service;
@@ -38,9 +39,15 @@ public class ValuesController : ApiControllerBase
         var jwt = await tokenService.GenerateToken(user);
         var parsedUser = await tokenService.DecrypteToken(jwt);
 
-        // var platformDb = _dbFactory.CreatePlatformDbAsync();
         var abc = _provider.GetRequiredKeyedService<IUserService>(MemberLevelEnum.Member);
         var fun = await abc.PrepareCreateMemberAsync(_companyDb, "111");
+        await _companyDb.ExecuteAsync(async dbTrans =>
+        {
+            await fun(dbTrans);
+            await _companyDb.User.CreateAsync(new UserEntity() { Name = "123"}, dbTrans);
+        });
+        
+        
         // await _companyDb.UserService.PrepareCreateMemberAsync("test");
         var user1 = _companyDb.User.GetAsync();
         var user2 = _companyDb.User.GetAsync();

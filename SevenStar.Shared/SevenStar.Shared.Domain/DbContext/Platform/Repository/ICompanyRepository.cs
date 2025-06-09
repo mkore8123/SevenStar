@@ -1,5 +1,6 @@
-﻿using System.Data;
+﻿using Infrastructure.Caching.Redis;
 using SevenStar.Shared.Domain.DbContext.Platform.Entity;
+using System.Data;
 
 namespace SevenStar.Shared.Domain.DbContext.Platform.Repository;
 
@@ -46,4 +47,26 @@ public interface ICompanyRepository : IPlatformDbContext
     /// </summary>
     /// <param name="id">公司主鍵 id</param>
     void Delete(int id);
+
+    /// <summary>
+    /// 取得公司遊戲資料庫連線物件
+    /// </summary>
+    /// <param name="companyId"></param>
+    /// <returns></returns>
+    Task<CompanyGameDbEntity> GetCompanyGameDb(int companyId);
+
+    /// <summary>
+    /// 取得公司指定用途的 redis 資料庫連線
+    /// </summary>
+    /// <param name="companyId"></param>
+    /// <param name="redisDb"></param>
+    /// <returns></returns>
+    Task<CompanyRedisDbEntity> GetCompanyRedisDb(int companyId, RedisDbEnum redisDb);
+
+    /// <summary>
+    /// 取得公司的 jwt 選項設定
+    /// </summary>
+    /// <param name="companyId"></param>
+    /// <returns></returns>
+    Task<CompanyJwtOptionsEntity> GetCompanyJwtOptions(int companyId);
 }

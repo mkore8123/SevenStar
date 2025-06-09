@@ -5,7 +5,6 @@ using Common.Api.Exception;
 using Common.Api.Localization;
 using Common.Api.Swagger;
 using SevenStar.Common.Extensions;
-using SevenStar.Shared.Domain.Api.Auth.Claims;
 using SevenStar.Shared.Domain.Api.Auth.Jwt;
 using SevenStar.Shared.Domain.Api.Logger.Serilog;
 using SevenStar.Shared.Domain.Extensions;

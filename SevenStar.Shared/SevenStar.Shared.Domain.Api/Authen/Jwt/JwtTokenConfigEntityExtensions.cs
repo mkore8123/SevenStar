@@ -2,12 +2,9 @@
 using Common.Api.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using SevenStar.Shared.Domain.Api.Authen.Claim;
+using SevenStar.Shared.Domain.Api.Authen.Claims;
 using SevenStar.Shared.Domain.Api.Authen.Jwt;
 using SevenStar.Shared.Domain.DbContext.Platform.Entity;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.Json;
 
 namespace SevenStar.Shared.Domain.Api.Auth.Jwt;
