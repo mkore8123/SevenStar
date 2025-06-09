@@ -37,7 +37,7 @@ public interface IJwtTokenConfigRepository
     /// <param name="issuer">JWT Token 發行者（iss）</param>
     /// <param name="audience">JWT Audience</param>
     /// <returns>JWT 設定物件清單</returns>
-    Task<IEnumerable<JwtTokenConfigEntity>> GetByIssuerAudienceAsync(string issuer, string audience);
+    Task<List<JwtTokenConfigEntity>> GetByIssuerAudienceAsync(string issuer, string audience);
 
     /// <summary>
     /// 更新 JWT 設定（依 id 覆寫，非同步）

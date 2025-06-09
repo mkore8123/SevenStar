@@ -1,5 +1,6 @@
 ﻿using Common.Api.Auth.Jwt;
 using Microsoft.IdentityModel.Tokens;
+using SevenStar.Shared.Domain.Api.Auth.Jwt;
 using SevenStar.Shared.Domain.DbContext.Platform;
 using System.Text;
 
@@ -25,17 +26,43 @@ public class DbJwtSigningKeyProvider : IJwtSigningKeyProvider
         _cacheService = cacheService;
     }
 
-    public SecurityKey GetKey(string issuer, string audience, string keyId)
+    public async Task<SecurityKey> GetKey(string issuer, string audience, string keyId)
     {
-        
+        var configKey = await _cacheService.GetOrAddJwtConfigForValidateAsync(issuer, audience, keyId, async () =>
+        {
+            var tokenConfigs = await _platformDb.JwtTokenConfig.GetByIssuerAudienceAsync(issuer, audience);
+            if (tokenConfigs == null || tokenConfigs.Count == 0)
+            {
+                return null;
+            }
+            var tokenConfig = tokenConfigs.Where(x => x.IsActive).MaxBy(x => x.VersionNo);
+            if (tokenConfigs == null )
+            {
+                return null;
+            }
+
+            var configKeies = await _platformDb.JwtSigningKey.GetByConfigIdAsync(tokenConfig.Id);
+            if (configKeies == null || configKeies.Count == 0)
+            {
+                return null;
+            }
+
+            var configKeyModel = configKeies.FirstOrDefault(key => key.KeyId == keyId);
+            if (configKeyModel == null)
+            {
+                return null;
+            }
+
+            return tokenConfig.ToModel(configKeyModel);
+        });
 
         if (!_dbJwtKeys.TryGetValue((issuer, audience, keyId), out var entry))
             throw new InvalidOperationException("找不到對應金鑰");
 
-        return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(entry.Secret));
+        return new SymmetricSecurityKey(Encoding.UTF8.GetBytes("private_key"));
     }
 
-    public string GetAlgorithm(string issuer, string audience, string keyId)
+    public async Task<string> GetAlgorithm(string issuer, string audience, string keyId)
     {
         if (!_dbJwtKeys.TryGetValue((issuer, audience, keyId), out var entry))
             throw new InvalidOperationException("找不到對應演算法");
