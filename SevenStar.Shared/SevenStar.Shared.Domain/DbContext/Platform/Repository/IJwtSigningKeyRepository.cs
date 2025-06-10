@@ -36,7 +36,7 @@ public interface IJwtSigningKeyRepository
     /// </summary>
     /// <param name="keyId">JWT 金鑰編號（kid）</param>
     /// <returns>JWT 金鑰物件清單</returns>
-    Task<IEnumerable<JwtSigningKeyEntity>> GetByKeyIdAsync(string keyId);
+    Task<List<JwtSigningKeyEntity>> GetByKeyIdAsync(string keyId);
 
     /// <summary>
     /// 更新金鑰資料（依 id 覆寫）（非同步）

@@ -29,7 +29,7 @@ public interface IJwtTokenConfigRepository
     /// </summary>
     /// <param name="companyId">公司主鍵 id</param>
     /// <returns>JWT 設定物件清單</returns>
-    Task<IEnumerable<JwtTokenConfigEntity>> GetByCompanyIdAsync(int companyId);
+    Task<List<JwtTokenConfigEntity>> GetByCompanyIdAsync(int companyId);
 
     /// <summary>
     /// 依 issuer + audience 查詢 JWT 設定（同公司可多組 audience）（非同步）

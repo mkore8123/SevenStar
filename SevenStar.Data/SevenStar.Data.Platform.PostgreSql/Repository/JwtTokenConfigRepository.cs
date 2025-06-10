@@ -50,7 +50,7 @@ public class JwtTokenConfigRepository : IJwtTokenConfigRepository
     }
 
     /// <inheritdoc/>
-    public async Task<IEnumerable<JwtTokenConfigEntity>> GetByCompanyIdAsync(int companyId)
+    public async Task<List<JwtTokenConfigEntity>> GetByCompanyIdAsync(int companyId)
     {
         var sql = @"
             SELECT id, company_id, issuer, audience, lifetime_minutes, require_exp, validate_issuer, validate_audience, validate_lifetime,
@@ -60,11 +60,13 @@ public class JwtTokenConfigRepository : IJwtTokenConfigRepository
                    is_active, version_no, created_at, updated_at
             FROM jwt_token_config
             WHERE company_id = @CompanyId";
-        return await _connection.QueryAsync<JwtTokenConfigEntity>(sql, new { CompanyId = companyId });
+        
+        var result = await _connection.QueryAsync<JwtTokenConfigEntity>(sql, new { CompanyId = companyId });
+        return result.ToList();
     }
 
     /// <inheritdoc/>
-    public async Task<IEnumerable<JwtTokenConfigEntity>> GetByIssuerAudienceAsync(string issuer, string audience)
+    public async Task<List<JwtTokenConfigEntity>> GetByIssuerAudienceAsync(string issuer, string audience)
     {
         var sql = @"
             SELECT id, company_id, issuer, audience, lifetime_minutes, require_exp, validate_issuer, validate_audience, validate_lifetime,
@@ -74,7 +76,9 @@ public class JwtTokenConfigRepository : IJwtTokenConfigRepository
                    is_active, version_no, created_at, updated_at
             FROM jwt_token_config
             WHERE issuer = @Issuer AND audience = @Audience";
-        return await _connection.QueryAsync<JwtTokenConfigEntity>(sql, new { Issuer = issuer, Audience = audience });
+        
+        var result = await _connection.QueryAsync<JwtTokenConfigEntity>(sql, new { Issuer = issuer, Audience = audience });
+        return result.ToList();
     }
 
     /// <inheritdoc/>

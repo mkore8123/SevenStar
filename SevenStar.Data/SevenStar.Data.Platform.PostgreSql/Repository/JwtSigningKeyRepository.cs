@@ -45,25 +45,31 @@ public class JwtSigningKeyRepository : IJwtSigningKeyRepository
     }
 
     /// <inheritdoc/>
-    public async Task<IEnumerable<JwtSigningKeyEntity>> GetByConfigIdAsync(int configId)
+    public async Task<List<JwtSigningKeyEntity>> GetByConfigIdAsync(int configId)
     {
         var sql = @"
             SELECT id, config_id, key_id, algorithm, public_key, private_key, 
                    valid_from, valid_to, is_active, created_at
             FROM jwt_signing_key
             WHERE config_id = @ConfigId";
-        return await _connection.QueryAsync<JwtSigningKeyEntity>(sql, new { ConfigId = configId });
+        
+        var result = await _connection.QueryAsync<JwtSigningKeyEntity>(sql, new { ConfigId = configId });
+
+        return result.ToList();
     }
 
     /// <inheritdoc/>
-    public async Task<IEnumerable<JwtSigningKeyEntity>> GetByKeyIdAsync(string keyId)
+    public async Task<List<JwtSigningKeyEntity>> GetByKeyIdAsync(string keyId)
     {
         var sql = @"
             SELECT id, config_id, key_id, algorithm, public_key, private_key, 
                    valid_from, valid_to, is_active, created_at
             FROM jwt_signing_key
             WHERE key_id = @KeyId";
-        return await _connection.QueryAsync<JwtSigningKeyEntity>(sql, new { KeyId = keyId });
+
+        var result = await _connection.QueryAsync<JwtSigningKeyEntity>(sql, new { KeyId = keyId });
+
+        return result.ToList();
     }
 
     /// <inheritdoc/>

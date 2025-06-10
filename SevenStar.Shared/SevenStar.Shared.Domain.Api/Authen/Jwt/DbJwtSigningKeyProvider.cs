@@ -26,7 +26,7 @@ public class DbJwtSigningKeyProvider : IJwtSigningKeyProvider
         _cacheService = cacheService;
     }
 
-    public async Task<SecurityKey> GetKey(string issuer, string audience, string keyId)
+    public async Task<SecurityKey> GetKeyAsync(string issuer, string audience, string keyId)
     {
         var configKey = await _cacheService.GetOrAddJwtConfigForValidateAsync(issuer, audience, keyId, async () =>
         {
@@ -59,10 +59,13 @@ public class DbJwtSigningKeyProvider : IJwtSigningKeyProvider
         if (!_dbJwtKeys.TryGetValue((issuer, audience, keyId), out var entry))
             throw new InvalidOperationException("找不到對應金鑰");
 
-        return new SymmetricSecurityKey(Encoding.UTF8.GetBytes("private_key"));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("private_key"));
+        key.KeyId = keyId;
+        
+        return key;
     }
 
-    public async Task<string> GetAlgorithm(string issuer, string audience, string keyId)
+    public async Task<string> GetAlgorithmAsync(string issuer, string audience, string keyId)
     {
         if (!_dbJwtKeys.TryGetValue((issuer, audience, keyId), out var entry))
             throw new InvalidOperationException("找不到對應演算法");

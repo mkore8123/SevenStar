@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 
 namespace Common.Api.Auth.Jwt;
 
@@ -29,8 +30,8 @@ public class JwtTokenService<TModel> : ITokenService<TModel>, IMultiJwtValidatio
     private async Task<(JwtTokenConfig config, SecurityKey key, string algorithm)> ResolveTokenConfig(string token)
     {
         var cfg = await _configProvider.GetForTokenAsync(token);
-        var key = _keyProvider.GetKey(cfg.Issuer, cfg.Audience, cfg.KeyId);
-        var algorithm = cfg.Algorithm ?? _keyProvider.GetAlgorithm(cfg.Issuer, cfg.Audience, cfg.KeyId);
+        var key = await _keyProvider.GetKeyAsync(cfg.Issuer, cfg.Audience, cfg.KeyId);
+        var algorithm = cfg.Algorithm ?? await _keyProvider.GetAlgorithmAsync(cfg.Issuer, cfg.Audience, cfg.KeyId);
         return (cfg, key, algorithm);
     }
 
@@ -46,7 +47,7 @@ public class JwtTokenService<TModel> : ITokenService<TModel>, IMultiJwtValidatio
 
         if (cfg.DefaultClaims is { Count: > 0 })
             claims.AddRange(cfg.DefaultClaims.Select(kv => new Claim(kv.Key, kv.Value)));
-
+        
         if (!string.IsNullOrWhiteSpace(cfg.Subject))
             claims.Add(new Claim(JwtRegisteredClaimNames.Sub, cfg.Subject));
 
@@ -60,23 +61,16 @@ public class JwtTokenService<TModel> : ITokenService<TModel>, IMultiJwtValidatio
             foreach (var kv in cfg.ExtraPayload)
                 payload[kv.Key] = kv.Value;
 
-        // ===== 合併 Header =====
-        var securityKey = _keyProvider.GetKey(cfg.Issuer, cfg.Audience, cfg.KeyId);
-        var algorithm = cfg.Algorithm ?? _keyProvider.GetAlgorithm(cfg.Issuer, cfg.Audience, cfg.KeyId);
+        // ===== 合併 Header - 1 =====
+        var securityKey = await _keyProvider.GetKeyAsync(cfg.Issuer, cfg.Audience, cfg.KeyId);
+        var algorithm = cfg.Algorithm ?? await _keyProvider.GetAlgorithmAsync(cfg.Issuer, cfg.Audience, cfg.KeyId);
         var creds = new SigningCredentials(securityKey, algorithm);
-        var header = new JwtHeader(creds) { ["kid"] = cfg.KeyId };
-
-        if (!string.IsNullOrWhiteSpace(cfg.TokenType))
-            header["typ"] = cfg.TokenType;
-
-        if (cfg.ExtraHeader is { Count: > 0 })
-            foreach (var kv in cfg.ExtraHeader)
-                header[kv.Key] = kv.Value;
 
         // ===== JWE: 加密模式 =====
         if (cfg.EncryptingCredentials != null)
         {
             // 注意：JWE（加密）模式下，部分自訂 Header 可能無法完全加入，受限於 CreateToken 方法。
+            // 不需要帶入自訂 Header; 會由 SecurityTokenDescriptor 底層自動生成 JWE 所需的基本 Header。
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Issuer = cfg.Issuer,
@@ -86,13 +80,25 @@ public class JwtTokenService<TModel> : ITokenService<TModel>, IMultiJwtValidatio
                 Subject = new ClaimsIdentity(claims),
                 SigningCredentials = creds,
                 EncryptingCredentials = cfg.EncryptingCredentials,
-                Claims = cfg.ExtraPayload // 注意：如有衝突，Claims 會覆蓋相同 key 的 claim
+                Claims = cfg.ExtraPayload, // 注意：如有衝突，Subject 的 Claim 會覆蓋 Claims 相同 key 的值
+                AdditionalHeaderClaims = cfg.ExtraHeader 
             };
             var token = _tokenHandler.CreateToken(tokenDescriptor);
             return _tokenHandler.WriteToken(token);
         }
         else
         {
+            // ===== 合併 Header - 2 =====
+            // 基本的 JWT 簽章可以自訂 JWT Header
+            var header = new JwtHeader(creds) { ["kid"] = cfg.KeyId };
+
+            if (!string.IsNullOrWhiteSpace(cfg.TokenType))
+                header["typ"] = cfg.TokenType;
+
+            if (cfg.ExtraHeader is { Count: > 0 })
+                foreach (var kv in cfg.ExtraHeader)
+                    header[kv.Key] = kv.Value;
+
             var token = new JwtSecurityToken(header, payload);
             return _tokenHandler.WriteToken(token);
         }
