@@ -1,4 +1,4 @@
-﻿using Common.Api.Auth.Jwt;
+﻿using Common.Api.Authen.Jwt.@interface;
 using Microsoft.IdentityModel.Tokens;
 using SevenStar.Shared.Domain.Api.Auth.Jwt;
 using SevenStar.Shared.Domain.DbContext.Platform;

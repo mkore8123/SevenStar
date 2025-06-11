@@ -32,7 +32,24 @@ public class JwtTokenConfig
     /// 例如："key1"、"rsa-key-202406"、"abcd1234"
     /// 不可為 null 或空字串。
     /// </summary>
-    public string KeyId { get; set; } = default!;
+    public string JwsKeyId { get; set; } = default!;
+
+    /// <summary>
+    /// JWE 加密金鑰對應的 Key ID（kid）。
+    /// 允許的值：任何合法字串（用於金鑰唯一標識，大小寫敏感）。
+    /// 例如："enc-key-202406"、"jwe-key1"、"abcd1234"
+    /// 
+    /// 用途：
+    ///   - 用於 JWE（JSON Web Encryption）場景下，指定加密用金鑰的唯一識別編號。
+    ///   - 在 JWT/JWE header 產生時會對應到 "kid" 欄位，
+    ///     方便接收方正確挑選解密金鑰，支援金鑰輪替與多組加密金鑰管理。
+    ///   - 常用於多租戶、多環境、多版本密鑰或需要動態管理金鑰的情境。
+    /// 
+    /// 注意：
+    ///   - "kid" 欄位僅供標識用途，本身不具保密性。
+    ///   - JWE 與 JWS 的 kid 可以分開設計，分別標識簽章金鑰與加密金鑰。
+    /// </summary>
+    public string? JweKeyId { get; set; } = default;
 
     /// <summary>
     /// Token 有效期間（存活時間）。
@@ -48,7 +65,55 @@ public class JwtTokenConfig
     /// 常見如："HS256"、"RS256"、"ES256"、SecurityAlgorithms.HmacSha256 等。
     /// 請參考 Microsoft.IdentityModel.Tokens.SecurityAlgorithms 靜態欄位。
     /// </summary>
-    public string? Algorithm { get; set; }
+    public string? JwsSignAlgorithm { get; set; }
+
+    /// <summary>
+    /// Token 加密演算法（JWE 金鑰管理演算法）。
+    /// 允許的值：
+    ///   - null（預設不加密）
+    ///   - JWT/JWE 支援的演算法名稱（標準字串）
+    /// 常見值如：
+    ///   - "RSA-OAEP"（RSA OAEP 金鑰包裝）
+    ///   - "RSA1_5"（RSA PKCS#1 v1.5 金鑰包裝）
+    ///   - "A128KW"、"A256KW"（AES 金鑰包裝）
+    ///   - "dir"（直接對稱金鑰使用）
+    ///   - "ECDH-ES"（ECDH 密鑰協議）
+    ///   - "PBES2-HS256+A128KW"（密碼推導金鑰包裝）
+    ///   - 你也可以直接參考 <see cref="Microsoft.IdentityModel.Tokens.SecurityAlgorithms"/>（僅部分演算法有定義）
+    /// 
+    /// 用途說明：
+    ///   - 指定 JWE（JSON Web Encryption）金鑰管理用演算法（對應 JWE header 的 "alg" 欄位）。
+    ///   - 當需要產生加密型 JWT（JWE）時，必須指定此欄位來決定用什麼方式包裝內容加密金鑰。
+    ///   - 欄位值必須與接收方支援的 JWE 金鑰管理演算法一致。
+    /// 
+    /// 相關標準：
+    ///   - 參考 RFC 7518/JWA：https://www.rfc-editor.org/rfc/rfc7518
+    /// </summary>
+    public string? JweEncryptAlgorithm { get; set; }
+
+    /// <summary>
+    /// JWE 內容加密演算法（Content Encryption Algorithm）。
+    /// 允許的值：
+    ///   - null（未設定時不可產生 JWE）
+    ///   - JWE 支援的內容加密演算法名稱（標準字串）
+    /// 
+    /// 常見值如：
+    ///   - "A128GCM"  （AES 128 位元 GCM）
+    ///   - "A192GCM"  （AES 192 位元 GCM）
+    ///   - "A256GCM"  （AES 256 位元 GCM）
+    ///   - "A128CBC-HS256"（AES 128 CBC + HMAC SHA-256）
+    ///   - "A192CBC-HS384"（AES 192 CBC + HMAC SHA-384）
+    ///   - "A256CBC-HS512"（AES 256 CBC + HMAC SHA-512）
+    /// 
+    /// 用途說明：
+    ///   - 指定 JWE（JSON Web Encryption）實際加密 Payload 的內容加密演算法（對應 JWE header 的 "enc" 欄位）。
+    ///   - 必須與金鑰管理演算法（alg）搭配使用，且雙方必須支援相同內容加密算法才能互通。
+    ///   - 欄位值必須與接收方支援的內容加密演算法一致，否則無法正確解密 JWE。
+    /// 
+    /// 相關標準：
+    ///   - 參考 RFC 7518/JWA：https://www.rfc-editor.org/rfc/rfc7518#section-5
+    /// </summary>
+    public string? JweContentEncryptAlgorithm { get; set; }
 
     /// <summary>
     /// 是否強制要求 Expiration Time（exp）。
@@ -146,7 +211,7 @@ public class JwtTokenConfig
     /// 參考：
     ///   - https://datatracker.ietf.org/doc/html/rfc7516
     /// </summary>
-    public EncryptingCredentials? EncryptingCredentials { get; set; }
+    //public EncryptingCredentials? EncryptingCredentials { get; set; }
 
     /// <summary>
     /// JWT Header 額外欄位（ExtraHeader）。

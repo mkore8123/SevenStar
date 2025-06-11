@@ -1,6 +1,7 @@
 ﻿using Common.Api.Auth;
 using Common.Api.Auth.Enum;
 using Common.Api.Auth.Jwt;
+using Common.Api.Authen.Jwt.@interface;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,10 +32,10 @@ public static class AuthenExtension
         services.AddScoped<IJwtTokenConfigProvider<TUser>, TTokenConfigProvider>();
         services.AddScoped<IJwtSigningKeyProvider, TSigningKeyProvider>();
         services.AddSingleton<IClaimsMapper<TUser>, TClaimsMapper>();
-        services.AddScoped<IMultiJwtValidationConfigProvider, JwtTokenService<TUser>>();
+        //services.AddScoped<IMultiJwtValidationConfigProvider, JwsTokenService<TUser>>();
 
         services.AddKeyedSingleton<ITokenService<TUser>>(TokenType.Jwt, (sp, key) =>
-            new JwtTokenService<TUser>(
+            new JwsTokenService<TUser>(
                 sp.GetRequiredService<IJwtTokenConfigProvider<TUser>>(),
                 sp.GetRequiredService<IJwtSigningKeyProvider>(),
                 sp.GetRequiredService<IClaimsMapper<TUser>>()

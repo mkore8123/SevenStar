@@ -45,8 +45,8 @@ public static class JwtTokenConfigEntityExtensions
             Issuer = entity.Issuer,
             Audience = entity.Audience,
             // 金鑰設定由 keyEntity 提供
-            KeyId = keyEntity.KeyId,
-            Algorithm = keyEntity.Algorithm,
+            JwsKeyId = keyEntity.KeyId,
+            JwsSignAlgorithm = keyEntity.Algorithm,
             // 時效、驗證邏輯欄位
             Lifetime = entity.LifetimeMinutes.HasValue ? TimeSpan.FromMinutes(entity.LifetimeMinutes.Value) : null,
             RequireExpirationTime = entity.RequireExp,

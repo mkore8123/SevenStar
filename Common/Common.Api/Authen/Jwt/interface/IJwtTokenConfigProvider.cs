@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Common.Api.Auth.Jwt;
+using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
-namespace Common.Api.Auth.Jwt;
+namespace Common.Api.Authen.Jwt.@interface;
 
 /// <summary>
 /// 提供 JWT Token 設定（<see cref="JwtTokenConfig"/>）的取得機制介面，支援依據模型產生或依據 Token 內容解構對應配置。

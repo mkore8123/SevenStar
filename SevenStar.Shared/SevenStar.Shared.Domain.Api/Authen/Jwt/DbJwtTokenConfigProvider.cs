@@ -1,4 +1,5 @@
 ﻿using Common.Api.Auth.Jwt;
+using Common.Api.Authen.Jwt.@interface;
 using SevenStar.Shared.Domain.Api.Authen.Claims;
 using SevenStar.Shared.Domain.DbContext.Platform;
 using SevenStar.Shared.Domain.DbContext.Platform.Entity;

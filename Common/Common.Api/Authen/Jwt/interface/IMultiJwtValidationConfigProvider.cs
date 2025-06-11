@@ -1,6 +1,6 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 
-namespace Common.Api.Auth.Jwt;
+namespace Common.Api.Authen.Jwt.@interface;
 
 /// <summary>
 /// 動態提供多組 JWT 驗證參數（<see cref="TokenValidationParameters"/>）的解析介面。
