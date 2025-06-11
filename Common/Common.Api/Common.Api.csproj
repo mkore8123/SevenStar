@@ -8,17 +8,15 @@
 
   <ItemGroup>
     <Compile Remove="Authen\Jwt\Event\**" />
-    <Compile Remove="Authen\Jwt\Interface\**" />
     <Compile Remove="SevenStar.Common.Api\**" />
     <EmbeddedResource Remove="Authen\Jwt\Event\**" />
-    <EmbeddedResource Remove="Authen\Jwt\Interface\**" />
     <EmbeddedResource Remove="SevenStar.Common.Api\**" />
     <None Remove="Authen\Jwt\Event\**" />
-    <None Remove="Authen\Jwt\Interface\**" />
     <None Remove="SevenStar.Common.Api\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="jose-jwt" Version="5.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.5" />
     <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="9.5.0" />
