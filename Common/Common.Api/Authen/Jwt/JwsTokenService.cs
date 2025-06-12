@@ -1,4 +1,5 @@
-﻿using Common.Api.Authen.Jwt.@interface;
+﻿using Common.Api.Authen.Jwt;
+using Common.Api.Authen.Jwt.Interface;
 using Common.Api.Authentication;
 using Jose;
 using Microsoft.IdentityModel.Tokens;
@@ -60,6 +61,8 @@ public class JwsTokenService<TModel> : ITokenService<TModel>
 
         // 取得金鑰 & 演算法
         var key = await _keyProvider.GetKeyAsync(cfg.Issuer, cfg.Audience, cfg.JwsKeyId);
+        var joseKey = SecurityKeyToJoseKeyConverter.ToJoseKey(key);
+
         var algStr = cfg.JwsSignAlgorithm ?? await _keyProvider.GetAlgorithmAsync(cfg.Issuer, cfg.Audience, cfg.JwsKeyId);
 
         // JWS Algorithm mapping
@@ -82,7 +85,7 @@ public class JwsTokenService<TModel> : ITokenService<TModel>
         string token = await Task.Run(() =>
             JWT.Encode(
                 claims,
-                key,
+                joseKey,
                 alg,
                 extraHeaders: headers
             )

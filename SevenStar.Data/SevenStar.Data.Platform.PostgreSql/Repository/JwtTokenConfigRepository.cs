@@ -116,5 +116,23 @@ public class JwtTokenConfigRepository : IJwtTokenConfigRepository
         var sql = @"DELETE FROM jwt_token_config WHERE id = @Id";
         await _connection.ExecuteAsync(sql, new { Id = id });
     }
+
+    /// <inheritdoc/>
+    public async Task<List<JwtTokenConfigEntity>> GetAllActiveAsync()
+    {
+        var sql = @"
+        SELECT id, company_id, issuer, audience, lifetime_minutes, require_exp, validate_issuer, validate_audience, validate_lifetime,
+               clock_skew_seconds, subject, not_before, token_type,
+               default_claims, extra_header, extra_payload,
+               valid_issuers, valid_audiences,
+               is_active, version_no, created_at, updated_at
+        FROM jwt_token_config
+        WHERE is_active = true
+          AND (valid_from IS NULL OR valid_from <= now())
+          AND (valid_to IS NULL OR valid_to > now())";
+
+        var result = await _connection.QueryAsync<JwtTokenConfigEntity>(sql);
+        return result.ToList();
+    }
 }
 

@@ -33,11 +33,11 @@ public class DynamicJwtAuthenticationMiddleware
 
             try
             {
-                var configProvider = context.RequestServices.GetRequiredService<IMultiJwtValidationConfigProvider>();
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var param = await configProvider.GetValidationParameters(token);
-                var principal = tokenHandler.ValidateToken(token, param, out var validatedToken);
-                context.User = principal;
+                //var configProvider = context.RequestServices.GetRequiredService<IMultiJwtValidationConfigProvider>();
+                //var tokenHandler = new JwtSecurityTokenHandler();
+                //var param = await configProvider.GetValidationParameters(token);
+                //var principal = tokenHandler.ValidateToken(token, param, out var validatedToken);
+                //context.User = principal;
             }
             catch
             {

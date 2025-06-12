@@ -20,4 +20,8 @@ public partial class PlatformDb
     private IJwtTokenConfigRepository? _jwtTokenConfig;
 
     public IJwtTokenConfigRepository JwtTokenConfig => _jwtTokenConfig ??= new JwtTokenConfigRepository(Connection);
+
+    private IJwtEncryptingKeyRepository? _jwtEncryptingKey;
+
+    public IJwtEncryptingKeyRepository JwtEncryptingKey => _jwtEncryptingKey ??= new JwtEncryptingKeyRepository(Connection);
 }

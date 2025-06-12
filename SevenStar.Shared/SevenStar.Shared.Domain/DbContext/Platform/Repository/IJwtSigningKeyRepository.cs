@@ -49,4 +49,17 @@ public interface IJwtSigningKeyRepository
     /// </summary>
     /// <param name="id">金鑰主鍵 id</param>
     Task DeleteAsync(int id);
+
+    /// <summary>
+    /// 查詢目前所有有效（現役、尚未過期）的 JWT 簽章金鑰清單（非同步）。
+    /// 僅回傳符合以下條件的金鑰：
+    /// <list type="bullet">
+    /// <item>is_active = true（現役啟用）</item>
+    /// <item>valid_from <= 現在（生效時間已到）</item>
+    /// <item>valid_to IS NULL 或 valid_to &gt; 現在（尚未過期或永久有效）</item>
+    /// </list>
+    /// 通常用於全域金鑰快取同步、簽章金鑰輪替、或多租戶金鑰自動切換等場景。
+    /// </summary>
+    /// <returns>所有有效的 JWT 簽章金鑰物件清單，若無資料則回傳空集合。</returns>
+    Task<List<JwtSigningKeyEntity>?> GetAllActiveAsync();
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Common.Api.Authen.Enum;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,6 +11,24 @@ namespace Common.Api.Auth.Jwt;
 /// </summary>
 public class JwtTokenConfig
 {
+    /// <summary>
+    /// 指定此 JWT Token 的包裝技術型態（JWS/JWE/純 JWT/嵌套等）。
+    /// <para>
+    /// 代表此 Token 實際的封裝安全層級與技術分類，請搭配 <see cref="JwtEnvelopeType"/> 列舉說明：
+    /// <list type="table">
+    /// <item><term>PlainJwt</term><description>純 JWT，無簽章無加密（極少用）</description></item>
+    /// <item><term>Jws / JwsJwt</term><description>具簽章、三段結構（現今最常見）</description></item>
+    /// <item><term>Jwe / JweJwt</term><description>具加密、五段結構（高機密需求場景）</description></item>
+    /// <item><term>NestedJwsJwe</term><description>先簽章再加密（極高安全、少見，見 RFC 7519 §9.2）</description></item>
+    /// <item><term>Custom</term><description>自訂型態（如 "at+jwt"、"id_token"、特殊協議等）</description></item>
+    /// </list>
+    /// <br/>
+    /// <b>實務說明：</b>本欄位通常由系統依據 Token 實際內容結構（分段數、header alg/enc/typ 等）判斷與設定，
+    /// 或由配置策略指定產生模式。為團隊或維運判讀 JWT 結構、選擇解碼驗簽/解密流程之依據。
+    /// </para>
+    /// </summary>
+    public JwtEnvelopeType Type { get; set; }
+
     /// <summary>
     /// Token 發行者（iss）。
     /// 允許的值：任何合法字串（通常為 URI、URL、公司/服務名稱等）。
@@ -35,6 +54,22 @@ public class JwtTokenConfig
     public string JwsKeyId { get; set; } = default!;
 
     /// <summary>
+    /// JWS（JSON Web Signature）簽章用的金鑰物件。
+    /// <para>
+    /// 可為對稱金鑰（<see cref="SymmetricSecurityKey"/>，如 HMAC-SHA256）或
+    /// 非對稱金鑰（<see cref="RsaSecurityKey"/>、<see cref="ECDsaSecurityKey"/>，如 RS256/ES256）。
+    /// </para>
+    /// <para>
+    /// - 發行 JWT Token 時，用於內容簽章（根據演算法使用私鑰或密鑰）。
+    /// - 驗證 JWT Token 時，用於簽章驗證（對稱金鑰或非對稱公鑰）。
+    /// </para>
+    /// <para>
+    /// 請依據 <see cref="JwtTokenConfig.Algorithm"/> 設定金鑰型別與內容。
+    /// </para>
+    /// </summary>
+    public SecurityKey JwsSecurityKey { get; set; } = default!;
+
+    /// <summary>
     /// JWE 加密金鑰對應的 Key ID（kid）。
     /// 允許的值：任何合法字串（用於金鑰唯一標識，大小寫敏感）。
     /// 例如："enc-key-202406"、"jwe-key1"、"abcd1234"
@@ -50,6 +85,22 @@ public class JwtTokenConfig
     ///   - JWE 與 JWS 的 kid 可以分開設計，分別標識簽章金鑰與加密金鑰。
     /// </summary>
     public string? JweKeyId { get; set; } = default;
+
+    /// <summary>
+    /// JWE（JSON Web Encryption）加解密用的金鑰物件。
+    /// <para>
+    /// 可為對稱金鑰（<see cref="SymmetricSecurityKey"/>，如 AES）
+    /// 或非對稱金鑰（<see cref="RsaSecurityKey"/>，如 RSA-OAEP）。
+    /// </para>
+    /// <para>
+    /// - 加密 JWT payload 時，用於加密資料內容。
+    /// - 解密 JWE token 時，用於解密取得原始 payload。
+    /// </para>
+    /// <para>
+    /// 請依據 <see cref="JwtTokenConfig.EncryptAlgorithm"/> 設定金鑰型別與內容。
+    /// </para>
+    /// </summary>
+    public SecurityKey? JweSecurityKey { get; set; } = default;
 
     /// <summary>
     /// Token 有效期間（存活時間）。

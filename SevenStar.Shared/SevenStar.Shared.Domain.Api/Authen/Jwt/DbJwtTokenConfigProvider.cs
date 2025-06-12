@@ -1,5 +1,5 @@
 ﻿using Common.Api.Auth.Jwt;
-using Common.Api.Authen.Jwt.@interface;
+using Common.Api.Authen.Jwt.Interface;
 using SevenStar.Shared.Domain.Api.Authen.Claims;
 using SevenStar.Shared.Domain.DbContext.Platform;
 using SevenStar.Shared.Domain.DbContext.Platform.Entity;
@@ -26,7 +26,7 @@ public class DbJwtTokenConfigProvider : IJwtTokenConfigProvider<MemberClaimModel
         var issuer = model.CompanyId;
         var audience = model.Device;
 
-        return await _cacheService.GetOrAddJwtConfigForIssueAsync(issuer, audience, async () =>
+        return await _cacheService.GetOrAddJwsConfigForIssueAsync(issuer, audience, async () =>
         {
             var config = await GetLatestActiveConfigAsync(issuer, audience);
 
@@ -51,7 +51,7 @@ public class DbJwtTokenConfigProvider : IJwtTokenConfigProvider<MemberClaimModel
         var iss = jwt.Issuer;
         var aud = jwt.Audiences.FirstOrDefault() ?? "";
 
-        return await _cacheService.GetOrAddJwtConfigForValidateAsync(iss, aud, kid, async () =>
+        return await _cacheService.GetOrAddJwsConfigForValidateAsync(iss, aud, kid, async () =>
         {
             var config = await GetLatestActiveConfigAsync(iss, aud);
 

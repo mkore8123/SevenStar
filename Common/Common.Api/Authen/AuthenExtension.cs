@@ -1,7 +1,7 @@
 ﻿using Common.Api.Auth;
 using Common.Api.Auth.Enum;
 using Common.Api.Auth.Jwt;
-using Common.Api.Authen.Jwt.@interface;
+using Common.Api.Authen.Jwt.Interface;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;

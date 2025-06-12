@@ -1,4 +1,4 @@
-﻿using Common.Api.Authen.Jwt.@interface;
+﻿using Common.Api.Authen.Jwt.Interface;
 using Microsoft.IdentityModel.Tokens;
 using SevenStar.Shared.Domain.Api.Auth.Jwt;
 using SevenStar.Shared.Domain.DbContext.Platform;
@@ -28,32 +28,9 @@ public class DbJwtSigningKeyProvider : IJwtSigningKeyProvider
 
     public async Task<SecurityKey> GetKeyAsync(string issuer, string audience, string keyId)
     {
-        var configKey = await _cacheService.GetOrAddJwtConfigForValidateAsync(issuer, audience, keyId, async () =>
+        var configKey = await _cacheService.GetOrAddJwsConfigForValidateAsync(issuer, audience, keyId, async () =>
         {
-            var tokenConfigs = await _platformDb.JwtTokenConfig.GetByIssuerAudienceAsync(issuer, audience);
-            if (tokenConfigs == null || tokenConfigs.Count == 0)
-            {
-                return null;
-            }
-            var tokenConfig = tokenConfigs.Where(x => x.IsActive).MaxBy(x => x.VersionNo);
-            if (tokenConfigs == null )
-            {
-                return null;
-            }
-
-            var configKeies = await _platformDb.JwtSigningKey.GetByConfigIdAsync(tokenConfig.Id);
-            if (configKeies == null || configKeies.Count == 0)
-            {
-                return null;
-            }
-
-            var configKeyModel = configKeies.FirstOrDefault(key => key.KeyId == keyId);
-            if (configKeyModel == null)
-            {
-                return null;
-            }
-
-            return tokenConfig.ToModel(configKeyModel);
+            throw new Exception("找不到");
         });
 
         if (!_dbJwtKeys.TryGetValue((issuer, audience, keyId), out var entry))

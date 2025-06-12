@@ -37,9 +37,9 @@ public static class JwtTokenConfigEntityExtensions
     /// <returns>
     /// 轉換後的 <see cref="JwtTokenConfig"/> 設定物件，結合 JWT 設定與金鑰資料，可用於應用程式產生/驗證 Token。
     /// </returns>
-    public static JwtTokenConfig ToModel(this JwtTokenConfigEntity entity, JwtSigningKeyEntity keyEntity)
+    public static JwtTokenConfig ToModel(this JwtTokenConfigEntity entity, JwtSigningKeyEntity keyEntity, JwtEncryptingKeyEntity? enKeyEntity = null)
     {
-        return new JwtTokenConfig
+        var jwtTokenConfig = new JwtTokenConfig
         {
             // 基本設定對應
             Issuer = entity.Issuer,
@@ -67,6 +67,13 @@ public static class JwtTokenConfigEntityExtensions
             ExtraPayload = ParseJsonObject(entity.ExtraPayload),
             // JtiGenerator、EncryptingCredentials 若有特殊需求可於此擴充
         };
+
+        if (enKeyEntity != null)
+        {
+
+        }
+
+        return jwtTokenConfig;
     }
 
     /// <summary>

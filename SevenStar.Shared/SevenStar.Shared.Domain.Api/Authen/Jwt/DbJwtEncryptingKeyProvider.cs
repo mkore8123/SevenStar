@@ -1,5 +1,5 @@
 ﻿using Common.Api.Authen.Jwt;
-using Common.Api.Authen.Jwt.@interface;
+using Common.Api.Authen.Jwt.Interface;
 using Dapper;
 using Microsoft.IdentityModel.Tokens;
 using Npgsql;

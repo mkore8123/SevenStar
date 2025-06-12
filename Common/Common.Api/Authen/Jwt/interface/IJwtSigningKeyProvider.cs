@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Common.Api.Authen.Jwt.@interface;
+namespace Common.Api.Authen.Jwt.Interface;
 
 /// <summary>
 /// 提供 JWT 簽章金鑰與演算法取得機制的介面。

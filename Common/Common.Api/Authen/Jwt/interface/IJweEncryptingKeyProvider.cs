@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Common.Api.Authen.Jwt.@interface;
+namespace Common.Api.Authen.Jwt.Interface;
 
 public interface IJweEncryptingKeyProvider
 {

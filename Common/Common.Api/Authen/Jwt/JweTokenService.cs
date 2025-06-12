@@ -1,5 +1,5 @@
 ﻿using Common.Api.Auth;
-using Common.Api.Authen.Jwt.@interface;
+using Common.Api.Authen.Jwt.Interface;
 using Common.Api.Authentication;
 using Jose;
 using Microsoft.IdentityModel.JsonWebTokens;
@@ -67,8 +67,8 @@ public class JweTokenService<TModel> : ITokenService<TModel>
 
         // 取得 JOSE 所需的 key & 演算法設定
         var key = await _encryptingKeyProvider.GetEncryptingCredentialsAsync(cfg.Issuer, cfg.Audience, cfg.JweKeyId);
-        var alg = MapToJweAlgorithm(cfg.JwsSignAlgorithm!);
-        var enc = MapToJweEncryption(cfg.JweEncryptAlgorithm!);
+        var alg = MapToJweAlgorithm(cfg.JweEncryptAlgorithm!);
+        var enc = MapToJweEncryption(cfg.JweContentEncryptAlgorithm!);
 
         // Header
         var headers = new Dictionary<string, object>

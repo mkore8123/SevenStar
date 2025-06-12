@@ -95,4 +95,19 @@ public class JwtSigningKeyRepository : IJwtSigningKeyRepository
         var sql = @"DELETE FROM jwt_signing_key WHERE id = @Id";
         await _connection.ExecuteAsync(sql, new { Id = id });
     }
+
+    /// <inheritdoc/>
+    public async Task<List<JwtSigningKeyEntity>?> GetAllActiveAsync()
+    {
+        var sql = @"
+        SELECT id, config_id, key_id, algorithm, public_key, private_key, 
+               valid_from, valid_to, is_active, created_at
+        FROM jwt_signing_key
+        WHERE is_active = true
+          AND valid_from <= now()
+          AND (valid_to IS NULL OR valid_to > now())";
+
+        var result = await _connection.QueryAsync<JwtSigningKeyEntity>(sql);
+        return result.ToList();
+    }
 }

@@ -1,5 +1,5 @@
 ﻿using Common.Api.Auth.Jwt;
-using Common.Api.Authen.Jwt.@interface;
+using Common.Api.Authen.Jwt.Interface;
 using Common.Api.Authentication;
 using Jose;
 using Microsoft.IdentityModel.Tokens;
@@ -36,15 +36,15 @@ public class NestedJwsJweTokenService<TModel> : ITokenService<TModel>
         if (encryptingCredentials == null)
             throw new InvalidOperationException("未取得加密金鑰");
 
-        var joseAlg = JweTokenService<TModel>.MapToJweAlgorithm(encryptingCredentials.Alg);
-        var joseEnc = JweTokenService<TModel>.MapToJweEncryption(encryptingCredentials.Enc);
-        var encKey = GetJoseKey(encryptingCredentials.Key);
+        var joseAlg = JweTokenService<TModel>.MapToJweAlgorithm(cfg.JweEncryptAlgorithm!);
+        var joseEnc = JweTokenService<TModel>.MapToJweEncryption(cfg.JweContentEncryptAlgorithm!);
+        // var encKey = GetJoseKey(encryptingCredentials.Key);
 
         // 3. Header 組裝（cty="JWT" 代表 Nested）
         var header = new Dictionary<string, object>
         {
-            ["alg"] = encryptingCredentials.Alg,
-            ["enc"] = encryptingCredentials.Enc,
+            ["alg"] = joseAlg,
+            ["enc"] = joseEnc,
             ["cty"] = "JWT"
         };
 
@@ -56,7 +56,7 @@ public class NestedJwsJweTokenService<TModel> : ITokenService<TModel>
                 header[kv.Key] = kv.Value;
 
         // 4. 用 JOSE 將 JWS 當 payload 加密成 JWE
-        var jwe = JWT.Encode(jws, encKey, joseAlg, joseEnc, extraHeaders: header);
+        var jwe = JWT.Encode(jws, encryptingCredentials, joseAlg, joseEnc, extraHeaders: header);
 
         return jwe;
     }
@@ -85,15 +85,5 @@ public class NestedJwsJweTokenService<TModel> : ITokenService<TModel>
 
         // 2. 驗簽 & 解析 JWS 交給 JwsTokenService
         return await _jwsService.DecrypteToken(jws);
-    }
-
-    private static object GetJoseKey(SecurityKey key)
-    {
-        return key switch
-        {
-            RsaSecurityKey rsaKey => rsaKey.Rsa ?? RSAUtils.FromPem(rsaKey.PrivateKey!), // 需自備 RSAUtils.FromPem
-            SymmetricSecurityKey symKey => symKey.Key,
-            _ => throw new NotSupportedException("不支援的金鑰型別: " + key.GetType().Name)
-        };
     }
 }

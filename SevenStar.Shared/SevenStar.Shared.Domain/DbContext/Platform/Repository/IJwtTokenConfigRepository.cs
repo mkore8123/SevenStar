@@ -25,6 +25,14 @@ public interface IJwtTokenConfigRepository
     Task<JwtTokenConfigEntity?> GetByIdAsync(int id);
 
     /// <summary>
+    /// 查詢目前所有有效（啟用且未過期）的 JWT 設定清單（非同步）。
+    /// 只回傳當下狀態為啟用（如 is_active=true），且有效期間內（如 valid_from/valid_to 符合現在時間）的資料。
+    /// 常用於全域快取預熱、同步所有配置到記憶體等場景。
+    /// </summary>
+    /// <returns>所有有效的 JWT 設定物件清單，若無資料則為空集合。</returns>
+    Task<List<JwtTokenConfigEntity>> GetAllActiveAsync();
+
+    /// <summary>
     /// 查詢指定公司下所有 JWT 設定（非同步）
     /// </summary>
     /// <param name="companyId">公司主鍵 id</param>
