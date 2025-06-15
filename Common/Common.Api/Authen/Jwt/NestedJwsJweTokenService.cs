@@ -1,19 +1,22 @@
 ﻿using Common.Api.Auth.Jwt;
+using Common.Api.Authen.Enum;
 using Common.Api.Authen.Jwt.Interface;
 using Common.Api.Authentication;
 using Jose;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System.Reflection.PortableExecutable;
 
 namespace Common.Api.Authen.Jwt;
 
 public class NestedJwsJweTokenService<TModel> : ITokenService<TModel>
 {
-    private readonly JwsTokenService<TModel> _jwsService;
+    private readonly ITokenService<TModel> _jwsService;
     private readonly IJwtTokenConfigProvider<TModel> _configProvider;
     private readonly IJweEncryptingKeyProvider _encryptingKeyProvider;
 
     public NestedJwsJweTokenService(
-        JwsTokenService<TModel> jwsService,
+        [FromKeyedServices(JwtEnvelopeType.Jws)] ITokenService<TModel> jwsService,
         IJwtTokenConfigProvider<TModel> configProvider,
         IJweEncryptingKeyProvider encryptingKeyProvider)
     {
@@ -32,31 +35,32 @@ public class NestedJwsJweTokenService<TModel> : ITokenService<TModel>
 
         // 2. 查詢加密用參數
         var cfg = await _configProvider.GetForModelAsync(model);
-        var encryptingCredentials = await _encryptingKeyProvider.GetEncryptingCredentialsAsync(cfg.Issuer, cfg.Audience, cfg.JweKeyId);
-        if (encryptingCredentials == null)
+        
+        var key = await _encryptingKeyProvider.GetAvailableKeyAsync(cfg.Issuer, cfg.Audience);
+        if (key == null)
             throw new InvalidOperationException("未取得加密金鑰");
 
-        var joseAlg = JweTokenService<TModel>.MapToJweAlgorithm(cfg.JweEncryptAlgorithm!);
-        var joseEnc = JweTokenService<TModel>.MapToJweEncryption(cfg.JweContentEncryptAlgorithm!);
-        // var encKey = GetJoseKey(encryptingCredentials.Key);
+        var joseAlg = JweTokenService<TModel>.MapToJweAlgorithm(key.Algorithm);
+        var joseEnc = JweTokenService<TModel>.MapToJweEncryption(key.ContentAlgorithm);
+        var encryptingKey = JweTokenService<TModel>.GetJoseEncryptingKey(key);
 
         // 3. Header 組裝（cty="JWT" 代表 Nested）
         var header = new Dictionary<string, object>
         {
             ["alg"] = joseAlg,
             ["enc"] = joseEnc,
-            ["cty"] = "JWT"
+            ["cty"] = "JWT"  // 巢狀或複合 JWE，表示內層是 JWS
         };
 
-        if (!string.IsNullOrWhiteSpace(cfg.JweKeyId))
-            header["kid"] = cfg.JweKeyId;
+        if (!string.IsNullOrWhiteSpace(key.KeyId))
+            header["kid"] = key.KeyId;
 
         if (cfg.ExtraHeader is { Count: > 0 })
             foreach (var kv in cfg.ExtraHeader)
                 header[kv.Key] = kv.Value;
 
         // 4. 用 JOSE 將 JWS 當 payload 加密成 JWE
-        var jwe = JWT.Encode(jws, encryptingCredentials, joseAlg, joseEnc, extraHeaders: header);
+        var jwe = JWT.Encode(jws, encryptingKey, joseAlg, joseEnc, extraHeaders: header);
 
         return jwe;
     }
@@ -66,12 +70,17 @@ public class NestedJwsJweTokenService<TModel> : ITokenService<TModel>
     /// </summary>
     public async Task<TModel> DecrypteToken(string jwt)
     {
+        // 先解 header，取得 iss/aud/kid
+        var headers = JWT.Headers(jwt);
+
         // 1. 查詢解密參數
         var cfg = await _configProvider.GetForTokenAsync(jwt);
-        var decryptKey = await _encryptingKeyProvider.GetDecryptingKeyAsync(cfg.Issuer, cfg.Audience, cfg.JweKeyId);
+        var kid = headers.TryGetValue("kid", out var kidObj) ? kidObj?.ToString() ?? "" : "";
 
-        var joseAlg = JweTokenService<TModel>.MapToJweAlgorithm(cfg.JweEncryptAlgorithm!);
-        var joseEnc = JweTokenService<TModel>.MapToJweEncryption(cfg.JweContentEncryptAlgorithm!);
+        var decryptKey = await _encryptingKeyProvider.GetKeyAsync(cfg.Issuer, cfg.Audience, kid);
+
+        var joseAlg = JweTokenService<TModel>.MapToJweAlgorithm(decryptKey.Algorithm);
+        var joseEnc = JweTokenService<TModel>.MapToJweEncryption(decryptKey.ContentAlgorithm);
 
         string jws;
         try

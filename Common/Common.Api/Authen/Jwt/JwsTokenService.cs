@@ -20,8 +20,7 @@ public class JwsTokenService<TModel> : ITokenService<TModel>
 
     public JwsTokenService(
         IJwtTokenConfigProvider<TModel> configProvider,
-        IJwtSigningKeyProvider keyProvider,
-        IClaimsMapper<TModel> claimsMapper)
+        IJwtSigningKeyProvider keyProvider, IClaimsMapper<TModel> claimsMapper)
     {
         _configProvider = configProvider;
         _keyProvider = keyProvider;
@@ -60,13 +59,11 @@ public class JwsTokenService<TModel> : ITokenService<TModel>
                 claims[kv.Key] = kv.Value;
 
         // 取得金鑰 & 演算法
-        var key = await _keyProvider.GetKeyAsync(cfg.Issuer, cfg.Audience, cfg.JwsKeyId);
+        var key = await _keyProvider.GetAvailableKeyAsync(cfg.Issuer, cfg.Audience);
         var joseKey = SecurityKeyToJoseKeyConverter.ToJoseKey(key);
 
-        var algStr = cfg.JwsSignAlgorithm ?? await _keyProvider.GetAlgorithmAsync(cfg.Issuer, cfg.Audience, cfg.JwsKeyId);
-
         // JWS Algorithm mapping
-        var alg = MapJwsAlgorithm(algStr);
+        var alg = MapJwsAlgorithm(key.Algorithm);
 
         // Header
         var headers = new Dictionary<string, object>
@@ -75,8 +72,9 @@ public class JwsTokenService<TModel> : ITokenService<TModel>
             { "alg", alg.ToString() }
         };
 
-        if (!string.IsNullOrWhiteSpace(cfg.JwsKeyId))
-            headers["kid"] = cfg.JwsKeyId;
+        if (!string.IsNullOrWhiteSpace(key.KeyId))
+            headers["kid"] = key.KeyId;
+
         if (cfg.ExtraHeader is { Count: > 0 })
             foreach (var kv in cfg.ExtraHeader)
                 headers[kv.Key] = kv.Value;
@@ -97,11 +95,11 @@ public class JwsTokenService<TModel> : ITokenService<TModel>
     {
         // 拆 header 拿 kid, alg
         var headers = JWT.Headers(jwt);
-        string? kid = headers.TryGetValue("kid", out var kidObj) ? kidObj?.ToString() : null;
+        var kid = headers.TryGetValue("kid", out var kidObj) ? kidObj?.ToString() : null;
 
         // 根據 config & kid 查金鑰
         var cfg = await _configProvider.GetForTokenAsync(jwt);
-        var key = await _keyProvider.GetKeyAsync(cfg.Issuer, cfg.Audience, kid ?? cfg.JwsKeyId);
+        var key = await _keyProvider.GetKeyAsync(cfg.Issuer, cfg.Audience, kid);
 
         // Decode/Verify（同步包進 Task.Run）
         IDictionary<string, object> claims;

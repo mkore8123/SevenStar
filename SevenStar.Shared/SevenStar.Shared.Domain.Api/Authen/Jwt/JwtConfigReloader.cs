@@ -1,13 +1,16 @@
-﻿using Common.Api.Auth.Jwt;
-using Common.Api.Authen.Enum;
+﻿using Common.Api.Authen.Enum;
+using Common.Api.Authen.Jwt.Model;
 using SevenStar.Shared.Domain.Api.Auth.Jwt;
+using SevenStar.Shared.Domain.Api.Mapper;
 using SevenStar.Shared.Domain.DbContext.Platform;
+using SevenStar.Shared.Domain.DbContext.Platform.Entity;
 using SevenStar.Shared.Domain.DbContext.Platform.Repository;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using static Dapper.SqlMapper;
 
 namespace SevenStar.Shared.Domain.Api.Authen.Jwt;
 
@@ -35,8 +38,9 @@ public class JwtConfigReloader
         var jweEncryptingKeies =  await _platformDb.JwtEncryptingKey.GetAllActiveAsync();
 
         // 建立新的快取字典
-        var newIssueCache = new ConcurrentDictionary<string, Lazy<Task<JwtTokenConfig>>>();
-        var newValidateCache = new ConcurrentDictionary<string, Lazy<Task<JwtTokenConfig>>>();
+        var newJwtIssueCache = new ConcurrentDictionary<JwtKey, JwtTokenConfig>();
+        var newJwsValidateCache = new ConcurrentDictionary<JwtKey, JwtSigningKey>();       
+        var newJweValidateCache = new ConcurrentDictionary<JwtKey, JwtEncryptingKey>();
 
         var configIds = jwtTokenConfigs.Select(x => x.Id).Distinct().ToList();
 
@@ -52,36 +56,30 @@ public class JwtConfigReloader
 
         foreach (var cfgId in configIds)
         {
-            var type = JwtEnvelopeType.PlainJwt;
             var config = jwtTokenConfigs.Where(jwtTokenConfig => jwtTokenConfig.Id == cfgId).MaxBy(jwtTokenConfig => jwtTokenConfig.VersionNo);
-            
+                        
             var signingKeiesWithId = jwsSigningKeies.Where(jwsSigningKey => jwsSigningKey.ConfigId == cfgId).ToList();
-            var signingKeySelector = signingKeiesWithId?.MaxBy(jwsSigningKey => jwsSigningKey.ValidTo);
+            var encryptingKeiesWithId = jweEncryptingKeies?.Where(jwsSigningKey => jwsSigningKey.ConfigId == cfgId).ToList();
 
-            var encryptKeiesWithId = jweEncryptingKeies?.Where(jwsSigningKey => jwsSigningKey.ConfigId == cfgId).ToList();
-            var encryptKeySelector = encryptKeiesWithId?.MaxBy(jwsSigningKey => jwsSigningKey.ValidTo);
+            var tokenConfig = config!.ToModel()!;
+            newJwtIssueCache.TryAdd(JwtKey.ForIssue(tokenConfig), tokenConfig);
 
-            if (signingKeySelector != null)
+            signingKeiesWithId?.ForEach(signingKey =>
             {
-                type = JwtEnvelopeType.Jws;
-            }
+                var model = JwtSigningKeyMapper.ToModel(signingKey);
+                var key = JwtKey.ForValidate(tokenConfig, model);
+                newJwsValidateCache.TryAdd(key, model);
+            });
 
-            if (encryptKeySelector != null)
+            encryptingKeiesWithId?.ForEach(encryptingKey =>
             {
-                type = signingKeySelector == null ? JwtEnvelopeType.Jwe : JwtEnvelopeType.NestedJwsJwe;
-            }
-
-            var tokenConfig = config!.ToModel(signingKeySelector, encryptKeySelector);
-            newIssueCache.TryAdd($"{config!.Issuer}::{config!.Audience}", new Lazy<Task<JwtTokenConfig>>(() => Task.FromResult(tokenConfig)));
-
-            foreach(var signingKey in signingKeiesWithId)
-            {
-                var tokenConfig2 = config!.ToModel(signingKey, encryptKeySelector);
-                newValidateCache.TryAdd($"{config.Issuer}::{config.Audience}::{signingKey.KeyId}", new Lazy<Task<JwtTokenConfig>>(() => Task.FromResult(tokenConfig2)));
-            }
+                var model = JwtEncryptingKeyMapper.ToModel(encryptingKey);
+                var key = JwtKey.ForValidate(tokenConfig, model);
+                newJweValidateCache.TryAdd(key, model);
+            });
         }
 
         // 原子性快取更新
-        return _cacheService.RefreshJwtConfig(newIssueCache, newValidateCache);
+        return _cacheService.Jwt.RefreshJwtConfig(newJwtIssueCache, newJwsValidateCache, newJweValidateCache);
     }
 }

@@ -82,6 +82,7 @@ public enum JwtEnvelopeType
     /// 嵌套型 JWT：「先簽章再加密」，RFC 7519 §9.2 支援。實際 typ 通常仍為 "JWT"。
     /// </summary>
     NestedJwsJwe,
+
     /// <summary>
     /// 其他自訂型態（如 "at+jwt"、"id_token"、自訂 typ、特殊協議…）。
     /// </summary>

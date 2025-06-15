@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common.Enums;
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Text;
@@ -9,5 +10,5 @@ public class UserClaimModel
 {
     public long UserId { get; set; } = default!;
     
-    public string Device { get; set; } = default!; // mobile or web
+    public DeviceTypeEnum Device { get; set; } = default!;
 }

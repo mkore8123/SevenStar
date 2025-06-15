@@ -8,7 +8,7 @@ public class UserClaimMapper : IClaimsMapper<UserClaimModel>
     {
         yield return new Claim("uid", model.UserId.ToString());
         // yield return new Claim("cid", model.CompanyId);
-        yield return new Claim("device", model.Device);
+        yield return new Claim("device", model.Device.ToString());
     }
 
     public UserClaimModel FromClaims(ClaimsPrincipal principal)
@@ -17,7 +17,7 @@ public class UserClaimMapper : IClaimsMapper<UserClaimModel>
         {
             UserId = long.Parse(principal.FindFirstValue("uid")),
             // CompanyId = principal.FindFirstValue("cid") ?? "",
-            Device = principal.FindFirstValue("device") ?? ""
+            Device = Enums.DeviceTypeEnum.Web //principal.FindFirstValue("device") ?? ""
         };
     }
 
@@ -42,7 +42,7 @@ public class UserClaimMapper : IClaimsMapper<UserClaimModel>
         {
             UserId = userId,
             // CompanyId = companyId,
-            Device = device
+            Device = Enums.DeviceTypeEnum.Web//device
         };
     }
 
@@ -52,7 +52,7 @@ public class UserClaimMapper : IClaimsMapper<UserClaimModel>
         {
             ["uid"] = model.UserId,
             // ["cid"] = model.CompanyId,
-            ["device"] = model.Device ?? ""
+            ["device"] = Enums.DeviceTypeEnum.Web.ToString() // model.Device ?? ""
         };
         return dic;
     }

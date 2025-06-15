@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Common.Api.Authen.Jwt.Model;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -6,29 +7,31 @@ using System.Text;
 namespace Common.Api.Authen.Jwt.Interface;
 
 /// <summary>
-/// 提供 JWT 簽章金鑰與演算法取得機制的介面。
-/// 支援多租戶、多裝置與金鑰版本（KeyId, kid）動態解析。
-/// 典型情境：根據 issuer（發行者）、audience（接收者/裝置）與 keyId（kid，金鑰版本）取得對應金鑰與演算法。
+/// JWT 簽章金鑰提供者介面（JWS 專用）。<br/>
+/// 提供根據發行者與接收者取得現役可用的簽章金鑰，或依據指定 KeyId 取得歷史簽章金鑰，供 JWT Token 的簽章與驗證流程使用。
 /// </summary>
 public interface IJwtSigningKeyProvider
 {
     /// <summary>
-    /// 取得指定 issuer（發行者）、audience（接收者/裝置）及 keyId（kid）對應的 <see cref="SecurityKey"/> 實例。
-    /// 用於 JWT 簽章驗證與產生。
+    /// 取得指定 issuer/audience 組合下「目前可用的現役簽章金鑰」（通常為最新版本），用於簽發 JWT Token（JWS）。
     /// </summary>
-    /// <param name="issuer">Token 發行者（iss），通常為公司/租戶代號。</param>
-    /// <param name="audience">Token 接收者（aud），通常為應用系統或裝置類型（如 mobile, web）。</param>
-    /// <param name="keyId">金鑰唯一標識（kid），可用於金鑰輪替或多版本金鑰管理。</param>
-    /// <returns>對應的 <see cref="SecurityKey"/> 實例。若無對應，應拋出例外或回傳 null。</returns>
-    Task<SecurityKey> GetKeyAsync(string issuer, string audience, string keyId);
+    /// <param name="issuer">JWT Token 的發行者（iss），例如公司代碼、平台識別字串。</param>
+    /// <param name="audience">JWT Token 的接收者（aud），例如 mobile、web、api-client 等。</param>
+    /// <returns>
+    /// 若查無對應可用金鑰，則拋出例外或回傳 null（依實作決定）；
+    /// 否則回傳現役的 <see cref="JwtSigningKey"/> 金鑰，用於產生 JWS Token。
+    /// </returns>
+    Task<JwtSigningKey> GetAvailableKeyAsync(string issuer, string audience);
 
     /// <summary>
-    /// 取得指定 issuer、audience 及 keyId 對應金鑰的簽章演算法（如 HmacSha256、RS256）。
-    /// 通常需與 <see cref="GetKey"/> 回傳之金鑰型態配對。
+    /// 取得指定 issuer/audience/kid 的歷史簽章金鑰，用於驗證 JWT Token（JWS）簽章正確性。
     /// </summary>
-    /// <param name="issuer">Token 發行者（iss）。</param>
-    /// <param name="audience">Token 接收者（aud）。</param>
-    /// <param name="keyId">金鑰唯一標識（kid）。</param>
-    /// <returns>對應的 JWT 簽章演算法名稱（如 SecurityAlgorithms.HmacSha256）。</returns>
-    Task<string> GetAlgorithmAsync(string issuer, string audience, string keyId);
+    /// <param name="issuer">JWT Token 的發行者（iss）。</param>
+    /// <param name="audience">JWT Token 的接收者（aud）。</param>
+    /// <param name="keyId">JWT Header 中指定的 Key ID（kid），用於對應簽章金鑰。</param>
+    /// <returns>
+    /// 若查無對應金鑰，則拋出例外或回傳 null（依實作決定）；
+    /// 否則回傳符合指定組合的 <see cref="JwtSigningKey"/> 實例。
+    /// </returns>
+    Task<JwtSigningKey> GetKeyAsync(string issuer, string audience, string keyId);
 }

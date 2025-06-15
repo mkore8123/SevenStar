@@ -9,6 +9,7 @@ using SevenStar.Shared.Domain.Api.Auth.Jwt;
 using SevenStar.Shared.Domain.Api.Logger.Serilog;
 using SevenStar.Shared.Domain.Extensions;
 using SevenStar.Shared.Domain.Service.Extensions;
+using SevenStar.Shared.Domain.Api.Authen.Claims;
 
 var companyId = 1;
 var platformDbConnectionString = "Host=127.0.0.1;Port=5432;Username=postgres;Password=apeter56789;Database=postgres;SearchPath=public;";
@@ -51,7 +52,7 @@ try
     
     // app.UseAuthorizationHandling();
     // 加入 JWT Middleware（務必放在 UseAuthorization 之前）
-    app.UseMiddleware<DynamicJwtAuthenticationMiddleware>();
+    app.UseMiddleware<DynamicJwtAuthenticationMiddleware<MemberClaimModel>>();
 
     // 套用基本健康檢查用的 http url: health & alive
     app.MapControllers();

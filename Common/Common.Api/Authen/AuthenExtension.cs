@@ -1,6 +1,9 @@
 ﻿using Common.Api.Auth;
+using Common.Api.Auth.Claims;
 using Common.Api.Auth.Enum;
 using Common.Api.Auth.Jwt;
+using Common.Api.Authen.Enum;
+using Common.Api.Authen.Jwt;
 using Common.Api.Authen.Jwt.Interface;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -33,14 +36,33 @@ public static class AuthenExtension
         services.AddScoped<IJwtSigningKeyProvider, TSigningKeyProvider>();
         services.AddSingleton<IClaimsMapper<TUser>, TClaimsMapper>();
         //services.AddScoped<IMultiJwtValidationConfigProvider, JwsTokenService<TUser>>();
+        services.AddSingleton<IJwtEnvelopeTypeResolver, JwtEnvelopeTypeResolver>();
+        services.AddSingleton<IJwtTokenServiceFactory<UserClaimModel>, JwtTokenServiceFactory<UserClaimModel>>();
 
-        services.AddKeyedSingleton<ITokenService<TUser>>(TokenType.Jwt, (sp, key) =>
+        services.AddKeyedScoped<ITokenService<TUser>>(JwtEnvelopeType.Jws, (sp, key) =>
             new JwsTokenService<TUser>(
                 sp.GetRequiredService<IJwtTokenConfigProvider<TUser>>(),
                 sp.GetRequiredService<IJwtSigningKeyProvider>(),
                 sp.GetRequiredService<IClaimsMapper<TUser>>()
             )
         );
+
+        services.AddKeyedScoped<ITokenService<TUser>>(JwtEnvelopeType.Jwe, (sp, key) =>
+            new JweTokenService<TUser>(
+                sp.GetRequiredService<IJwtTokenConfigProvider<TUser>>(),
+                sp.GetRequiredService<IJweEncryptingKeyProvider>(),
+                sp.GetRequiredService<IClaimsMapper<TUser>>()
+            )
+        );
+
+        services.AddKeyedScoped<ITokenService<TUser>>(JwtEnvelopeType.NestedJwsJwe, (sp, key) =>
+            new NestedJwsJweTokenService<TUser>(
+                sp.GetRequiredKeyedService<ITokenService<TUser>>(JwtEnvelopeType.Jws),
+                sp.GetRequiredService<IJwtTokenConfigProvider<TUser>>(),
+                sp.GetRequiredService<IJweEncryptingKeyProvider>()
+            )
+        );
+
 
         return services;
     }

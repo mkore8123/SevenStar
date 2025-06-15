@@ -1,8 +1,4 @@
-﻿using Common.Api.Auth.Jwt;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
+﻿using Common.Api.Authen.Jwt.Model;
 
 namespace Common.Api.Authen.Jwt.Interface;
 
@@ -19,7 +15,7 @@ public interface IJwtTokenConfigProvider<TModel>
     /// </summary>
     /// <param name="model">應用於產生 Token 的模型實例，通常包含租戶/公司、裝置、身分等資訊。</param>
     /// <returns>對應的 <see cref="JwtTokenConfig"/> 配置實例。</returns>
-    Task<JwtTokenConfig> GetForModelAsync(TModel model);
+    Task<JwtTokenConfig?> GetForModelAsync(TModel model);
 
     /// <summary>
     /// 根據已產生的 JWT Token 字串，解構出其中的 issuer(iss)、audience(aud)、keyId(kid) 等欄位，
@@ -27,5 +23,5 @@ public interface IJwtTokenConfigProvider<TModel>
     /// </summary>
     /// <param name="token">JWT Token 字串（通常為三段 base64url 編碼的結構）。</param>
     /// <returns>解析後對應的 <see cref="JwtTokenConfig"/> 配置實例。</returns>
-    Task<JwtTokenConfig> GetForTokenAsync(string token);
+    Task<JwtTokenConfig?> GetForTokenAsync(string token);
 }

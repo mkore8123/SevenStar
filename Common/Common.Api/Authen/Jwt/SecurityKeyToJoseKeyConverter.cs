@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Common.Api.Authen.Jwt.Model;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
@@ -8,41 +9,42 @@ namespace Common.Api.Authen.Jwt;
 
 public static class SecurityKeyToJoseKeyConverter
 {
-    public static object ToJoseKey(SecurityKey key)
+    /// <summary>
+    /// 將 JwtSigningKey 轉換為 Jose.JWT 套件支援的 key 實例（byte[]、RSA、ECDsa）。
+    /// </summary>
+    public static object ToJoseKey(JwtSigningKey key)
     {
-        switch (key)
+        if (key.Algorithm.StartsWith("HS", StringComparison.OrdinalIgnoreCase))
         {
-            case SymmetricSecurityKey symKey:
-                return symKey.Key; // byte[]
+            // HMAC（對稱式）：使用 PrivateKey 當作 byte[]
+            if (string.IsNullOrWhiteSpace(key.PrivateKey))
+                throw new ArgumentException("HMAC 演算法需提供 PrivateKey");
 
-            case RsaSecurityKey rsaKey:
-                if (rsaKey.Rsa != null)
-                    return rsaKey.Rsa;
-                // 若無 Rsa 但有 Parameters
-                if (!IsEmpty(rsaKey.Parameters))
-                    return RSAFromParameters(rsaKey.Parameters);
-                throw new ArgumentException("RsaSecurityKey 既無 Rsa 屬性，也無 Parameters 資料");
-
-            case ECDsaSecurityKey ecdsaKey:
-                if (ecdsaKey.ECDsa != null)
-                    return ecdsaKey.ECDsa;
-                throw new ArgumentException("ECDsaSecurityKey 必須有 ECDsa 屬性", nameof(key));
-
-            default:
-                throw new NotSupportedException($"不支援的 SecurityKey 型別：{key?.GetType().Name}");
+            return Encoding.UTF8.GetBytes(key.PrivateKey);
         }
-    }
 
-    private static bool IsEmpty(RSAParameters param)
-    {
-        // 只要 Modulus 有值就代表參數有內容
-        return param.Modulus == null || param.Modulus.Length == 0;
-    }
+        if (key.Algorithm.StartsWith("RS", StringComparison.OrdinalIgnoreCase))
+        {
+            // RSA（非對稱式）
+            if (string.IsNullOrWhiteSpace(key.PrivateKey))
+                throw new ArgumentException("RSA 演算法需提供 PrivateKey");
 
-    private static RSA RSAFromParameters(RSAParameters param)
-    {
-        var rsa = RSA.Create();
-        rsa.ImportParameters(param);
-        return rsa;
+            var rsa = RSA.Create();
+            rsa.ImportFromPem(key.PrivateKey.ToCharArray());
+            return rsa;
+        }
+
+        if (key.Algorithm.StartsWith("ES", StringComparison.OrdinalIgnoreCase))
+        {
+            // ECDSA（非對稱式）
+            if (string.IsNullOrWhiteSpace(key.PrivateKey))
+                throw new ArgumentException("ECDSA 演算法需提供 PrivateKey");
+
+            var ecdsa = ECDsa.Create();
+            ecdsa.ImportFromPem(key.PrivateKey.ToCharArray());
+            return ecdsa;
+        }
+
+        throw new NotSupportedException($"不支援的演算法: {key.Algorithm}");
     }
 }

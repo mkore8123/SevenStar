@@ -1,5 +1,6 @@
 ﻿using Common.Api.Auth;
 using Common.Api.Authen.Jwt.Interface;
+using Common.Api.Authen.Jwt.Model;
 using Common.Api.Authentication;
 using Jose;
 using Microsoft.IdentityModel.JsonWebTokens;
@@ -7,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Common.Api.Authen.Jwt;
@@ -66,9 +68,11 @@ public class JweTokenService<TModel> : ITokenService<TModel>
                 claims[kv.Key] = kv.Value;
 
         // 取得 JOSE 所需的 key & 演算法設定
-        var key = await _encryptingKeyProvider.GetEncryptingCredentialsAsync(cfg.Issuer, cfg.Audience, cfg.JweKeyId);
-        var alg = MapToJweAlgorithm(cfg.JweEncryptAlgorithm!);
-        var enc = MapToJweEncryption(cfg.JweContentEncryptAlgorithm!);
+        var key = await _encryptingKeyProvider.GetAvailableKeyAsync(cfg.Issuer, cfg.Audience);
+        var encryptingKey = GetJoseEncryptingKey(key);
+
+        var alg = MapToJweAlgorithm(key.Algorithm);
+        var enc = MapToJweEncryption(key.ContentAlgorithm);
 
         // Header
         var headers = new Dictionary<string, object>
@@ -78,8 +82,8 @@ public class JweTokenService<TModel> : ITokenService<TModel>
             { "enc", enc.ToString() }
         };
 
-        if (!string.IsNullOrWhiteSpace(cfg.JweKeyId))
-            headers["kid"] = cfg.JweKeyId;
+        if (!string.IsNullOrWhiteSpace(key.KeyId))
+            headers["kid"] = key.KeyId;
 
         if (cfg.ExtraHeader is { Count: > 0 })
             foreach (var kv in cfg.ExtraHeader)
@@ -89,7 +93,7 @@ public class JweTokenService<TModel> : ITokenService<TModel>
         string jwe = await Task.Run(() =>
             JWT.Encode(
                 claims,
-                key,
+                encryptingKey,
                 alg,
                 enc,
                 extraHeaders: headers
@@ -109,7 +113,7 @@ public class JweTokenService<TModel> : ITokenService<TModel>
 
         // 你也可以自訂從 payload 取出 iss/aud/kid
         var cfg = await _configProvider.GetForTokenAsync(jwt);
-        var key = await _encryptingKeyProvider.GetDecryptingKeyAsync(cfg.Issuer, cfg.Audience, cfg.JweKeyId);
+        var key = await _encryptingKeyProvider.GetKeyAsync(cfg.Issuer, cfg.Audience, kid);
 
         // 解密（同步，需 Task.Run 包裝）
         IDictionary<string, object> claims = await Task.Run(() =>
@@ -220,6 +224,49 @@ public class JweTokenService<TModel> : ITokenService<TModel>
             default:
                 throw new NotSupportedException($"不支援的 JWE 內容加密演算法：{enc}");
         }
+    }
+
+
+    public static object GetJoseEncryptingKey(JwtEncryptingKey key)
+    {
+        if (string.IsNullOrWhiteSpace(key.Algorithm))
+            throw new ArgumentException("EncryptingKey.Algorithm 未設定");
+
+        if (key.Algorithm.StartsWith("RSA", StringComparison.OrdinalIgnoreCase))
+        {
+            // RSA 公鑰（PEM 格式）
+            if (string.IsNullOrWhiteSpace(key.PublicKey))
+                throw new ArgumentException("RSA 公鑰不可為空");
+
+            var rsa = RSA.Create();
+            rsa.ImportFromPem(key.PublicKey.ToCharArray());
+            return rsa;
+        }
+        else if (key.Algorithm.Equals("dir", StringComparison.OrdinalIgnoreCase) ||
+                 key.Algorithm.EndsWith("KW", StringComparison.OrdinalIgnoreCase))
+        {
+            // 對稱金鑰（Base64 或 HEX 輸入）
+            if (string.IsNullOrWhiteSpace(key.PrivateKey))
+                throw new ArgumentException("對稱金鑰不可為空");
+
+            byte[] rawKey;
+            if (key.PrivateKey.Trim().Length % 4 == 0 && IsBase64(key.PrivateKey))
+                rawKey = Convert.FromBase64String(key.PrivateKey);
+            else
+                rawKey = Convert.FromHexString(key.PrivateKey);
+
+            return rawKey;
+        }
+        else
+        {
+            throw new NotSupportedException($"不支援的金鑰加密演算法: {key.Algorithm}");
+        }
+    }
+
+    private static bool IsBase64(string s)
+    {
+        Span<byte> buffer = new Span<byte>(new byte[s.Length]);
+        return Convert.TryFromBase64String(s, buffer, out _);
     }
 }
 

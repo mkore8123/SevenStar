@@ -1,6 +1,7 @@
 ﻿using Common.Api.Auth.Claims;
 using Common.Api.Auth.Enum;
 using Common.Api.Authentication;
+using Common.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SevenStar.Shared.Domain.Api.Auth;
@@ -29,28 +30,28 @@ public class ValuesController : ApiControllerBase
     [AllowAnonymous]
     public async Task<string> Test()
     {
-        var tokenService = _provider.GetRequiredKeyedService<ITokenService<UserClaimModel>>(TokenType.Jwt);
-        var user = new UserClaimModel
-        {
-            UserId = 123,
-            //CompanyId = "companyA",
-            Device = "mobile"
-        };
-        var jwt = await tokenService.GenerateToken(user);
-        var parsedUser = await tokenService.DecrypteToken(jwt);
+        //var tokenService = _provider.GetRequiredKeyedService<ITokenService<UserClaimModel>>(TokenType.Jwt);
+        //var user = new UserClaimModel
+        //{
+        //    UserId = 123,
+        //    //CompanyId = "companyA",
+        //    Device = DeviceTypeEnum.Mobile, // "mobile"
+        //};
+        //var jwt = await tokenService.GenerateToken(user);
+        //var parsedUser = await tokenService.DecrypteToken(jwt);
 
-        var abc = _provider.GetRequiredKeyedService<IUserService>(MemberLevelEnum.Member);
-        var fun = await abc.PrepareCreateMemberAsync(_companyDb, "111");
-        await _companyDb.ExecuteAsync(async dbTrans =>
-        {
-            await fun(dbTrans);
-            await _companyDb.User.CreateAsync(new UserEntity() { Name = "123"}, dbTrans);
-        });
+        //var abc = _provider.GetRequiredKeyedService<IUserService>(MemberLevelEnum.Member);
+        //var fun = await abc.PrepareCreateMemberAsync(_companyDb, "111");
+        //await _companyDb.ExecuteAsync(async dbTrans =>
+        //{
+        //    await fun(dbTrans);
+        //    await _companyDb.User.CreateAsync(new UserEntity() { Name = "123"}, dbTrans);
+        //});
         
         
-        // await _companyDb.UserService.PrepareCreateMemberAsync("test");
-        var user1 = _companyDb.User.GetAsync();
-        var user2 = _companyDb.User.GetAsync();
+        //// await _companyDb.UserService.PrepareCreateMemberAsync("test");
+        //var user1 = _companyDb.User.GetAsync();
+        //var user2 = _companyDb.User.GetAsync();
         return "abc";
     }
 
