@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Common.Api.Authen.Enum;
+namespace Common.Api.Authen.Jwt.Enum;
 
 /// <summary>
 /// JWT 包裝技術型態（JWS / JWE / 純 JWT / 嵌套 JWT）。

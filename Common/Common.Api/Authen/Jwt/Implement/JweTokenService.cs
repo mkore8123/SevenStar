@@ -1,5 +1,4 @@
-﻿using Common.Api.Auth;
-using Common.Api.Authen.Jwt.Interface;
+﻿using Common.Api.Authen.Jwt.Interface;
 using Common.Api.Authen.Jwt.Model;
 using Common.Api.Authentication;
 using Jose;
@@ -11,7 +10,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Common.Api.Authen.Jwt;
+namespace Common.Api.Authen.Jwt.Implement;
 
 /// <summary>
 /// 完全用 JOSE.JWT 實作的 JWE Token 服務

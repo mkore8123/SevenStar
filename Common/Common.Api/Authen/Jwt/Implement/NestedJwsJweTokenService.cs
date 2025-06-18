@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection.PortableExecutable;
 
-namespace Common.Api.Authen.Jwt;
+namespace Common.Api.Authen.Jwt.Implement;
 
 public class NestedJwsJweTokenService<TModel> : ITokenService<TModel>
 {

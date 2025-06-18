@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Common.Api.Authen.Enum;
+namespace Common.Api.Authen.Jwt.Enum;
 
 /// <summary>
 /// JWT 應用場景類型（依 OAuth2/OIDC 等標準用途）
