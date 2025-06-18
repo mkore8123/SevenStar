@@ -1,5 +1,5 @@
 ﻿using Common.Api.Auth.Jwt;
-using Common.Api.Authen.Enum;
+using Common.Api.Authen.Jwt.Enum;
 using Common.Api.Authen.Jwt.Interface;
 using Common.Api.Authentication;
 using Jose;

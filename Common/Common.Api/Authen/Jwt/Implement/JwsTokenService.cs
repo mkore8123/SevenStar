@@ -1,4 +1,5 @@
-﻿using Common.Api.Authen.Jwt;
+﻿using Common.Api.Auth;
+using Common.Api.Authen.Jwt;
 using Common.Api.Authen.Jwt.Interface;
 using Common.Api.Authentication;
 using Jose;
@@ -10,7 +11,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common.Api.Auth.Jwt;
+namespace Common.Api.Authen.Jwt.Implement;
 
 public class JwsTokenService<TModel> : ITokenService<TModel>
 {

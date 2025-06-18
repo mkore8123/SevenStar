@@ -1,4 +1,4 @@
-﻿using Common.Api.Auth;
+﻿using Common.Api.Authen;
 using Common.Enums;
 using System.Security.Claims;
 

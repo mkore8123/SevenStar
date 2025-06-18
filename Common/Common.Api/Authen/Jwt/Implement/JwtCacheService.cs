@@ -5,7 +5,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Common.Api.Authen.Jwt;
+namespace Common.Api.Authen.Jwt.Implement;
 
 /// <summary>
 /// IJwtCacheService 的實作，專責管理 JWT Token 快取存取與更新。

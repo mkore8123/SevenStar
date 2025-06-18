@@ -1,9 +1,9 @@
-﻿using Common.Api.Auth;
-using Common.Api.Auth.Claims;
+﻿using Common.Api.Auth.Claims;
 using Common.Api.Auth.Enum;
 using Common.Api.Auth.Jwt;
-using Common.Api.Authen.Enum;
-using Common.Api.Authen.Jwt;
+using Common.Api.Authen;
+using Common.Api.Authen.Jwt.Enum;
+using Common.Api.Authen.Jwt.Implement;
 using Common.Api.Authen.Jwt.Interface;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;

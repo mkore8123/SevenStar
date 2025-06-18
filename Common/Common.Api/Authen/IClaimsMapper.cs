@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace Common.Api.Auth;
+namespace Common.Api.Authen;
 
 /// <summary>
 /// 定義模型與 JWT Claims 之間轉換的介面。

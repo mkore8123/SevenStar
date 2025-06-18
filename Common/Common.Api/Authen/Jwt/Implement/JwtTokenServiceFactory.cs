@@ -1,4 +1,4 @@
-﻿using Common.Api.Authen.Enum;
+﻿using Common.Api.Authen.Jwt.Enum;
 using Common.Api.Authen.Jwt.Interface;
 using Common.Api.Authentication;
 using Microsoft.Extensions.DependencyInjection;
@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Common.Api.Authen.Jwt;
+namespace Common.Api.Authen.Jwt.Implement;
 
 public class JwtTokenServiceFactory<TClaimModel> : IJwtTokenServiceFactory<TClaimModel>
 {

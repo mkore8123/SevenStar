@@ -1,4 +1,4 @@
-﻿using Common.Api.Authen.Enum;
+﻿using Common.Api.Authen.Jwt.Enum;
 using Common.Api.Authentication;
 using System;
 using System.Collections.Generic;

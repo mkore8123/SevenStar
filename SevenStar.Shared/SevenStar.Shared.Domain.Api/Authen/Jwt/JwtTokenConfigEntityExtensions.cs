@@ -1,6 +1,6 @@
 ﻿using Common.Api.Auth.Claims;
 using Common.Api.Authen.Enum;
-using Common.Api.Authen.Jwt;
+using Common.Api.Authen.Jwt.Implement;
 using Common.Api.Authen.Jwt.Interface;
 using Common.Api.Authen.Jwt.Model;
 using Common.Api.Authentication;

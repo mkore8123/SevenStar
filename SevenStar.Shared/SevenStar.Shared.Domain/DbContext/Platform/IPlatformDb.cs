@@ -11,11 +11,4 @@ public partial interface IPlatformDb
     /// </summary>
     /// <returns></returns>
     Task<IPlatformDb> CreateInstanceAsync();
-
-    /// <summary>
-    /// 取得指定的 Repository 物件
-    /// </summary>
-    /// <typeparam name="TRepository"></typeparam>
-    /// <returns></returns>
-    // TRepository GetRepository<TRepository>() where TRepository : class, IPlatformDbContext, new();
 }

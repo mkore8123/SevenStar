@@ -1,9 +1,9 @@
-﻿using Common.Api.Authen.Enum;
+﻿using Common.Api.Authen.Jwt.Enum;
 using Common.Api.Authen.Jwt.Exception;
 using Common.Api.Authen.Jwt.Interface;
 using System.Text.Json;
 
-namespace Common.Api.Authen.Jwt;
+namespace Common.Api.Authen.Jwt.Implement;
 
 /// <summary>
 /// 預設 JWT envelope 型態解析器
