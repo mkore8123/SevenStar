@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Authen\Jwt\Event\**" />
+    <Compile Remove="Auth\Jwt\Event\**" />
     <Compile Remove="SevenStar.Common.Api\**" />
-    <EmbeddedResource Remove="Authen\Jwt\Event\**" />
+    <EmbeddedResource Remove="Auth\Jwt\Event\**" />
     <EmbeddedResource Remove="SevenStar.Common.Api\**" />
-    <None Remove="Authen\Jwt\Event\**" />
+    <None Remove="Auth\Jwt\Event\**" />
     <None Remove="SevenStar.Common.Api\**" />
   </ItemGroup>
 

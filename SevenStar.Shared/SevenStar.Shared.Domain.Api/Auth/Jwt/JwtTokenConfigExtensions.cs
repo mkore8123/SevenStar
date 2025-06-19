@@ -16,7 +16,7 @@ namespace SevenStar.Shared.Domain.Api.Auth.Jwt;
 /// <summary>
 /// 提供 JwtTokenConfigEntity 與 JwtSigningKeyEntity 轉換為 JwtTokenConfig 的擴充方法。
 /// </summary>
-public static class JwtTokenConfigEntityExtensions
+public static class JwtTokenConfigExtensions
 {
     public static IServiceCollection AddJwtTokenService(this IServiceCollection services)
     {
