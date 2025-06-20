@@ -1,5 +1,5 @@
-﻿using Common.Api.Authen.Jwt;
-using Common.Api.Authen.Jwt.Interface;
+﻿using Common.Api.Auth.Jwt.Interface.Provider;
+using Common.Api.Authen.Jwt;
 using Common.Api.Authen.Jwt.Model;
 using Dapper;
 using Microsoft.IdentityModel.Tokens;
@@ -10,13 +10,13 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace SevenStar.Shared.Domain.Api.Authen.Jwt;
+namespace SevenStar.Shared.Domain.Api.Auth.Jwt.Provider;
 
-public class DbJweEncryptingKeyProvider : IJweEncryptingKeyProvider
+public class CacheJweEncryptingKeyProvider : IJweEncryptingKeyProvider
 {
     private readonly IApiSingletonCacheService _cacheService;
 
-    public DbJweEncryptingKeyProvider(IApiSingletonCacheService cacheService)
+    public CacheJweEncryptingKeyProvider(IApiSingletonCacheService cacheService)
     {
         _cacheService = cacheService;
     }

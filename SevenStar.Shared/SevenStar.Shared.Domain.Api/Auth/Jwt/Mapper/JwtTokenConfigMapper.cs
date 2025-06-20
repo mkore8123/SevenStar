@@ -2,7 +2,7 @@
 using Common.Api.Authen.Jwt.Model;
 using SevenStar.Shared.Domain.DbContext.Platform.Entity;
 
-namespace SevenStar.Shared.Domain.Api.Mapper;
+namespace SevenStar.Shared.Domain.Api.Auth.Jwt.Mapper;
 
 public static class JwtTokenConfigMapper
 {

@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SevenStar.Shared.Domain.Api.Mapper;
+namespace SevenStar.Shared.Domain.Api.Auth.Jwt.Mapper;
 
 /// <summary>
 /// JWT 加密金鑰實體與模型的轉換工具類別。

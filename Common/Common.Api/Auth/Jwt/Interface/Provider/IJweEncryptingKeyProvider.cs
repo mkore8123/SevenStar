@@ -1,6 +1,6 @@
 ﻿using Common.Api.Authen.Jwt.Model;
 
-namespace Common.Api.Authen.Jwt.Interface;
+namespace Common.Api.Auth.Jwt.Interface.Provider;
 
 /// <summary>
 /// JWT 加密金鑰提供者介面（JWE 專用）。<br/>

@@ -1,15 +1,7 @@
-﻿using Common.Api.Authen.Enum;
-using Common.Api.Authen.Jwt.Model;
-using SevenStar.Shared.Domain.Api.Auth.Jwt;
-using SevenStar.Shared.Domain.Api.Mapper;
+﻿using Common.Api.Authen.Jwt.Model;
+using SevenStar.Shared.Domain.Api.Auth.Jwt.Mapper;
 using SevenStar.Shared.Domain.DbContext.Platform;
-using SevenStar.Shared.Domain.DbContext.Platform.Entity;
-using SevenStar.Shared.Domain.DbContext.Platform.Repository;
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using static Dapper.SqlMapper;
 
 namespace SevenStar.Shared.Domain.Api.Authen.Jwt;
@@ -44,21 +36,11 @@ public class JwtConfigReloader
 
         var configIds = jwtTokenConfigs.Select(x => x.Id).Distinct().ToList();
 
-        if (configIds == null || configIds.Count == 0)
-        {
-            return false;
-        }
-
-        if (jwsSigningKeies == null || jwsSigningKeies.Count == 0)
-        {
-            return false;
-        }
-
         foreach (var cfgId in configIds)
         {
             var config = jwtTokenConfigs.Where(jwtTokenConfig => jwtTokenConfig.Id == cfgId).MaxBy(jwtTokenConfig => jwtTokenConfig.VersionNo);
                         
-            var signingKeiesWithId = jwsSigningKeies.Where(jwsSigningKey => jwsSigningKey.ConfigId == cfgId).ToList();
+            var signingKeiesWithId = jwsSigningKeies?.Where(jwsSigningKey => jwsSigningKey.ConfigId == cfgId).ToList();
             var encryptingKeiesWithId = jweEncryptingKeies?.Where(jwsSigningKey => jwsSigningKey.ConfigId == cfgId).ToList();
 
             var tokenConfig = config!.ToModel()!;

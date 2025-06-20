@@ -1,6 +1,6 @@
 ﻿using Common.Api.Authen.Jwt.Model;
 
-namespace Common.Api.Authen.Jwt.Interface;
+namespace Common.Api.Auth.Jwt.Interface.Provider;
 
 /// <summary>
 /// 提供 JWT Token 設定（<see cref="JwtTokenConfig"/>）的取得機制介面，支援依據模型產生或依據 Token 內容解構對應配置。

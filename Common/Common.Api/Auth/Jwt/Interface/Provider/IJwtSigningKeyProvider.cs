@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Common.Api.Authen.Jwt.Interface;
+namespace Common.Api.Auth.Jwt.Interface.Provider;
 
 /// <summary>
 /// JWT 簽章金鑰提供者介面（JWS 專用）。<br/>

@@ -1,17 +1,17 @@
-﻿using Common.Api.Authen.Jwt.Interface;
+﻿using Common.Api.Auth.Jwt.Interface.Provider;
 using Common.Api.Authen.Jwt.Model;
 using SevenStar.Shared.Domain.Api.Authen.Claims;
 using SevenStar.Shared.Domain.DbContext.Platform;
 using SevenStar.Shared.Domain.DbContext.Platform.Entity;
 using System.IdentityModel.Tokens.Jwt;
 
-namespace SevenStar.Shared.Domain.Api.Auth.Jwt;
+namespace SevenStar.Shared.Domain.Api.Auth.Jwt.Provider;
 
-public class DbJwtTokenConfigProvider : IJwtTokenConfigProvider<MemberClaimModel>
+public class CacheJwtTokenConfigProvider : IJwtTokenConfigProvider<MemberClaimModel>
 {
     private readonly IApiSingletonCacheService _cacheService;
 
-    public DbJwtTokenConfigProvider(IPlatformDb platformDb, IApiSingletonCacheService cacheService)
+    public CacheJwtTokenConfigProvider(IPlatformDb platformDb, IApiSingletonCacheService cacheService)
     {
         _cacheService = cacheService;
     }

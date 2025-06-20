@@ -1,17 +1,17 @@
-﻿using Common.Api.Authen.Jwt.Interface;
+﻿using Common.Api.Auth.Jwt.Interface.Provider;
 using Common.Api.Authen.Jwt.Model;
 using Microsoft.IdentityModel.Tokens;
 using SevenStar.Shared.Domain.Api.Auth.Jwt;
 using SevenStar.Shared.Domain.DbContext.Platform;
 using System.Text;
 
-namespace SevenStar.Shared.Domain.Api.Authen.Jwt;
+namespace SevenStar.Shared.Domain.Api.Auth.Jwt.Provider;
 
-public class DbJwtSigningKeyProvider : IJwtSigningKeyProvider
+public class CacheJwtSigningKeyProvider : IJwtSigningKeyProvider
 {
     private readonly IApiSingletonCacheService _cacheService;
 
-    public DbJwtSigningKeyProvider(IApiSingletonCacheService cacheService)
+    public CacheJwtSigningKeyProvider(IApiSingletonCacheService cacheService)
     {
         _cacheService = cacheService;
     }

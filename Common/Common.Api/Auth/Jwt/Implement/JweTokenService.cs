@@ -1,4 +1,4 @@
-﻿using Common.Api.Authen.Jwt.Interface;
+﻿using Common.Api.Auth.Jwt.Interface.Provider;
 using Common.Api.Authen.Jwt.Model;
 using Common.Api.Authentication;
 using Jose;

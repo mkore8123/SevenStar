@@ -1,6 +1,7 @@
 ﻿using Common.Api.Auth.Claims;
 using Common.Api.Auth.Enum;
 using Common.Api.Auth.Jwt;
+using Common.Api.Auth.Jwt.Interface.Provider;
 using Common.Api.Authen;
 using Common.Api.Authen.Jwt.Enum;
 using Common.Api.Authen.Jwt.Implement;
@@ -35,9 +36,9 @@ public static class AuthenExtension
         services.AddScoped<IJwtTokenConfigProvider<TUser>, TTokenConfigProvider>();
         services.AddScoped<IJwtSigningKeyProvider, TSigningKeyProvider>();
         services.AddSingleton<IClaimsMapper<TUser>, TClaimsMapper>();
-        //services.AddScoped<IMultiJwtValidationConfigProvider, JwsTokenService<TUser>>();
         services.AddSingleton<IJwtEnvelopeTypeResolver, JwtEnvelopeTypeResolver>();
         services.AddSingleton<IJwtTokenServiceFactory<UserClaimModel>, JwtTokenServiceFactory<UserClaimModel>>();
+        services.AddSingleton<IJwtCacheService, JwtSnapshotCacheService>();
 
         services.AddKeyedScoped<ITokenService<TUser>>(JwtEnvelopeType.Jws, (sp, key) =>
             new JwsTokenService<TUser>(

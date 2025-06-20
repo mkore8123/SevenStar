@@ -4,11 +4,11 @@ using System.Collections.Concurrent;
 
 namespace SevenStar.Shared.Domain.Api;
 
-public partial class ApiSingletonCacheService : IApiSingletonCacheService
+public partial class ApiSnapCacheService : IApiSingletonCacheService
 {
     public IJwtCacheService Jwt { get; }
 
-    public ApiSingletonCacheService(IJwtCacheService jwt)
+    public ApiSnapCacheService(IJwtCacheService jwt)
     {
         Jwt = jwt ?? throw new ArgumentNullException(nameof(jwt), "JWT Cache Service cannot be null.");
     }

@@ -11,7 +11,7 @@ namespace Common.Api.Authen.Jwt.Implement;
 /// IJwtCacheService 的實作，專責管理 JWT Token 快取存取與更新。
 /// 採用 ConcurrentDictionary 儲存，支援高併發讀取。
 /// </summary>
-public class JwtCacheService : IJwtCacheService
+public class JwtSnapshotCacheService : IJwtCacheService
 {
     private ConcurrentDictionary<JwtKey, JwtTokenConfig> _jwtConfigIssueCache = new();
     private ConcurrentDictionary<JwtKey, JwtSigningKey> _jwsSigningIssueCache = new();

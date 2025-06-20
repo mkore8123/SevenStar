@@ -1,6 +1,6 @@
 ﻿using Common.Api.Auth.Jwt;
+using Common.Api.Auth.Jwt.Interface.Provider;
 using Common.Api.Authen.Jwt.Enum;
-using Common.Api.Authen.Jwt.Interface;
 using Common.Api.Authentication;
 using Jose;
 using Microsoft.Extensions.DependencyInjection;
