@@ -6,8 +6,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenStar.AppHost", "SevenS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenStar.Company.Admin.Api", "SevenStar.Company.Admin.Api\SevenStar.Company.Admin.Api.csproj", "{3C355DED-94CA-5203-49D3-E61964C7DD9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenStar.Company.Admin.Web", "SevenStar.Company.Admin.Web\SevenStar.Company.Admin.Web.csproj", "{29417E0F-C417-CE54-5B34-581F1D7950BF}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SevenStar.Shared", "SevenStar.Shared", "{CA30A22E-3142-40CF-BCF6-13A0A2453C6B}"
@@ -42,6 +40,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Caching.Redi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenStar.Data.Platform.PostgreSql", "SevenStar.Data\SevenStar.Data.Platform.PostgreSql\SevenStar.Data.Platform.PostgreSql.csproj", "{D68C07AF-BE1B-44D0-8113-F615682A4475}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenStar.Shared.Domain.Web", "SevenStar.Shared\SevenStar.Shared.Domain.Web\SevenStar.Shared.Domain.Web.csproj", "{D0679EE6-B4EE-41E0-9E33-4AD01AFB564C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SevenStar.Company.Admin.Web", "SevenStar.Company.Admin.Web\SevenStar.Company.Admin.Web.csproj", "{2CC5944F-4D8F-E806-A229-11B9472D9EE5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,10 +58,6 @@ Global
 		{3C355DED-94CA-5203-49D3-E61964C7DD9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C355DED-94CA-5203-49D3-E61964C7DD9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C355DED-94CA-5203-49D3-E61964C7DD9F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{29417E0F-C417-CE54-5B34-581F1D7950BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{29417E0F-C417-CE54-5B34-581F1D7950BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{29417E0F-C417-CE54-5B34-581F1D7950BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{29417E0F-C417-CE54-5B34-581F1D7950BF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{11E591AD-88AB-1082-D7C9-3B424936DFB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{11E591AD-88AB-1082-D7C9-3B424936DFB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11E591AD-88AB-1082-D7C9-3B424936DFB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -112,6 +110,14 @@ Global
 		{D68C07AF-BE1B-44D0-8113-F615682A4475}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D68C07AF-BE1B-44D0-8113-F615682A4475}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D68C07AF-BE1B-44D0-8113-F615682A4475}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0679EE6-B4EE-41E0-9E33-4AD01AFB564C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0679EE6-B4EE-41E0-9E33-4AD01AFB564C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0679EE6-B4EE-41E0-9E33-4AD01AFB564C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0679EE6-B4EE-41E0-9E33-4AD01AFB564C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CC5944F-4D8F-E806-A229-11B9472D9EE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CC5944F-4D8F-E806-A229-11B9472D9EE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CC5944F-4D8F-E806-A229-11B9472D9EE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CC5944F-4D8F-E806-A229-11B9472D9EE5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -130,6 +136,7 @@ Global
 		{D015EAA1-1EF3-460F-8BDE-9828717C58A1} = {EC8CF188-7A5F-4340-B348-A13731E6ED20}
 		{3F1F0B62-C923-4799-A6E3-6185511B0FF7} = {EC8CF188-7A5F-4340-B348-A13731E6ED20}
 		{D68C07AF-BE1B-44D0-8113-F615682A4475} = {FD21780B-8A8E-4FE7-B5E8-5CC5CC463085}
+		{D0679EE6-B4EE-41E0-9E33-4AD01AFB564C} = {CA30A22E-3142-40CF-BCF6-13A0A2453C6B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0C4DA5FA-CDAC-4B6C-B21C-2894EB0B22DB}

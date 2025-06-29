@@ -9,7 +9,7 @@ using SevenStar.Shared.Domain.Api.Auth.Jwt;
 using SevenStar.Shared.Domain.Api.Logger.Serilog;
 using SevenStar.Shared.Domain.Extensions;
 using SevenStar.Shared.Domain.Service.Extensions;
-using SevenStar.Shared.Domain.Api.Authen.Claims;
+using SevenStar.Shared.Domain.Api.Auth.Claims;
 
 var companyId = 1;
 var platformDbConnectionString = "Host=127.0.0.1;Port=5432;Username=postgres;Password=apeter56789;Database=postgres;SearchPath=public;";

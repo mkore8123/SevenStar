@@ -1,5 +1,5 @@
 ﻿using Common.Api.Auth.Jwt.Interface.Provider;
-using Common.Api.Authen.Jwt;
+using Common.Api.Auth.Jwt.Mapper;
 using Common.Api.Authentication;
 using Jose;
 using Microsoft.IdentityModel.Tokens;
@@ -60,7 +60,7 @@ public class JwsTokenService<TModel> : ITokenService<TModel>
 
         // 取得金鑰 & 演算法
         var key = await _keyProvider.GetAvailableKeyAsync(cfg.Issuer, cfg.Audience);
-        var joseKey = SecurityKeyToJoseKeyConverter.ToJoseKey(key);
+        var joseKey = JoseKeyMapper.ToJoseKey(key);
 
         // JWS Algorithm mapping
         var alg = MapJwsAlgorithm(key.Algorithm);

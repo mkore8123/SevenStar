@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Common.Api.Authen.Jwt;
+namespace Common.Api.Auth.Jwt.Mapper;
 
-public static class SecurityKeyToJoseKeyConverter
+public static class JoseKeyMapper
 {
     /// <summary>
     /// 將 JwtSigningKey 轉換為 Jose.JWT 套件支援的 key 實例（byte[]、RSA、ECDsa）。

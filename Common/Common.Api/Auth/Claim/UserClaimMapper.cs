@@ -7,7 +7,7 @@ public class UserClaimMapper : IClaimsMapper<UserClaimModel>
 {
     public IEnumerable<Claim> ToClaims(UserClaimModel model)
     {
-        yield return new Claim("uid", model.UserId.ToString());
+        yield return new Claim("uid", model.Id.ToString());
         // yield return new Claim("cid", model.CompanyId);
         yield return new Claim("device", model.Device.ToString());
     }
@@ -16,7 +16,7 @@ public class UserClaimMapper : IClaimsMapper<UserClaimModel>
     {
         return new UserClaimModel
         {
-            UserId = long.Parse(principal.FindFirstValue("uid")),
+            Id = long.Parse(principal.FindFirstValue("uid")),
             // CompanyId = principal.FindFirstValue("cid") ?? "",
             Device = Enums.DeviceTypeEnum.Web //principal.FindFirstValue("device") ?? ""
         };
@@ -41,7 +41,7 @@ public class UserClaimMapper : IClaimsMapper<UserClaimModel>
 
         return new UserClaimModel
         {
-            UserId = userId,
+            Id = userId,
             // CompanyId = companyId,
             Device = Enums.DeviceTypeEnum.Web//device
         };
@@ -51,10 +51,15 @@ public class UserClaimMapper : IClaimsMapper<UserClaimModel>
     {
         var dic = new Dictionary<string, object>
         {
-            ["uid"] = model.UserId,
+            ["uid"] = model.Id,
             // ["cid"] = model.CompanyId,
             ["device"] = Enums.DeviceTypeEnum.Web.ToString() // model.Device ?? ""
         };
         return dic;
+    }
+
+    public UserClaimModel FromClaimsDictionary(IDictionary<string, object> claims)
+    {
+        throw new NotImplementedException();
     }
 }

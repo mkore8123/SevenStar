@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using Common.Enums;
+using System.Security.Claims;
 
 namespace Common.Api.Authen;
 
@@ -26,7 +27,13 @@ public interface IClaimsMapper<TModel>
     /// </summary>
     /// <param name="principal">含有多個 Claim 的 <see cref="ClaimsPrincipal"/> 實例，通常由 Token 解析而得。</param>
     /// <returns>還原後的 <typeparamref name="TModel"/> 實例。</returns>
-    TModel FromClaims(ClaimsPrincipal principal);
+    TModel FromClaims(ClaimsPrincipal principal)
+    {
+        var dict = principal.Claims
+            .ToDictionary(c => c.Type, c => (object)c.Value);
+
+        return FromClaimsDictionary(dict);
+    }
 
     /// <summary>
     /// 將指定的 <typeparamref name="TModel"/> 資料模型轉換為 <see cref="Dictionary{String, Object}"/> 型態的 Claims 字典。
@@ -57,4 +64,25 @@ public interface IClaimsMapper<TModel>
     /// 包含 claims 中對應欄位轉回模型屬性的資料。
     /// </returns>
     TModel FromClaimsDic(IDictionary<string, object> claims);
+
+    /// <summary>
+    /// 根據指定的 <see cref="Dictionary{String, Object}"/> 型態的 Claims 字典，
+    /// 還原對應的 <typeparamref name="TModel"/> 資料模型。
+    /// 
+    /// 這個方法通常用於處理更一般化的場景，例如跨服務傳遞時，
+    /// 僅以 Key-Value 字典格式傳輸 Claims 資料，無需構造 <see cref="ClaimsPrincipal"/> 或 <see cref="ClaimsIdentity"/>。
+    /// 
+    /// 也可用於從 Token 解密後取得的 payload（如 JWE/JWS 解開後得到的 JSON 物件）
+    /// 直接映射回應用層的資料模型，便於多租戶、自訂認證協議、或非標準 JWT 結構的情境。
+    /// </summary>
+    /// <param name="claims">
+    /// 以 Key-Value 格式表示的 Claims 資料字典，
+    /// Key 為 Claim 名稱（如 "uid", "cid", "role"），Value 為對應的屬性值。
+    /// 通常由 Token payload、序列化還原、或其他協議攜帶的資料所組成。
+    /// </param>
+    /// <returns>
+    /// 還原後的 <typeparamref name="TModel"/> 型別實例，
+    /// 其中包含從字典中對應欄位映射回模型屬性的資料。
+    /// </returns>
+    TModel FromClaimsDictionary(IDictionary<string, object> claims);
 }

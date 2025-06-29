@@ -8,7 +8,7 @@ namespace Common.Api.Auth.Claims;
 
 public class UserClaimModel
 {
-    public long UserId { get; set; } = default!;
+    public long Id { get; set; } = default!;
     
     public DeviceTypeEnum Device { get; set; } = default!;
 }

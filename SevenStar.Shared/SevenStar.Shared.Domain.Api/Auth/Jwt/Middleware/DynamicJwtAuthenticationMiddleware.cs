@@ -1,10 +1,7 @@
 ﻿using Common.Api.Authen.Jwt.Exception;
 using Common.Api.Authen.Jwt.Interface;
-using Common.Api.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
-using SevenStar.Shared.Domain.Api.Authen.Claims;
 
 /// <summary>
 /// 專責處理 JWT 動態 Envelope 判斷與 claims model 綁定的 Middleware

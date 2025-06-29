@@ -29,9 +29,4 @@ public class JwtSigningKey
     /// Base64 或 PEM 格式的 Private Key（如為對稱式則存一份即可）
     /// </summary>
     public string? PrivateKey { get; set; }
-
-    ///// <summary>
-    ///// 實際使用的金鑰（對稱或非對稱）
-    ///// </summary>
-    //public SecurityKey SecurityKey { get; set; } = default!;
 }

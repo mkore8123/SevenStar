@@ -3,8 +3,8 @@ using Common.Api.Authen.Jwt.Interface;
 using Common.Api.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using SevenStar.Shared.Domain.Api.Auth.Claims;
 using SevenStar.Shared.Domain.Api.Auth.Jwt.Provider;
-using SevenStar.Shared.Domain.Api.Authen.Claims;
 
 namespace SevenStar.Shared.Domain.Api.Auth.Jwt;
 
