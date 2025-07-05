@@ -1,0 +1,125 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@using Syncfusion.Blazor.RichTextEditor
+
+<h3>全功能論壇編輯器</h3>
+
+<SfRichTextEditor @bind-Value="Content">
+    <RichTextEditorToolbarSettings Items="@ToolbarItems" />
+    <RichTextEditorQuickToolbarSettings Image="@ImageToolbar"
+                                        Link="@LinkToolbar"
+                                        Table="@TableToolbar" />
+</SfRichTextEditor>
+<hr />
+
+<h5>預覽內容</h5>
+<div class="border p-3" style="min-height:200px;">
+    @((MarkupString)Content)
+</div>
+
+@code {
+    private string Content = @"<h2>這是全解放編輯器</h2>
+    <p>盡情使用所有工具列功能測試。</p>";
+
+    private List<ToolbarItemModel> ToolbarItems = new()
+    {
+        // 文字樣式
+        new() { Command = ToolbarCommand.Bold },
+        new() { Command = ToolbarCommand.Italic },
+        new() { Command = ToolbarCommand.Underline },
+        new() { Command = ToolbarCommand.StrikeThrough },
+        new() { Command = ToolbarCommand.InlineCode },
+        new() { Command = ToolbarCommand.CodeBlock },
+        new() { Command = ToolbarCommand.FontName },
+        new() { Command = ToolbarCommand.FontSize },
+        new() { Command = ToolbarCommand.FontColor },
+        new() { Command = ToolbarCommand.BackgroundColor },
+        new() { Command = ToolbarCommand.LowerCase },
+        new() { Command = ToolbarCommand.UpperCase },
+        new() { Command = ToolbarCommand.SuperScript },
+        new() { Command = ToolbarCommand.SubScript },
+        new() { Command = ToolbarCommand.Separator },
+
+        // 段落樣式
+        new() { Command = ToolbarCommand.Formats },
+        new() { Command = ToolbarCommand.Alignments },
+        new() { Command = ToolbarCommand.Indent },
+        new() { Command = ToolbarCommand.Outdent },
+        new() { Command = ToolbarCommand.Blockquote },
+        new() { Command = ToolbarCommand.OrderedList },
+        new() { Command = ToolbarCommand.UnorderedList },
+        new() { Command = ToolbarCommand.NumberFormatList },
+        new() { Command = ToolbarCommand.BulletFormatList },
+        new() { Command = ToolbarCommand.HorizontalLine },
+        new() { Command = ToolbarCommand.Separator },
+
+        // 插入
+        new() { Command = ToolbarCommand.CreateTable },
+        new() { Command = ToolbarCommand.CreateLink },
+        new() { Command = ToolbarCommand.RemoveLink },
+        new() { Command = ToolbarCommand.Image },
+        new() { Command = ToolbarCommand.Audio },
+        new() { Command = ToolbarCommand.Video },
+        new() { Command = ToolbarCommand.InsertCode },
+        new() { Command = ToolbarCommand.Separator },
+
+        // 匯入匯出
+        new() { Command = ToolbarCommand.ImportWord },
+        new() { Command = ToolbarCommand.ExportWord },
+        new() { Command = ToolbarCommand.ExportPdf },
+        new() { Command = ToolbarCommand.Separator },
+
+        // 其它工具
+        new() { Command = ToolbarCommand.FormatPainter },
+        new() { Command = ToolbarCommand.ClearFormat },
+        new() { Command = ToolbarCommand.Print },
+        new() { Command = ToolbarCommand.SourceCode },
+        new() { Command = ToolbarCommand.FullScreen },
+        new() { Command = ToolbarCommand.Maximize },
+        new() { Command = ToolbarCommand.Minimize },
+        new() { Command = ToolbarCommand.Preview },
+        new() { Command = ToolbarCommand.Separator },
+        new() { Command = ToolbarCommand.Undo },
+        new() { Command = ToolbarCommand.Redo }
+    };
+
+    private List<ImageToolbarItemModel> ImageToolbar = new()
+    {
+        new() { Command = ImageToolbarCommand.Replace },
+        new() { Command = ImageToolbarCommand.Align },
+        new() { Command = ImageToolbarCommand.Caption },
+        new() { Command = ImageToolbarCommand.Remove },
+        new() { Command = ImageToolbarCommand.HorizontalSeparator },
+        new() { Command = ImageToolbarCommand.InsertLink },
+        new() { Command = ImageToolbarCommand.OpenImageLink },
+        new() { Command = ImageToolbarCommand.EditImageLink },
+        new() { Command = ImageToolbarCommand.RemoveImageLink },
+        new() { Command = ImageToolbarCommand.Separator },
+        new() { Command = ImageToolbarCommand.Display },
+        new() { Command = ImageToolbarCommand.AltText },
+        new() { Command = ImageToolbarCommand.Dimension }
+    };
+
+    private List<LinkToolbarItemModel> LinkToolbar = new()
+    {
+        new() { Command = LinkToolbarCommand.Open },
+        new() { Command = LinkToolbarCommand.Edit },
+        new() { Command = LinkToolbarCommand.UnLink }
+    };
+        
+    private List<TableToolbarItemModel> TableToolbar = new()
+    {
+        new() { Command = TableToolbarCommand.HorizontalSeparator },
+        new() { Command = TableToolbarCommand.TableHeader },
+        new() { Command = TableToolbarCommand.TableRows },
+        new() { Command = TableToolbarCommand.TableColumns },
+        new() { Command = TableToolbarCommand.BackgroundColor },
+        new() { Command = TableToolbarCommand.TableRemove },
+        new() { Command = TableToolbarCommand.Alignments },
+        new() { Command = TableToolbarCommand.TableCellVerticalAlign },
+        new() { Command = TableToolbarCommand.Styles },
+        new() { Command = TableToolbarCommand.TableEditProperties },
+        new() { Command = TableToolbarCommand.TableCell },
+        new() { Command = TableToolbarCommand.Separator }
+    };
+}
