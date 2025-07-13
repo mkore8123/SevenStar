@@ -1,0 +1,47 @@
+﻿@inject NavigationManager Navigation
+@inject IJSRuntime JS
+@rendermode InteractiveServer
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Navigations
+
+<SfAppBar CssClass="e-appbar e-dark" Position="AppBarPosition.Top">
+    <ChildContent>
+        <div class="d-flex justify-content-between align-items-center w-100 px-3">
+            <!-- Logo 與名稱 -->
+            <div class="d-flex align-items-center">
+                <img src="https://picsum.photos/30" class="me-2 rounded-circle" alt="Logo" />
+                <span class="fs-4 fw-bold">My Blazor App</span>
+            </div>
+
+            <!-- 中間導航 -->
+            <div class="d-flex align-items-center">
+                <SfButton CssClass="e-primary me-2" Content="Home" @onclick="@(() => NavigateTo("/"))"></SfButton>
+                <SfButton CssClass="e-success me-2" Content="Forum" @onclick="@(() => NavigateTo("/forum"))"></SfButton>
+                <SfButton CssClass="e-warning" Content="Articles" @onclick="@(() => NavigateTo("/articles"))"></SfButton>
+            </div>
+
+            <!-- 右側 -->
+            <div class="d-flex align-items-center">
+                <SfButton CssClass="e-flat e-icon-btn e-light me-2" IconCss="e-icons e-bell" @onclick="OnNotifyClick"></SfButton>
+                <SfButton CssClass="e-flat e-icon-btn e-light" IconCss="e-icons e-user" @onclick="OnProfileClick"></SfButton>
+            </div>
+        </div>
+    </ChildContent>
+</SfAppBar>
+
+@code {
+    private void NavigateTo(string url)
+    {
+        Navigation.NavigateTo(url);
+    }
+
+    private async Task OnNotifyClick()
+    {
+        await JS.InvokeVoidAsync("console.log", "Notifications Clicked");
+    }
+
+    private async Task OnProfileClick()
+    {
+        await JS.InvokeVoidAsync("console.log", "Profile Clicked");
+    }
+}

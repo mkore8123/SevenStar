@@ -1,8 +1,8 @@
-﻿@page "/"
+﻿@page "/test"
 @rendermode InteractiveServer
 @using Syncfusion.Blazor.RichTextEditor
 
-<h3>全功能論壇編輯器</h3>
+@* <h3>全功能論壇編輯器</h3>
 
 <SfRichTextEditor @bind-Value="Content">
     <RichTextEditorToolbarSettings Items="@ToolbarItems" />
@@ -122,4 +122,4 @@
         new() { Command = TableToolbarCommand.TableCell },
         new() { Command = TableToolbarCommand.Separator }
     };
-}
+} *@
